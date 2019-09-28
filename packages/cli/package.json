@@ -1,0 +1,29 @@
+{
+  "name": "@degenerator/cli",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "./build/index.js",
+  "files": [
+    "build/"
+  ],
+  "bin": {
+    "degenerator": "./build/index.js"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc -p ."
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.8",
+    "nodemon": "^1.19.2",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "clear": "^0.1.0",
+    "commander": "^3.0.2",
+    "figlet": "^1.2.4",
+    "inquirer": "^7.0.0"
+  }
+}

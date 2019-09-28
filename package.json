@@ -1,0 +1,30 @@
+{
+    "name": "degenerator",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "lerna run build --npm-client=yarn",
+        "bootstrap": "lerna bootstrap --npm-client=yarn",
+        "install-peers": "lerna run install-peers --npm-client=yarn",
+        "test": "lerna run test --npm-client=yarn",
+        "lint": "lerna run lint --npm-client=yarn",
+        "release": "./script/release.sh"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "lerna": "^3.16.4",
+        "husky": "^1.3.1",
+        "prettier": "^1.16.4",
+        "pretty-quick": "^1.10.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged"
+        }
+    }
+}
