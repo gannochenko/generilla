@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "tsc -p ."
+    "build": "tsc -w -p ."
   },
   "devDependencies": {
     "@types/node": "^12.7.8",
@@ -25,6 +25,7 @@
     "commander": "^3.0.2",
     "ejs": "^2.7.1",
     "figlet": "^1.2.4",
+    "findit": "^2.0.0",
     "inquirer": "^7.0.0"
   }
 }

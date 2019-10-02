@@ -8,6 +8,8 @@ import clear from 'clear';
 import program from 'commander';
 import path from 'path';
 
+import { Template } from './lib/template';
+
 clear();
 console.log(
     chalk.red(
@@ -32,4 +34,9 @@ console.log(
 // const cheese: string = true === program.cheese ? 'marble' : program.cheese || 'no';
 // console.log('  - %s cheese', cheese);
 
-const generatorsPath = path.join(__dirname, 'generators');
+const generatorsPath = path.join(__dirname, '../generators');
+
+const template = new Template(path.join(generatorsPath, 'react.component'));
+(async () => {
+    await template.copy(path.join(__dirname, '../fields'));
+})();
