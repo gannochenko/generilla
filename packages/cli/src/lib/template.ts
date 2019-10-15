@@ -1,38 +1,21 @@
 // @ts-ignore
-import find from 'findit';
-import path from 'path';
+import { FsCrawler } from './fs-crawler';
 import { ObjectLiteral } from './type';
+
+interface Parameters {
+    blowUpLandingSite?: false;
+}
 
 export class Template {
     constructor(private path: string) {}
 
-    async copy(dstPath: string, variables: ObjectLiteral = {}) {
-        console.log(dstPath);
-        const finder = find(this.path);
+    public async copy(dstPath: string, variables: ObjectLiteral = {}, parameters: Parameters = {}) {
+        const crawler = new FsCrawler(this.path);
+        const files = await crawler.run(dstPath, variables);
 
-        // todo: add timeout here with Promise.race()
-        const onEnd = new Promise(resolve => {
-            finder.on('end', resolve);
-        });
-
-        finder.on('directory', (dir: string, stat: any, stop: () => void) => {
-            console.log(dir);
-            const base = path.basename(dir);
-            if (base === '[component_name]') {
-                stop();
-                return;
-            }
-            // var base = path.basename(dir);
-            // if (base === '.git' || base === 'node_modules') stop()
-            // else console.log(dir + '/')
-        });
-
-        // finder.on('file', function (file, stat) {
-        //     console.log(file);
-        // });
-        //
-        // finder.on('link', function (link, stat) {
-        //     console.log(link);
-        // });
+        // copy files one by one
+        for (const source in files) {
+            console.log(source);
+        }
     }
 }

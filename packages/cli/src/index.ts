@@ -13,7 +13,7 @@ import { Template } from './lib/template';
 clear();
 console.log(
     chalk.red(
-        figlet.textSync('DEGenerator', { horizontalLayout: 'full' })
+        figlet.textSync('Generilla', { horizontalLayout: 'full' })
     )
 );
 
@@ -36,7 +36,10 @@ console.log(
 
 const generatorsPath = path.join(__dirname, '../generators');
 
-const template = new Template(path.join(generatorsPath, 'react.component'));
+const template = new Template(path.join(generatorsPath, 'react.component', 'template'));
 (async () => {
-    await template.copy(path.join(__dirname, '../fields'));
+    await template.copy('/Users/sergeigannochenko/_generilla_tests', {
+        component_name: 'suck',
+        use_tests: true,
+    });
 })();
