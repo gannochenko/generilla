@@ -1,1 +1,1 @@
-export * from './<!- component_name ->';
+export * from './<%- component_name_uc %>';

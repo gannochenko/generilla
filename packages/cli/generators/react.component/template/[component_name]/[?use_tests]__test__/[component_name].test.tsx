@@ -25,12 +25,10 @@ describe('<<!- component_name -> />', () => {
         // console.log(prettyDOM(container));
         //
         // // how to search for elements
-        // const button = container.querySelector(
-        //     '[data-testid="search-submit"]'
-        // ) as HTMLButtonElement;
-        // const input = container.querySelector(
-        //     '[data-testid="search-input"]'
-        // ) as HTMLInputElement;
+        // const node = container.querySelector(
+        //     '.some-selector'
+        // ) as HTMLElement;
+        // const anotherNode = getByTestId('search-input') as HTMLElement;
         //
         // // how to fire events
         // fireEvent.click(button);

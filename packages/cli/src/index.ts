@@ -39,7 +39,8 @@ const generatorsPath = path.join(__dirname, '../generators');
 const template = new Template(path.join(generatorsPath, 'react.component', 'template'));
 (async () => {
     await template.copy('/Users/sergeigannochenko/_generilla_tests', {
-        component_name: 'suck',
+        component_name: 'demo',
+        component_name_uc: 'Demo',
         use_tests: true,
     });
 })();

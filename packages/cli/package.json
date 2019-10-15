@@ -14,6 +14,7 @@
     "build": "tsc -w -p ."
   },
   "devDependencies": {
+    "@types/ejs": "^2.6.3",
     "@types/node": "^12.7.8",
     "nodemon": "^1.19.2",
     "ts-node": "^8.4.1",
