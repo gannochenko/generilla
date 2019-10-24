@@ -2,16 +2,9 @@
 import find from 'findit';
 import path from 'path';
 import fs from 'fs';
-import { ObjectLiteral } from './type';
+import { ObjectLiteral, ObjectList } from './type';
 
 const CONDITION_REGEX = /^\[\?([a-zA-Z_0-9]+)\]/i;
-
-interface TargetFsObject {
-    type: 'f' | 'd';
-    path: string;
-}
-
-type ObjectList = ObjectLiteral<TargetFsObject>;
 
 export class FsCrawler {
     constructor(private path: string) {}
