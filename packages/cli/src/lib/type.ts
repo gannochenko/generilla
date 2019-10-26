@@ -16,6 +16,10 @@ export interface TargetFsObject {
 export interface Generator {
     new (property: string): Generator;
     getName(): string;
+    getQuestions(): Promise<any[]>;
+    refineAnswers(answers: ObjectLiteral): Promise<ObjectLiteral>;
+    getDependencies(): string[];
+    getDevDependencies(): string[];
 }
 
 export type ObjectList = ObjectLiteral<TargetFsObject>;

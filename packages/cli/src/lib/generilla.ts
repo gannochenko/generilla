@@ -35,7 +35,7 @@ export class Generilla {
         const generatorItem = list!.find(item => item.path === generatorPath);
         const generator = new GeneratorController(generatorItem!);
 
-        await generator.create();
+        await generator.runPipeline();
 
         console.log('Enjoy your brand new whatever you generated there!');
     }

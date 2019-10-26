@@ -2,6 +2,7 @@
 import find from 'findit';
 import { GeneratorListItem, Generator } from './type';
 import path from "path";
+import inquirer from 'inquirer';
 
 export class GeneratorList {
     public static async getList(folder: string) {
@@ -15,7 +16,7 @@ export class GeneratorList {
                 return;
             }
 
-            const generator: Generator = new generatorClass();
+            const generator: Generator = new generatorClass({ inquirer });
 
             let name = '';
             if (typeof generator.getName === 'function') {
