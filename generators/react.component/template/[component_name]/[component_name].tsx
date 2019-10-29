@@ -4,7 +4,7 @@ import {
     <%- component_name_uc %>Container,
 } from './style';
 
-import { Props } from './type.ts';
+import { Props } from './type';
 
 export const <%- component_name_uc %>: FunctionComponent<Props> = ({
     children,

@@ -2,6 +2,9 @@
 
 import path from 'path';
 import { Generilla } from './lib/generilla';
+import { HOME_SUBFOLDER } from './lib/constants';
 
-const app = new Generilla(path.join(__dirname, '../generators'));
+const env = process.env;
+
+const app = new Generilla(env.GENERILLA_GENERATORS_HOME || path.join(env.HOME!, HOME_SUBFOLDER));
 app.run();

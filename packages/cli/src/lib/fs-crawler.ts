@@ -3,6 +3,7 @@ import find from 'findit';
 import path from 'path';
 import fs from 'fs';
 import { ObjectLiteral, ObjectList } from './type';
+import { Interpolator } from './interpolator';
 
 const CONDITION_REGEX = /^\[\?([a-zA-Z_0-9]+)\]/i;
 
@@ -79,14 +80,7 @@ export class FsCrawler {
             }
         }
 
-        for(const variable in variables) {
-            const value = variables[variable].toString().replace(/[^a-zA-Z0-9_]/g, '');
-
-            pathName = pathName.replace(new RegExp(`\\[\\?${variable}\\]`, 'i'), '');
-            pathName = pathName.replace(new RegExp(`\\[${variable}\\]`, 'g'), value);
-        }
-
-        return pathName;
+        return Interpolator.apply(pathName, variables);
     }
 
     private static isObjectExist(objectPath: string) {

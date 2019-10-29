@@ -22,10 +22,12 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
+    "case-formatter": "^1.0.9",
     "chalk": "^2.4.2",
     "clear": "^0.1.0",
     "commander": "^3.0.2",
     "ejs": "^2.7.1",
+    "execa": "^3.2.0",
     "figlet": "^1.2.4",
     "findit": "^2.0.0",
     "inquirer": "^7.0.0"

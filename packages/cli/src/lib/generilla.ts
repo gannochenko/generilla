@@ -9,7 +9,7 @@ import program from 'commander';
 import { GeneratorList } from './generatorList';
 import { GeneratorListItem } from './type';
 import fs from "fs";
-import { GeneratorController } from './generatorController';
+import { GeneratorController } from './generator-controller';
 
 const NOTHING = '__nothing__';
 
@@ -35,7 +35,8 @@ export class Generilla {
         const generatorItem = list!.find(item => item.path === generatorPath);
         const generator = new GeneratorController(generatorItem!);
 
-        await generator.runPipeline();
+        const destination = '/Users/sergeigannochenko/proj/generilla/_output'; // process.cwd();
+        await generator.runPipeline(destination);
 
         console.log('Enjoy your brand new whatever you generated there!');
     }

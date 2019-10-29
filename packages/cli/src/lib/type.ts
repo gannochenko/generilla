@@ -18,8 +18,13 @@ export interface Generator {
     getName(): string;
     getQuestions(): Promise<any[]>;
     refineAnswers(answers: ObjectLiteral): Promise<ObjectLiteral>;
-    getDependencies(): string[];
-    getDevDependencies(): string[];
+    getDependencies(): Dependencies;
+    getDevDependencies(): Dependencies;
 }
 
 export type ObjectList = ObjectLiteral<TargetFsObject>;
+
+export interface Dependencies {
+    destination?: string;
+    packages: string[];
+}

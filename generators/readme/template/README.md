@@ -12,32 +12,32 @@
 [![Language][language-shield]][language-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/ca134944-33b3-41ac-8d12-048fc8c20637/deploy-status)](https://app.netlify.com/sites/grayscale-promo-gatsbyjs-starter/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ca134944-33b3-41ac-8d12-048fc8c20637/deploy-status)](https://app.netlify.com/sites/<%- repository_name %>/deploys)
 
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
   <!--
-  <a href="https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter">
+  <a href="https://github.com/<%- github_account_name %>/<%- repository_name %>">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
   -->
 
-  <h3 align="center">Grayscale promo &mdash; GatsbyJS starter</h3>
+  <h3 align="center"><%- project_name %></h3>
 
   <p align="center">
     An awesome GatsbyJS template to build a smiple landing fast
     <!--
     <br />
-    <a href="https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/<%- github_account_name %>/<%- repository_name %>"><strong>Explore the docs »</strong></a>
     -->
     <br />
     <br />
-    <a href="https://gatsby-starter-grayscale-promo.netlify.com/">View Demo</a>
+    <a href="https://<%- repository_name %>.netlify.com/">View Demo</a>
     ·
-    <a href="https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter/issues">Report Bug</a>
+    <a href="https://github.com/<%- github_account_name %>/<%- repository_name %>/issues">Report Bug</a>
     ·
-    <a href="https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter/issues">Request Feature</a>
+    <a href="https://github.com/<%- github_account_name %>/<%- repository_name %>/issues">Request Feature</a>
   </p>
 </p>
 
@@ -110,7 +110,7 @@ const API_KEY = 'ENTER YOUR API';
 * analytics support
 * page auto-generation support
 
-See the [open issues](https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/<%- github_account_name %>/<%- repository_name %>/issues) for a list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -133,30 +133,29 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Sergei Gannochenko - [Linkedin](https://www.linkedin.com/in/sergey-gannochenko/)
 
-Project Link: [https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter](https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter)
+Project Link: [https://github.com/<%- github_account_name %>/<%- repository_name %>](https://github.com/<%- github_account_name %>/<%- repository_name %>)
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
 Special thanks to:
 
-* [Another cool GatsbyJS starter I took some ideas from](https://github.com/damassi/gatsby-starter-typescript-rebass-netlifycms)
 * [Unsplash](https://unsplash.com)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/awesome1888/grayscale-promo-gatsbyjs-starter.svg?style=flat-square
-[contributors-url]: https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter/graphs/contributors
-[language-shield]: https://img.shields.io/github/languages/top/awesome1888/grayscale-promo-gatsbyjs-starter.svg?style=flat-square
-[language-url]: https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter
-[forks-shield]: https://img.shields.io/github/forks/awesome1888/grayscale-promo-gatsbyjs-starter.svg?style=flat-square
-[forks-url]: https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter/network/members
-[stars-shield]: https://img.shields.io/github/stars/awesome1888/grayscale-promo-gatsbyjs-starter.svg?style=flat-square
-[stars-url]: https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter/stargazers
-[issues-shield]: https://img.shields.io/github/issues/awesome1888/grayscale-promo-gatsbyjs-starter.svg?style=flat-square
-[issues-url]: https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter/issues
-[license-shield]: https://img.shields.io/github/license/awesome1888/grayscale-promo-gatsbyjs-starter.svg?style=flat-square
-[license-url]: https://github.com/awesome1888/grayscale-promo-gatsbyjs-starter/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/<%- github_account_name %>/<%- repository_name %>.svg?style=flat-square
+[contributors-url]: https://github.com/<%- github_account_name %>/<%- repository_name %>/graphs/contributors
+[language-shield]: https://img.shields.io/github/languages/top/<%- github_account_name %>/<%- repository_name %>.svg?style=flat-square
+[language-url]: https://github.com/<%- github_account_name %>/<%- repository_name %>
+[forks-shield]: https://img.shields.io/github/forks/<%- github_account_name %>/<%- repository_name %>.svg?style=flat-square
+[forks-url]: https://github.com/<%- github_account_name %>/<%- repository_name %>/network/members
+[stars-shield]: https://img.shields.io/github/stars/<%- github_account_name %>/<%- repository_name %>.svg?style=flat-square
+[stars-url]: https://github.com/<%- github_account_name %>/<%- repository_name %>/stargazers
+[issues-shield]: https://img.shields.io/github/issues/<%- github_account_name %>/<%- repository_name %>.svg?style=flat-square
+[issues-url]: https://github.com/<%- github_account_name %>/<%- repository_name %>/issues
+[license-shield]: https://img.shields.io/github/license/<%- github_account_name %>/<%- repository_name %>.svg?style=flat-square
+[license-url]: https://github.com/<%- github_account_name %>/<%- repository_name %>/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/sergey-gannochenko/
 [product-screenshot]: images/screenshot.png

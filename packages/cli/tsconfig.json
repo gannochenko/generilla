@@ -21,7 +21,9 @@
         "declaration": true,
         "types": []
     },
-    "exclude": ["node_modules", "build", "generators"],
+    "exclude": ["node_modules", "build",
+      "../../generators"
+    ],
     "include": ["src/**/*",
       "src/globals.d.ts"
     ]

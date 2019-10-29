@@ -5,17 +5,18 @@
 
 import React from 'react';
 import { fireEvent, cleanup, render, prettyDOM, waitForElement } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import { <!- component_name -> } from '../<!- component_name ->';
+import { <%- component_name %> } from '../<%- component_name %>';
 
-describe('<<!- component_name -> />', () => {
+describe('<<%- component_name %> />', () => {
     afterEach(async () => {
         cleanup();
     });
 
     it('should render itself without errors', async () => {
         const { container, getByTestId } = render(
-            <<!- component_name -> />,
+            <<%- component_name %> />,
         );
 
         // // ///////////////////////
@@ -41,5 +42,7 @@ describe('<<!- component_name -> />', () => {
         // );
         //
         // expect(element).toBeInstanceOf(HTMLElement);
+        //
+        // userEvent.type(input, 'Max Mustermann');
     });
 });

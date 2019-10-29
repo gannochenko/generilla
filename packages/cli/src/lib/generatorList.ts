@@ -3,10 +3,13 @@ import find from 'findit';
 import { GeneratorListItem, Generator } from './type';
 import path from "path";
 import inquirer from 'inquirer';
+import { TextConverter } from './text-converter';
 
 export class GeneratorList {
     public static async getList(folder: string) {
         const list: GeneratorListItem[] = [];
+
+        const textConverter = new TextConverter();
 
         const folderList = await this.getFolderList(folder);
         for(let generatorFolder of folderList) {
@@ -16,7 +19,7 @@ export class GeneratorList {
                 return;
             }
 
-            const generator: Generator = new generatorClass({ inquirer });
+            const generator: Generator = new generatorClass({ inquirer, textConverter });
 
             let name = '';
             if (typeof generator.getName === 'function') {
