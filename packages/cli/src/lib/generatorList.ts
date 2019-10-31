@@ -1,11 +1,11 @@
-// @ts-ignore
-import find from 'findit';
-import { GeneratorListItem, Generator } from './type';
-import path from "path";
+import { GeneratorListItem, Generator, GeneratorImport } from './type';
+import path from 'path';
 import inquirer from 'inquirer';
+import ejs from 'ejs';
 import execa from 'execa';
 import { TextConverter } from './text-converter';
 import { Template } from './template';
+import fs from 'fs';
 
 export class GeneratorList {
     public static async getList(folder: string) {
@@ -14,18 +14,25 @@ export class GeneratorList {
         const textConverter = new TextConverter();
 
         const folderList = await this.getFolderList(folder);
-        for(let generatorFolder of folderList) {
-            const imported = (await import(generatorFolder));
+        for (let generatorFolder of folderList) {
+            let imported: GeneratorImport;
+            try {
+                imported = await import(generatorFolder);
+            } catch (error) {
+                continue;
+            }
             const GeneratorClass = imported.Generator || imported.default;
             if (typeof GeneratorClass !== 'function') {
-                return;
+                continue;
             }
 
             const generator: Generator = new GeneratorClass({
                 inquirer,
                 textConverter,
                 execa,
-                makeTemplate: (templateFolder: string) => new Template(templateFolder),
+                makeTemplate: (templateFolder: string) =>
+                    new Template(templateFolder),
+                ejs,
             });
 
             let name = '';
@@ -44,24 +51,8 @@ export class GeneratorList {
     }
 
     private static async getFolderList(folder: string) {
-        const generators: string[] = [];
-
-        const finder = find(folder);
-        finder.on('directory', (dir: string, stat: any, stop: () => void) => {
-            if (dir === folder) {
-                return;
-            }
-
-            generators.push(dir);
-
-            stop();
-            return;
-        });
-
-        return new Promise<string[]>(resolve => {
-            finder.on('end', () => {
-                resolve(generators);
-            });
-        });
+        return fs
+            .readdirSync(folder)
+            .map(subFolder => path.join(folder, subFolder));
     }
 }

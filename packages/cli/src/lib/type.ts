@@ -1,3 +1,7 @@
+import { Inquirer } from 'inquirer';
+import { TextConverter } from './text-converter';
+import { Template } from './template';
+
 export interface ObjectLiteral<P = any> {
     [k: string]: P;
 }
@@ -30,4 +34,21 @@ export type ObjectList = ObjectLiteral<TargetFsObject>;
 export interface Dependencies {
     destination?: string;
     packages: string[];
+}
+
+export interface GeneratorUtils {
+    inquirer: Inquirer;
+    textConverter: TextConverter;
+    execa: any;
+    makeTemplate: (templateFolder: string) => Template;
+    ejs: any;
+}
+
+export interface GeneratorClass {
+    new (util: GeneratorUtils): Generator;
+}
+
+export interface GeneratorImport {
+    default?: GeneratorClass;
+    Generator?: GeneratorClass;
 }
