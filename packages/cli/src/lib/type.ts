@@ -15,11 +15,14 @@ export interface TargetFsObject {
 
 export interface Generator {
     new (property: string): Generator;
+    setContext(context: ObjectLiteral): string;
     getName(): string;
+    onBeforeExecution(): boolean;
     getQuestions(): Promise<any[]>;
     refineAnswers(answers: ObjectLiteral): Promise<ObjectLiteral>;
-    getDependencies(): Dependencies;
-    getDevDependencies(): Dependencies;
+    getDependencies(answers: ObjectLiteral): Dependencies;
+    getDevDependencies(answers: ObjectLiteral): Dependencies;
+    onAfterExecution(answers: ObjectLiteral): void;
 }
 
 export type ObjectList = ObjectLiteral<TargetFsObject>;

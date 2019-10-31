@@ -1,6 +1,6 @@
 import { Dependencies, GeneratorListItem, ObjectLiteral } from './type';
 import inquirer from 'inquirer';
-import { join } from 'path';
+import { join, normalize } from 'path';
 import { Template } from './template';
 import execa from 'execa';
 import { Interpolator } from './interpolator';
@@ -13,6 +13,21 @@ export class GeneratorController {
      */
     async runPipeline(destination: string) {
         const { path, generator } = this.generator;
+
+        // before hook
+        if (typeof generator.setContext == 'function') {
+            await generator.setContext({
+                generatorPath: normalize(path),
+                destinationPath: normalize(destination),
+            })
+        }
+
+        // before hook
+        if (typeof generator.onBeforeExecution == 'function') {
+            if(await generator.onBeforeExecution() === false) {
+                return;
+            }
+        }
 
         // ask questions
         let answers: ObjectLiteral = {};
@@ -34,12 +49,17 @@ export class GeneratorController {
 
         // install dependencies
         if (typeof generator.getDependencies === 'function') {
-            await this.install(destination, answers, await generator.getDependencies());
+            await this.install(destination, answers, await generator.getDependencies(answers));
         }
 
         // install dev dependencies
         if (typeof generator.getDevDependencies === 'function') {
-            await this.install(destination, answers, await generator.getDevDependencies(), ['--dev']);
+            await this.install(destination, answers, await generator.getDevDependencies(answers), ['--dev']);
+        }
+
+        // after hook
+        if (typeof generator.onAfterExecution == 'function') {
+            await generator.onAfterExecution(answers);
         }
     }
 

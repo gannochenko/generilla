@@ -1,5 +1,5 @@
 {
-  "name": "@degenerator/cli",
+  "name": "@generilla/cli",
   "version": "0.0.0",
   "license": "MIT",
   "main": "./build/index.js",
@@ -7,11 +7,12 @@
     "build/"
   ],
   "bin": {
-    "degenerator": "./build/index.js"
+    "generilla": "./build/index.js"
   },
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "tsc -w -p ."
+    "build:watch": "tsc -w -p .",
+    "build": "tsc -p .; chmod +x ./build/index.js"
   },
   "devDependencies": {
     "@types/ejs": "^2.6.3",

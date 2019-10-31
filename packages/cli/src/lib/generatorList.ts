@@ -3,7 +3,9 @@ import find from 'findit';
 import { GeneratorListItem, Generator } from './type';
 import path from "path";
 import inquirer from 'inquirer';
+import execa from 'execa';
 import { TextConverter } from './text-converter';
+import { Template } from './template';
 
 export class GeneratorList {
     public static async getList(folder: string) {
@@ -14,12 +16,17 @@ export class GeneratorList {
         const folderList = await this.getFolderList(folder);
         for(let generatorFolder of folderList) {
             const imported = (await import(generatorFolder));
-            const generatorClass = imported.Generator || imported.default;
-            if (typeof generatorClass !== 'function') {
+            const GeneratorClass = imported.Generator || imported.default;
+            if (typeof GeneratorClass !== 'function') {
                 return;
             }
 
-            const generator: Generator = new generatorClass({ inquirer, textConverter });
+            const generator: Generator = new GeneratorClass({
+                inquirer,
+                textConverter,
+                execa,
+                makeTemplate: (templateFolder: string) => new Template(templateFolder),
+            });
 
             let name = '';
             if (typeof generator.getName === 'function') {

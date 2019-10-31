@@ -4,7 +4,7 @@ import clear from 'clear';
 // @ts-ignore
 import figlet from 'figlet';
 import inquirer from 'inquirer';
-import program from 'commander';
+import commander from 'commander';
 
 import { GeneratorList } from './generatorList';
 import { GeneratorListItem } from './type';
@@ -21,6 +21,8 @@ export class Generilla {
             throw new Error(`No such directory: ${this.generatorsPath}`);
         }
 
+        this.createInterface();
+
         clear();
         this.showIntro();
 
@@ -35,7 +37,7 @@ export class Generilla {
         const generatorItem = list!.find(item => item.path === generatorPath);
         const generator = new GeneratorController(generatorItem!);
 
-        const destination = '/Users/sergeigannochenko/proj/generilla/_output'; // process.cwd();
+        const destination = process.env.GENERILLA_DST || process.cwd();
         await generator.runPipeline(destination);
 
         console.log('Enjoy your brand new whatever you generated there!');
@@ -84,21 +86,21 @@ export class Generilla {
             return false;
         }
     }
+
+    private createInterface() {
+        const program = new commander.Command();
+
+        program
+            .name('generilla')
+            .version('1.0.0', '-v, --version', 'output the current version')
+            .description("Generilla: an extremely simple code generator runner")
+            .option('-p, --peppers', 'Add peppers')
+            .option('-P, --pineapple', 'Add pineapple')
+            .option('-b, --bbq', 'Add bbq sauce')
+            .option('-c, --cheese <type>', 'Add the specified type of cheese [marble]')
+            .option('-C, --no-cheese', 'You do not want any cheese')
+            .parse(process.argv);
+
+        return program;
+    }
 }
-
-// program
-//     .version('0.0.1')
-//     .description("An example Generilla for ordering pizza's")
-//     .option('-p, --peppers', 'Add peppers')
-//     .option('-P, --pineapple', 'Add pineapple')
-//     .option('-b, --bbq', 'Add bbq sauce')
-//     .option('-c, --cheese <type>', 'Add the specified type of cheese [marble]')
-//     .option('-C, --no-cheese', 'You do not want any cheese')
-//     .parse(process.argv);
-
-// console.log('you ordered a pizza with:');
-// if (program.peppers) console.log('  - peppers');
-// if (program.pineapple) console.log('  - pineapple');
-// if (program.bbq) console.log('  - bbq');
-// const cheese: string = true === program.cheese ? 'marble' : program.cheese || 'no';
-// console.log('  - %s cheese', cheese);
