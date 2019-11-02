@@ -4,14 +4,14 @@ import clear from 'clear';
 // @ts-ignore
 import figlet from 'figlet';
 import inquirer from 'inquirer';
-import commander from 'commander';
+import commander, { Command as CommanderCommand } from 'commander';
 
 import { GeneratorList } from './generatorList';
-import { GeneratorListItem } from './type';
-import fs from "fs";
+import { Command, GeneratorListItem, ObjectLiteral } from './type';
+import fs from 'fs';
 import { GeneratorController } from './generator-controller';
-
-const NOTHING = '__nothing__';
+import { COMMAND_LIST, COMMAND_RUN } from './commands';
+import { NOTHING } from './constants';
 
 export class Generilla {
     constructor(private generatorsPath: string) {}
@@ -21,20 +21,46 @@ export class Generilla {
             throw new Error(`No such directory: ${this.generatorsPath}`);
         }
 
-        this.createInterface();
+        const command = this.processCLI();
 
-        clear();
-        this.showIntro();
+        if (command.name === COMMAND_RUN) {
+            await this.runCommandRun(command);
+        } else if (command.name === COMMAND_LIST) {
+            await this.runCommandList(command);
+        }
+    }
 
-        const list = await GeneratorList.getList(this.generatorsPath);
-        const generatorPath = await this.selectGenerator(list!);
+    protected async runCommandRun(command: Command) {
+        const generatorCode = command.args.generator as string;
+        let generatorItem: GeneratorListItem | undefined;
+        if (generatorCode) {
+            generatorItem = await GeneratorList.getByCode(
+                this.generatorsPath,
+                generatorCode,
+            );
+            if (!generatorItem) {
+                console.log(
+                    'Emm... I am not aware of such generator to be out there.',
+                );
+                return;
+            }
+            this.showIntro();
+        } else {
+            this.showIntro();
 
-        if (generatorPath === NOTHING) {
-            console.log('Well then, see you round!');
-            return;
+            const list = await GeneratorList.getList(this.generatorsPath);
+            const generatorPath = await this.selectGenerator(list!);
+
+            if (generatorPath === NOTHING) {
+                console.log('Well then, see you round!');
+                return;
+            }
+
+            generatorItem = list!.find(item => item.path === generatorPath);
         }
 
-        const generatorItem = list!.find(item => item.path === generatorPath);
+        console.log(generatorItem);
+
         const generator = new GeneratorController(generatorItem!);
 
         const destination = process.env.GENERILLA_DST || process.cwd();
@@ -43,24 +69,26 @@ export class Generilla {
         console.log('Enjoy your brand new whatever you generated there!');
     }
 
+    protected async runCommandList(command: Command) {}
+
     protected showIntro() {
+        clear();
         console.log(
             chalk.red(
-                figlet.textSync('Generilla', { horizontalLayout: 'full' })
-            )
+                figlet.textSync('Generilla', { horizontalLayout: 'full' }),
+            ),
         );
     }
 
     protected async selectGenerator(list: GeneratorListItem[]) {
-        const answers = await inquirer
-            .prompt([
-                {
-                    type: 'list',
-                    name: 'generator',
-                    message: 'Oh yes, I will create...',
-                    choices: this.formatGeneratorChoices(list),
-                },
-            ]);
+        const answers = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'generator',
+                message: 'Oh yes, I will create...',
+                choices: this.formatGeneratorChoices(list),
+            },
+        ]);
 
         return answers.generator;
     }
@@ -68,12 +96,12 @@ export class Generilla {
     protected formatGeneratorChoices(list: GeneratorListItem[]) {
         const choices = list.map(generator => ({
             name: generator.name,
-            value: generator.path
+            value: generator.path,
         }));
 
         choices.unshift({
             name: 'ehhhh... nothing 😐',
-            value: NOTHING
+            value: NOTHING,
         });
 
         return choices;
@@ -82,25 +110,60 @@ export class Generilla {
     private isObjectExist(objectPath: string) {
         try {
             return fs.existsSync(objectPath);
-        } catch(err) {
+        } catch (err) {
             return false;
         }
     }
 
-    private createInterface() {
+    private processCLI() {
         const program = new commander.Command();
+
+        let commandToRun = '';
+        let commandArguments: ObjectLiteral = {};
 
         program
             .name('generilla')
             .version('1.0.0', '-v, --version', 'output the current version')
-            .description("Generilla: an extremely simple code generator runner")
-            .option('-p, --peppers', 'Add peppers')
-            .option('-P, --pineapple', 'Add pineapple')
-            .option('-b, --bbq', 'Add bbq sauce')
-            .option('-c, --cheese <type>', 'Add the specified type of cheese [marble]')
-            .option('-C, --no-cheese', 'You do not want any cheese')
-            .parse(process.argv);
+            .description(
+                'Generilla: an extremely simple code generator runner',
+            );
 
-        return program;
+        program
+            .command('run [generator]')
+            .alias('r')
+            .description('Run a specified generator')
+            .option('-a, --answers <answers>', 'Answers as JSON object')
+            .option('-y, --yes', 'Use the default answers when possible')
+            .option('-o, --output', 'Target folder')
+
+            // function to execute when command is uses
+            .action((generator: string, command: CommanderCommand) => {
+                commandToRun = COMMAND_RUN;
+                commandArguments = {
+                    generator,
+                    answers: command.answers,
+                };
+            });
+
+        program
+            .command('list')
+            .alias('l')
+            .description('Display a list of available generators')
+
+            // function to execute when command is uses
+            .action(function() {
+                commandToRun = COMMAND_LIST;
+            });
+
+        program.parse(process.argv);
+
+        if (!commandToRun) {
+            commandToRun = COMMAND_RUN;
+        }
+
+        return {
+            name: commandToRun,
+            args: commandArguments,
+        } as Command;
     }
 }

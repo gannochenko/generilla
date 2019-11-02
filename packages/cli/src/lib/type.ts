@@ -9,6 +9,7 @@ export interface ObjectLiteral<P = any> {
 export interface GeneratorListItem {
     path: string;
     name: string;
+    code: string;
     generator: Generator;
 }
 
@@ -51,4 +52,9 @@ export interface GeneratorClass {
 export interface GeneratorImport {
     default?: GeneratorClass;
     Generator?: GeneratorClass;
+}
+
+export interface Command {
+    name: string;
+    args: ObjectLiteral;
 }

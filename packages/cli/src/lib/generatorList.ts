@@ -43,11 +43,19 @@ export class GeneratorList {
             list.push({
                 path: generatorFolder,
                 name: name || path.basename(generatorFolder),
+                code: path.basename(generatorFolder),
                 generator,
             });
         }
 
         return list;
+    }
+
+    public static async getByCode(folder: string, generatorCode: string) {
+        console.log(generatorCode);
+        return (await this.getList(folder)).find(
+            item => item.name === generatorCode,
+        );
     }
 
     private static async getFolderList(folder: string) {
