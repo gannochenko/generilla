@@ -6,14 +6,16 @@ import figlet from 'figlet';
 import inquirer from 'inquirer';
 import commander, { Command as CommanderCommand } from 'commander';
 
-import { GeneratorList } from './generatorList';
+import { GeneratorList } from './generator-list';
 import { Command, GeneratorListItem, ObjectLiteral } from './type';
 import fs from 'fs';
 import { GeneratorController } from './generator-controller';
 import { COMMAND_LIST, COMMAND_RUN } from './commands';
-import { NOTHING } from './constants';
+import { NOTHING, VERSION } from './constants';
 
 export class Generilla {
+    private introShown = false;
+
     constructor(private generatorsPath: string) {}
 
     public async run() {
@@ -31,35 +33,38 @@ export class Generilla {
     }
 
     protected async runCommandRun(command: Command) {
-        const generatorCode = command.args.generator as string;
+        let generatorCode = command.args.generator as string;
         let generatorItem: GeneratorListItem | undefined;
-        if (generatorCode) {
-            generatorItem = await GeneratorList.getByCode(
-                this.generatorsPath,
-                generatorCode,
-            );
-            if (!generatorItem) {
-                console.log(
-                    'Emm... I am not aware of such generator to be out there.',
-                );
-                return;
-            }
-            this.showIntro();
-        } else {
-            this.showIntro();
 
-            const list = await GeneratorList.getList(this.generatorsPath);
-            const generatorPath = await this.selectGenerator(list!);
+        const list = await GeneratorList.getList(this.generatorsPath);
+        let chosenFromList = false;
 
-            if (generatorPath === NOTHING) {
+        if (!generatorCode) {
+            this.showIntro();
+            generatorCode = await this.selectGenerator(list!);
+
+            if (generatorCode === NOTHING) {
                 console.log('Well then, see you round!');
                 return;
             }
 
-            generatorItem = list!.find(item => item.path === generatorPath);
+            chosenFromList = true;
         }
 
-        console.log(generatorItem);
+        generatorItem = list!.find(item => item.code === generatorCode);
+        if (!generatorItem) {
+            console.log(
+                'Emm... I am not aware of such generator to be out there.',
+            );
+            return;
+        }
+
+        this.showIntro();
+        if (!chosenFromList) {
+            console.log(
+                `Running '${generatorItem.name}' [${generatorItem.code}] generator`,
+            );
+        }
 
         const generator = new GeneratorController(generatorItem!);
 
@@ -72,12 +77,18 @@ export class Generilla {
     protected async runCommandList(command: Command) {}
 
     protected showIntro() {
+        if (this.introShown) {
+            return;
+        }
+
         clear();
         console.log(
             chalk.red(
                 figlet.textSync('Generilla', { horizontalLayout: 'full' }),
             ),
         );
+
+        this.introShown = true;
     }
 
     protected async selectGenerator(list: GeneratorListItem[]) {
@@ -95,8 +106,8 @@ export class Generilla {
 
     protected formatGeneratorChoices(list: GeneratorListItem[]) {
         const choices = list.map(generator => ({
-            name: generator.name,
-            value: generator.path,
+            name: `${generator.name} [${generator.code}]`,
+            value: generator.code,
         }));
 
         choices.unshift({
@@ -123,9 +134,11 @@ export class Generilla {
 
         program
             .name('generilla')
-            .version('1.0.0', '-v, --version', 'output the current version')
-            .description(
-                'Generilla: an extremely simple code generator runner',
+            .version(VERSION, '-v, --version', 'Output the current version')
+            .description('Generilla: an extremely simple code generator runner')
+            .option(
+                '-m, --mould',
+                'Output a mould of just executed generation, so it is possible to repeat it again later in a non-interactive way',
             );
 
         program
@@ -134,7 +147,10 @@ export class Generilla {
             .description('Run a specified generator')
             .option('-a, --answers <answers>', 'Answers as JSON object')
             .option('-y, --yes', 'Use the default answers when possible')
-            .option('-o, --output', 'Target folder')
+            .option(
+                '-o, --output',
+                'Specify an alternative target folder, rather than CWD',
+            )
 
             // function to execute when command is uses
             .action((generator: string, command: CommanderCommand) => {

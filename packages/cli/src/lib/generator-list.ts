@@ -52,7 +52,6 @@ export class GeneratorList {
     }
 
     public static async getByCode(folder: string, generatorCode: string) {
-        console.log(generatorCode);
         return (await this.getList(folder)).find(
             item => item.name === generatorCode,
         );
