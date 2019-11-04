@@ -11,20 +11,22 @@ export class GeneratorController {
     /**
      * This is the default pipeline
      */
-    async runPipeline(destination: string) {
+    async runPipeline(destination: string, parameters?: ObjectLiteral) {
         const { path, generator } = this.generator;
+
+        console.log(parameters);
 
         // before hook
         if (typeof generator.setContext == 'function') {
             await generator.setContext({
                 generatorPath: normalize(path),
                 destinationPath: normalize(destination),
-            })
+            });
         }
 
         // before hook
         if (typeof generator.onBeforeExecution == 'function') {
-            if(await generator.onBeforeExecution() === false) {
+            if ((await generator.onBeforeExecution()) === false) {
                 return;
             }
         }
@@ -34,7 +36,7 @@ export class GeneratorController {
         if (typeof generator.getQuestions == 'function') {
             const questions = await generator.getQuestions();
             if (questions.length) {
-                answers = await inquirer.prompt(questions) as any[];
+                answers = (await inquirer.prompt(questions)) as any[];
             }
         }
 
@@ -49,12 +51,21 @@ export class GeneratorController {
 
         // install dependencies
         if (typeof generator.getDependencies === 'function') {
-            await this.install(destination, answers, await generator.getDependencies(answers));
+            await this.install(
+                destination,
+                answers,
+                await generator.getDependencies(answers),
+            );
         }
 
         // install dev dependencies
         if (typeof generator.getDevDependencies === 'function') {
-            await this.install(destination, answers, await generator.getDevDependencies(answers), ['--dev']);
+            await this.install(
+                destination,
+                answers,
+                await generator.getDevDependencies(answers),
+                ['--dev'],
+            );
         }
 
         // after hook
@@ -63,17 +74,24 @@ export class GeneratorController {
         }
     }
 
-    private async install(destination: string, answers: ObjectLiteral, deps: Dependencies, args: string[] = []) {
+    private async install(
+        destination: string,
+        answers: ObjectLiteral,
+        deps: Dependencies,
+        args: string[] = [],
+    ) {
         if (deps && deps.packages && deps.packages.length) {
-
             const localDestination = deps.destination;
             if (localDestination) {
-                destination = Interpolator.apply(join(destination, localDestination), answers);
+                destination = Interpolator.apply(
+                    join(destination, localDestination),
+                    answers,
+                );
             }
 
             await execa('yarn', ['add', ...deps.packages, ...args], {
                 cwd: destination,
-                stdio: ['inherit', 'inherit', 'inherit']
+                stdio: ['inherit', 'inherit', 'inherit'],
             });
         }
     }

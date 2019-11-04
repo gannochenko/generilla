@@ -68,8 +68,9 @@ export class Generilla {
 
         const generator = new GeneratorController(generatorItem!);
 
-        const destination = process.env.GENERILLA_DST || process.cwd();
-        await generator.runPipeline(destination);
+        const destination =
+            command.args.output || process.env.GENERILLA_DST || process.cwd();
+        await generator.runPipeline(destination, command.args);
 
         console.log('Enjoy your brand new whatever you generated there!');
     }
@@ -148,7 +149,7 @@ export class Generilla {
             .option('-a, --answers <answers>', 'Answers as JSON object')
             .option('-y, --yes', 'Use the default answers when possible')
             .option(
-                '-o, --output',
+                '-o, --output <output>',
                 'Specify an alternative target folder, rather than CWD',
             )
 
@@ -158,6 +159,8 @@ export class Generilla {
                 commandArguments = {
                     generator,
                     answers: command.answers,
+                    yes: command.yes,
+                    output: command.output,
                 };
             });
 
