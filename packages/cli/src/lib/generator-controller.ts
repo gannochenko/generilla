@@ -1,4 +1,9 @@
-import { Dependencies, GeneratorListItem, ObjectLiteral } from './type';
+import {
+    Dependencies,
+    Generator,
+    GeneratorListItem,
+    ObjectLiteral,
+} from './type';
 import inquirer from 'inquirer';
 import { join, normalize } from 'path';
 import { Template } from './template';
@@ -14,7 +19,7 @@ export class GeneratorController {
     async runPipeline(destination: string, parameters?: ObjectLiteral) {
         const { path, generator } = this.generator;
 
-        console.log(parameters);
+        parameters = parameters || {};
 
         // before hook
         if (typeof generator.setContext == 'function') {
@@ -32,13 +37,7 @@ export class GeneratorController {
         }
 
         // ask questions
-        let answers: ObjectLiteral = {};
-        if (typeof generator.getQuestions == 'function') {
-            const questions = await generator.getQuestions();
-            if (questions.length) {
-                answers = (await inquirer.prompt(questions)) as any[];
-            }
-        }
+        let answers = await this.askQuestions(generator, parameters);
 
         // refine answers
         if (typeof generator.refineAnswers == 'function') {
@@ -72,6 +71,54 @@ export class GeneratorController {
         if (typeof generator.onAfterExecution == 'function') {
             await generator.onAfterExecution(answers);
         }
+    }
+
+    private async askQuestions(
+        generator: Generator,
+        parameters: ObjectLiteral,
+    ) {
+        let answers: ObjectLiteral = {};
+        if (parameters.answers) {
+            try {
+                answers = JSON.parse(parameters.answers);
+            } catch (error) {
+                throw new Error(
+                    'Illegal format of -a (--answers) option. It should be a serialized JSON object.',
+                );
+            }
+        } else {
+            if (typeof generator.getQuestions == 'function') {
+                let questions = await generator.getQuestions();
+                if (questions && questions.length) {
+                    let defaultAnswers: ObjectLiteral = {};
+                    if (parameters.yes) {
+                        defaultAnswers = this.getDefaultAnswers(questions);
+                        questions = this.filterOutDefault(questions);
+                    }
+                    if (questions.length) {
+                        answers = {
+                            ...defaultAnswers,
+                            ...((await inquirer.prompt(questions)) as any[]),
+                        };
+                    }
+                }
+            }
+        }
+
+        return answers;
+    }
+
+    private getDefaultAnswers(questions: any[]) {
+        const answers: ObjectLiteral = {};
+        questions.forEach(question => {
+            answers[question.name] = question.default;
+        });
+
+        return answers;
+    }
+
+    private filterOutDefault(questions: any[]) {
+        return questions.filter(question => !('default' in question));
     }
 
     private async install(
