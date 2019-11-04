@@ -1,36 +1,38 @@
 {
-  "name": "@generilla/cli",
-  "version": "0.0.0",
-  "license": "MIT",
-  "main": "./build/index.js",
-  "files": [
-    "build/"
-  ],
-  "bin": {
-    "generilla": "./build/index.js"
-  },
-  "scripts": {
-    "start": "ts-node src/index.ts",
-    "build:watch": "tsc -w -p .",
-    "build": "tsc -p .; chmod +x ./build/index.js"
-  },
-  "devDependencies": {
-    "@types/ejs": "^2.6.3",
-    "@types/inquirer": "^6.5.0",
-    "@types/node": "^12.7.8",
-    "nodemon": "^1.19.2",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.6.3"
-  },
-  "dependencies": {
-    "case-formatter": "^1.0.9",
-    "chalk": "^2.4.2",
-    "clear": "^0.1.0",
-    "commander": "^3.0.2",
-    "ejs": "^2.7.1",
-    "execa": "^3.2.0",
-    "figlet": "^1.2.4",
-    "findit": "^2.0.0",
-    "inquirer": "^7.0.0"
-  }
+    "name": "@generilla/cli",
+    "version": "0.0.0",
+    "license": "MIT",
+    "main": "./build/index.js",
+    "files": [
+        "build/"
+    ],
+    "bin": {
+        "generilla": "./build/index.js"
+    },
+    "scripts": {
+        "start": "ts-node src/index.ts",
+        "build:watch": "tsc -w -p .",
+        "build": "tsc -p .; chmod +x ./build/index.js"
+    },
+    "devDependencies": {
+        "@types/clone-deep": "^4.0.1",
+        "@types/ejs": "^2.6.3",
+        "@types/inquirer": "^6.5.0",
+        "@types/node": "^12.7.8",
+        "nodemon": "^1.19.2",
+        "ts-node": "^8.4.1",
+        "typescript": "^3.6.3"
+    },
+    "dependencies": {
+        "case-formatter": "^1.0.9",
+        "chalk": "^2.4.2",
+        "clear": "^0.1.0",
+        "clone-deep": "^4.0.1",
+        "commander": "^3.0.2",
+        "ejs": "^2.7.1",
+        "execa": "^3.2.0",
+        "figlet": "^1.2.4",
+        "findit": "^2.0.0",
+        "inquirer": "^7.0.0"
+    }
 }

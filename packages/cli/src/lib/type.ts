@@ -58,3 +58,7 @@ export interface Command {
     name: string;
     args: ObjectLiteral;
 }
+
+export interface GenerationResult {
+    originalAnswers: ObjectLiteral;
+}

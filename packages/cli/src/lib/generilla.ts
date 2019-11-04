@@ -70,9 +70,23 @@ export class Generilla {
 
         const destination =
             command.args.output || process.env.GENERILLA_DST || process.cwd();
-        await generator.runPipeline(destination, command.args);
+        const { originalAnswers } = await generator.runPipeline(
+            destination,
+            command.args,
+        );
 
         console.log('Enjoy your brand new whatever you generated there!');
+
+        if (command.args.mould) {
+            console.log(
+                'Ah, yes. If you would like to run this process non-interactively, use the following command:',
+            );
+            console.log(
+                `generilla run ${generatorItem.code} -a '${JSON.stringify(
+                    originalAnswers || {},
+                )}'`,
+            );
+        }
     }
 
     protected async runCommandList(command: Command) {}
@@ -182,7 +196,7 @@ export class Generilla {
 
         return {
             name: commandToRun,
-            args: commandArguments,
+            args: { ...commandArguments, mould: program.mould },
         } as Command;
     }
 }

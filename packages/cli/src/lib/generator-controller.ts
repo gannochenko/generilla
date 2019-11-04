@@ -1,10 +1,12 @@
 import {
     Dependencies,
+    GenerationResult,
     Generator,
     GeneratorListItem,
     ObjectLiteral,
 } from './type';
 import inquirer from 'inquirer';
+import cloneDeep from 'clone-deep';
 import { join, normalize } from 'path';
 import { Template } from './template';
 import execa from 'execa';
@@ -18,6 +20,9 @@ export class GeneratorController {
      */
     async runPipeline(destination: string, parameters?: ObjectLiteral) {
         const { path, generator } = this.generator;
+        const result: GenerationResult = {
+            originalAnswers: {},
+        };
 
         parameters = parameters || {};
 
@@ -32,12 +37,14 @@ export class GeneratorController {
         // before hook
         if (typeof generator.onBeforeExecution == 'function') {
             if ((await generator.onBeforeExecution()) === false) {
-                return;
+                return result;
             }
         }
 
         // ask questions
         let answers = await this.askQuestions(generator, parameters);
+
+        result.originalAnswers = cloneDeep(answers);
 
         // refine answers
         if (typeof generator.refineAnswers == 'function') {
@@ -71,6 +78,8 @@ export class GeneratorController {
         if (typeof generator.onAfterExecution == 'function') {
             await generator.onAfterExecution(answers);
         }
+
+        return result;
     }
 
     private async askQuestions(
@@ -93,12 +102,14 @@ export class GeneratorController {
                     let defaultAnswers: ObjectLiteral = {};
                     if (parameters.yes) {
                         defaultAnswers = this.getDefaultAnswers(questions);
-                        questions = this.filterOutDefault(questions);
+                        questions = this.removeQuestionsWithDefault(questions);
                     }
                     if (questions.length) {
                         answers = {
                             ...defaultAnswers,
-                            ...((await inquirer.prompt(questions)) as any[]),
+                            ...((await inquirer.prompt(
+                                questions,
+                            )) as ObjectLiteral),
                         };
                     }
                 }
@@ -117,7 +128,7 @@ export class GeneratorController {
         return answers;
     }
 
-    private filterOutDefault(questions: any[]) {
+    private removeQuestionsWithDefault(questions: any[]) {
         return questions.filter(question => !('default' in question));
     }
 
