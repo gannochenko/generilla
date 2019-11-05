@@ -6,5 +6,9 @@ import { HOME_SUBFOLDER } from './lib/constants';
 
 const env = process.env;
 
-const app = new Generilla(env.GENERILLA_GENERATORS_HOME || path.join(env.HOME!, HOME_SUBFOLDER));
-app.run();
+const app = new Generilla(
+    env.GENERILLA_GENERATORS_HOME || path.join(env.HOME!, HOME_SUBFOLDER),
+);
+app.run().catch(error => {
+    console.error(error.stack);
+});
