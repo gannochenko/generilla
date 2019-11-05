@@ -89,7 +89,14 @@ export class Generilla {
         }
     }
 
-    protected async runCommandList(command: Command) {}
+    protected async runCommandList(command: Command) {
+        console.log('Available generators:');
+        console.log('');
+        (await GeneratorList.getList(this.generatorsPath)).forEach(generator =>
+            console.log(`   * ${generator.name} [${generator.code}]`),
+        );
+        console.log('');
+    }
 
     protected showIntro() {
         if (this.introShown) {
