@@ -2,6 +2,18 @@
 # yarn lockfile v1
 
 
+"@generilla/core@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@generilla/core/-/core-1.0.0.tgz#25ae59e17adb60d606e5b9346445e194d0b90cf3"
+  integrity sha512-hepYpDIwm2kQ/Gihg3hAO1YghAcPv0+OgXfmQWBa45kkRnXxc22EpYTqsA8yh8kA83OJtyVkIemrz8Jx5n53pA==
+  dependencies:
+    case-formatter "^1.0.9"
+    clone-deep "^4.0.1"
+    ejs "^2.7.1"
+    execa "^3.2.0"
+    findit "^2.0.0"
+    inquirer "^7.0.0"
+
 "@types/clone-deep@^4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@types/clone-deep/-/clone-deep-4.0.1.tgz#7c488443ab9f571cd343d774551b78e9264ea990"
