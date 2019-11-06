@@ -4,12 +4,16 @@ import clear from 'clear';
 // @ts-ignore
 import figlet from 'figlet';
 import inquirer from 'inquirer';
+import fs from 'fs';
 import commander, { Command as CommanderCommand } from 'commander';
 
-import { GeneratorList } from './generator-list';
-import { Command, GeneratorListItem, ObjectLiteral } from './type';
-import fs from 'fs';
-import { GeneratorController } from './generator-controller';
+import {
+    GeneratorList,
+    GeneratorController,
+    GeneratorListItem,
+    ObjectLiteral,
+} from '@generilla/core';
+import { Command } from './type';
 import { COMMAND_LIST, COMMAND_RUN } from './commands';
 import { NOTHING, VERSION } from './constants';
 
