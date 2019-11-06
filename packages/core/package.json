@@ -1,56 +1,46 @@
 {
     "name": "@generilla/core",
     "version": "0.0.0",
+    "license": "MIT",
     "main": "build/index.js",
     "files": [
         "build/"
     ],
     "scripts": {
         "install-peers": "install-self-peers -- --ignore-scripts",
-        "build": "./script/build.sh",
+        "build": "tsc --p .",
+        "build:watch": "tsc -w -p .",
         "test": "jest -c ./jest/config.js --passWithNoTests",
         "test:watch": "jest -c ./jest/config.js --watch",
         "lint": "eslint ./src --ext .js,.ts",
         "lint:fix": "eslint ./src --fix --ext .js,.ts"
     },
-    "keywords": [],
-    "author": "gannochenko.sv@gmail.com",
-    "license": "MIT",
-    "devDependencies": {
-        "@babel/cli": "^7.5.5",
-        "@babel/core": "^7.3.4",
-        "@babel/plugin-proposal-class-properties": "^7.5.5",
-        "@babel/plugin-proposal-decorators": "^7.4.4",
-        "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
-        "@babel/preset-env": "^7.3.4",
-        "@babel/preset-react": "^7.0.0",
-        "@babel/preset-typescript": "^7.3.3",
-        "@team-griffin/install-self-peers": "^1.1.1",
-        "@typescript-eslint/eslint-plugin": "^2.0.0",
-        "@typescript-eslint/parser": "^2.0.0",
-        "babel-eslint": "^10.0.2",
-        "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-        "eslint": "^6.3.0",
-        "eslint-config-airbnb-base": "^13.1.0",
-        "eslint-config-prettier": "^6.0.0",
-        "eslint-plugin-import": "^2.18.0",
-        "eslint-plugin-jsx-a11y": "^6.2.1",
-        "eslint-plugin-prettier": "^3.1.0",
-        "eslint-plugin-react": "^7.13.0",
-        "eslint-plugin-react-hooks": "^1.6.0",
-        "jest": "^24.3.1",
-        "peer-deps-externals-webpack-plugin": "^1.0.4",
-        "typescript": "^3.6.3"
-    },
     "dependencies": {
-        "chalk": "^2.4.2",
-        "clear": "^0.1.0",
-        "commander": "^3.0.2",
-        "figlet": "^1.2.4",
+        "case-formatter": "^1.0.9",
+        "clone-deep": "^4.0.1",
+        "ejs": "^2.7.1",
+        "execa": "^3.2.0",
+        "findit": "^2.0.0",
         "inquirer": "^7.0.0"
     },
-    "peerDependencies": {},
     "publishConfig": {
         "access": "public"
+    },
+    "devDependencies": {
+        "@team-griffin/install-self-peers": "^1.1.1",
+        "@types/clone-deep": "^4.0.1",
+        "@types/ejs": "^2.6.3",
+        "@types/inquirer": "^6.5.0",
+        "@types/jest": "^24.0.22",
+        "@typescript-eslint/eslint-plugin": "^2.6.1",
+        "@typescript-eslint/parser": "^2.6.1",
+        "eslint": "^6.6.0",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-config-prettier": "^6.5.0",
+        "eslint-plugin-import": "^2.18.2",
+        "eslint-plugin-prettier": "^3.1.1",
+        "jest": "^24.9.0",
+        "ts-jest": "^24.1.0",
+        "typescript": "^3.7.2"
     }
 }
