@@ -8,8 +8,7 @@
     ],
     "scripts": {
         "install-peers": "install-self-peers -- --ignore-scripts",
-        "build": "tsc --p .",
-        "build:watch": "tsc -w -p .",
+        "build": "rm -rf ./build/*; tsc --p .",
         "test": "jest -c ./jest/config.js --passWithNoTests",
         "test:watch": "jest -c ./jest/config.js --watch",
         "lint": "eslint ./src --ext .js,.ts",

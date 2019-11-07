@@ -11,8 +11,8 @@
     },
     "scripts": {
         "start": "ts-node src/index.ts",
-        "build:watch": "tsc -w -p .",
-        "build": "tsc -p .; chmod +x ./build/index.js"
+        "build:watch": "rm -rf ./build/*; tsc -w -p .",
+        "build": "rm -rf ./build/*; tsc -p .; chmod +x ./build/index.js"
     },
     "devDependencies": {
         "@types/clone-deep": "^4.0.1",
