@@ -48,7 +48,10 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
+  * [Development](#development)
 * [Usage](#usage)
+  * [Creating a generator](#creating-a-generator)
+  * [Using a generator](#using-a-generator)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
 * [License](#license)
@@ -121,12 +124,17 @@ To avoid problems with permissions and `sudo`, we install the package locally an
     ```
     As this is done, the command `generilla` should be available
 
+<!-- USAGE -->
+## Usage
+
+### Creating a generator
+
+### Using a generator
+
 <!-- ROADMAP -->
 ## Roadmap
 
-* soon this feature will be done
-* and this
-* and this too
+* dowloading generators from GitHub
 
 See the [open issues](https://github.com/awesome1888/generilla/issues) for a list of proposed features (and known issues).
 
@@ -155,10 +163,6 @@ Project Link: [https://github.com/awesome1888/generilla](https://github.com/awes
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
-
-Special thanks to:
-
-* [Unsplash](https://unsplash.com)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
