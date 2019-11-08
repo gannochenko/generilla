@@ -116,7 +116,7 @@ To avoid problems with permissions and `sudo`, we install the package locally an
     ```
 4. Link `cli` package to the global scope
     ```sh
-    cd packages/core;
+    cd packages/cli;
     yarn link
     ```
     As this is done, the command `generilla` should be available

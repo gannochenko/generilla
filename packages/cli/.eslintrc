@@ -17,7 +17,7 @@
   "rules": {
     "prettier/prettier": "warn",
     "import/prefer-default-export": "off",
-    "no-param-reassign": "off",
+    //"no-param-reassign": "off",
     "class-methods-use-this": "off",
     "no-use-before-define": ["error", { "functions": false }],
     "no-underscore-dangle": ["error", { "allow": ["__DEV__", "__TEST__"] }],
