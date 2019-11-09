@@ -70,7 +70,7 @@
 
 ### Built With
 
-* [TypeScript](http://www.typescriptlang.org/) - everything (well, almost everything) is type-safe
+* [TypeScript](http://www.typescriptlang.org/)
 * [Inquirer](https://www.npmjs.com/package/inquirer)
 * [Chalk](https://www.npmjs.com/package/chalk)
 * [Execa](https://www.npmjs.com/package/execa)
@@ -157,6 +157,8 @@ To avoid problems with permissions and `sudo`, it is possible to install the pac
 As soon as the generator is there, type `generilla` in the terminal. You should be able to see your generator in the list. After choosing a generator the code will be create in the current folder.
 
 Type `generilla -h` to find out about all available commands.
+
+<img src="https://raw.githubusercontent.com/awesome1888/generilla/master/demo/demo_480.gif" alt="Logo" width="480" height="286">
 
 <!-- ROADMAP -->
 ## Roadmap
