@@ -72,18 +72,24 @@
 ### Built With
 
 * [TypeScript](http://www.typescriptlang.org/) - everything (well, almost everything) is type-safe
+* [Inquirer](https://www.npmjs.com/package/inquirer)
+* [Chalk](https://www.npmjs.com/package/chalk)
+* [Execa](https://www.npmjs.com/package/execa)
+* [Filget](https://www.npmjs.com/package/figlet)
+* [Commander](https://www.npmjs.com/package/commander)
+* [EJS](https://www.npmjs.com/package/ejs)
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* yarn
+* [Node](https://nodesource.com/blog/installing-node-js-tutorial-using-nvm-on-mac-os-x-and-ubuntu/)
+* [Yarn](https://yarnpkg.com/lang/en/docs/install/#mac-stable)
 
 ### Installation
 
-To avoid problems with permissions and `sudo`, we install the package locally and then add it's folder to `PATH` variable.
+To avoid problems with permissions and `sudo`, it is possible to install the package locally and then add it's folder to `PATH` variable.
 
 1. Create `~/.node` folder
     ```sh
@@ -129,12 +135,32 @@ To avoid problems with permissions and `sudo`, we install the package locally an
 
 ### Creating a generator
 
+1. Create a generator home folder, if there is none
+    ~~~sh
+    mkdir ~/.generilla
+    ~~~
+2. Create a sub-folder there, with the following structure
+    ~~~
+    generator-name/
+    └-- template/
+    └── index.js
+    ~~~
+    
+    Inside the `template/` folder you will put the template of the code to be generated.
+    The `index.js` file is the generator itself.
+
+    Use [these generators as examples](https://github.com/awesome1888/generators).
+
 ### Using a generator
+
+As soon as the generator is there, type `generilla` in the terminal. You should be able to see your generator in the list. After choosing a generator the code will be create in the current folder.
+
+Type `generilla -h` to find out about all available commands.
 
 <!-- ROADMAP -->
 ## Roadmap
 
-* dowloading generators from GitHub
+* getting generators directly from GitHub
 
 See the [open issues](https://github.com/awesome1888/generilla/issues) for a list of proposed features (and known issues).
 
