@@ -146,7 +146,7 @@ To avoid problems with permissions and `sudo`, it is possible to install the pac
     └-- template/
     └── index.js
     ~~~
-    
+
     Inside the `template/` folder you will put the template of the code to be generated.
     The `index.js` file is the generator itself.
 
@@ -156,9 +156,9 @@ To avoid problems with permissions and `sudo`, it is possible to install the pac
 
 As soon as the generator is there, type `generilla` in the terminal. You should be able to see your generator in the list. After choosing a generator the code will be create in the current folder.
 
-Type `generilla -h` to find out about all available commands.
-
 <img src="https://raw.githubusercontent.com/awesome1888/generilla/master/demo/demo_480.gif" alt="Logo" width="480" height="286">
+
+Type `generilla -h` to find out about all available commands.
 
 <!-- ROADMAP -->
 ## Roadmap
