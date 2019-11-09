@@ -115,7 +115,7 @@ To avoid problems with permissions and `sudo`, it is possible to install the pac
     cd generilla;
     yarn run boostrap;
     ```
-3. Link `core` package
+3. Build and link `core` package
     ```sh
     cd packages/core;
     yarn run build;
@@ -123,7 +123,7 @@ To avoid problems with permissions and `sudo`, it is possible to install the pac
     cd ../cli;
     yarn link @generilla/core;
     ```
-4. Link `cli` package to the global scope
+4. Build and link `cli` package to the global scope
     ```sh
     cd packages/cli;
     yarn run build;
