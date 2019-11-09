@@ -25,7 +25,7 @@
   <h3 align="center">Generilla</h3>
 
   <p align="center">
-    Simple code generator
+    Simple code generator for JS/JS applications
     <!--
     <br />
     <a href="https://github.com/awesome1888/generilla"><strong>Explore the docs »</strong></a>
@@ -56,7 +56,6 @@
 * [Contributing](#contributing)
 * [License](#license)
 * [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
 
 
 
@@ -119,6 +118,7 @@ To avoid problems with permissions and `sudo`, it is possible to install the pac
 3. Link `core` package
     ```sh
     cd packages/core;
+    yarn run build;
     yarn link;
     cd ../cli;
     yarn link @generilla/core;
@@ -126,6 +126,7 @@ To avoid problems with permissions and `sudo`, it is possible to install the pac
 4. Link `cli` package to the global scope
     ```sh
     cd packages/cli;
+    yarn run build;
     yarn link
     ```
     As this is done, the command `generilla` should be available
@@ -160,7 +161,7 @@ Type `generilla -h` to find out about all available commands.
 <!-- ROADMAP -->
 ## Roadmap
 
-* getting generators directly from GitHub
+* Getting generators directly from GitHub
 
 See the [open issues](https://github.com/awesome1888/generilla/issues) for a list of proposed features (and known issues).
 
@@ -186,9 +187,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Sergei Gannochenko - [Linkedin](https://www.linkedin.com/in/gannochenko/)
 
 Project Link: [https://github.com/awesome1888/generilla](https://github.com/awesome1888/generilla)
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
