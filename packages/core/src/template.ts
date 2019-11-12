@@ -21,17 +21,22 @@ export class Template {
 
         // copy files one by one
         for (const source in files) {
-            const object = files[source];
-            if (object.type === 'd') {
-                fs.mkdirSync(object.path);
-            }
-            if (object.type === 'f') {
-                // eslint-disable-next-line no-await-in-loop
-                const content = (await this.renderFile(
-                    source,
-                    variables,
-                )) as string;
-                fs.writeFileSync(object.path, Buffer.from(content, 'utf-8'));
+            if (Object.prototype.hasOwnProperty.call(files, source)) {
+                const object = files[source];
+                if (object.type === 'd') {
+                    fs.mkdirSync(object.path);
+                }
+                if (object.type === 'f') {
+                    // eslint-disable-next-line no-await-in-loop
+                    const content = (await this.renderFile(
+                        source,
+                        variables,
+                    )) as string;
+                    fs.writeFileSync(
+                        object.path,
+                        Buffer.from(content, 'utf-8'),
+                    );
+                }
             }
         }
     }

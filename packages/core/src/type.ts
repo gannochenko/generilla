@@ -51,6 +51,8 @@ export interface GeneratorUtils {
     execa: any;
     makeTemplate: (templateFolder: string) => Template;
     ejs: any;
+    pathExists: any;
+    caseFormatter: any;
 }
 
 export interface GeneratorClass {

@@ -9,6 +9,7 @@
     "scripts": {
         "install-peers": "install-self-peers -- --ignore-scripts",
         "build": "rm -rf ./build/*; tsc --p .",
+        "build:watch": "rm -rf ./build/*; tsc -w -p .",
         "test": "jest -c ./jest/config.js --passWithNoTests",
         "test:watch": "jest -c ./jest/config.js --watch",
         "lint": "eslint ./src --ext .js,.ts",
@@ -20,7 +21,8 @@
         "ejs": "^2.7.1",
         "execa": "^3.2.0",
         "findit": "^2.0.0",
-        "inquirer": "^7.0.0"
+        "inquirer": "^7.0.0",
+        "path-exists": "^4.0.0"
     },
     "publishConfig": {
         "access": "public"

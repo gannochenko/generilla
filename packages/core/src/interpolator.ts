@@ -2,6 +2,7 @@ import { ObjectLiteral } from './type';
 
 export class Interpolator {
     static apply(template: string, variables: ObjectLiteral) {
+        let processedTemplate = template;
         // eslint-disable-next-line no-restricted-syntax
         for (const variable in variables) {
             if (Object.prototype.hasOwnProperty.call(variables, variable)) {
@@ -9,17 +10,17 @@ export class Interpolator {
                     .toString()
                     .replace(/[^a-zA-Z0-9_-]/g, '');
 
-                template = template.replace(
+                processedTemplate = template.replace(
                     new RegExp(`\\[\\?${variable}\\]`, 'i'),
                     '',
                 );
-                template = template.replace(
+                processedTemplate = template.replace(
                     new RegExp(`\\[${variable}\\]`, 'g'),
                     value,
                 );
             }
         }
 
-        return template;
+        return processedTemplate;
     }
 }

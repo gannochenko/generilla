@@ -24,8 +24,6 @@ export class GeneratorController {
             originalAnswers: {},
         };
 
-        parameters = parameters || {};
-
         // before hook
         if (typeof generator.setContext === 'function') {
             await generator.setContext({
@@ -42,7 +40,7 @@ export class GeneratorController {
         }
 
         // ask questions
-        let answers = await this.askQuestions(generator, parameters);
+        let answers = await this.askQuestions(generator, parameters || {});
 
         result.originalAnswers = cloneDeep(answers);
 
@@ -139,16 +137,18 @@ export class GeneratorController {
         args: string[] = [],
     ) {
         if (deps && deps.packages && deps.packages.length) {
+            let cmdDestination = destination;
+
             const localDestination = deps.destination;
             if (localDestination) {
-                destination = Interpolator.apply(
-                    join(destination, localDestination),
+                cmdDestination = Interpolator.apply(
+                    join(cmdDestination, localDestination),
                     answers,
                 );
             }
 
             await execa('yarn', ['add', ...deps.packages, ...args], {
-                cwd: destination,
+                cwd: cmdDestination,
                 stdio: ['inherit', 'inherit', 'inherit'],
             });
         }

@@ -3,9 +3,12 @@ import inquirer from 'inquirer';
 import ejs from 'ejs';
 import fs from 'fs';
 import execa from 'execa';
+import pathExists from 'path-exists';
+import caseFormatter from 'case-formatter';
 import { GeneratorListItem, Generator, GeneratorImport } from './type';
 import { TextConverter } from './text-converter';
 import { Template } from './template';
+import { Debug } from './debug';
 
 export class GeneratorList {
     public static async getList(folder: string) {
@@ -21,6 +24,7 @@ export class GeneratorList {
                 // eslint-disable-next-line no-await-in-loop
                 imported = await import(generatorFolder);
             } catch (error) {
+                Debug.log(error);
                 continue;
             }
             const GeneratorClass = imported.Generator || imported.default;
@@ -35,6 +39,8 @@ export class GeneratorList {
                 makeTemplate: (templateFolder: string) =>
                     new Template(templateFolder),
                 ejs,
+                pathExists,
+                caseFormatter,
             });
 
             let name = '';
