@@ -12,6 +12,7 @@ import {
     GeneratorController,
     GeneratorListItem,
     ObjectLiteral,
+    Debug,
 } from '@generilla/core';
 import { Command } from './type';
 import { COMMAND_LIST, COMMAND_RUN } from './commands';
@@ -28,6 +29,9 @@ export class Generilla {
         }
 
         const command = this.processCLI();
+        if (command.args.debug) {
+            Debug.enable();
+        }
 
         if (command.name === COMMAND_RUN) {
             await this.runCommandRun(command);
@@ -165,7 +169,8 @@ export class Generilla {
             .option(
                 '-m, --mould',
                 'Output a mould of just executed generation, so it is possible to repeat it again later in a non-interactive way',
-            );
+            )
+            .option('-d, --debug', 'Output an additional debug info');
 
         program
             .command('run [generator]')
@@ -207,7 +212,11 @@ export class Generilla {
 
         return {
             name: commandToRun,
-            args: { ...commandArguments, mould: program.mould },
+            args: {
+                ...commandArguments,
+                mould: program.mould,
+                debug: program.debug,
+            },
         } as Command;
     }
 }
