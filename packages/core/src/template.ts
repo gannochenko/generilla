@@ -20,23 +20,20 @@ export class Template {
         const files = await crawler.run(dstPath, variables);
 
         // copy files one by one
-        for (const source in files) {
-            if (Object.prototype.hasOwnProperty.call(files, source)) {
-                const object = files[source];
-                if (object.type === 'd') {
-                    fs.mkdirSync(object.path);
-                }
-                if (object.type === 'f') {
-                    // eslint-disable-next-line no-await-in-loop
-                    const content = (await this.renderFile(
-                        source,
-                        variables,
-                    )) as string;
-                    fs.writeFileSync(
-                        object.path,
-                        Buffer.from(content, 'utf-8'),
-                    );
-                }
+        const fileKeys = Object.keys(files);
+        for (let i = 0; i < fileKeys.length; i += 1) {
+            const source = fileKeys[i];
+            const object = files[source];
+            if (object.type === 'd') {
+                fs.mkdirSync(object.path);
+            }
+            if (object.type === 'f') {
+                // eslint-disable-next-line no-await-in-loop
+                const content = (await this.renderFile(
+                    source,
+                    variables,
+                )) as string;
+                fs.writeFileSync(object.path, Buffer.from(content, 'utf-8'));
             }
         }
     }
