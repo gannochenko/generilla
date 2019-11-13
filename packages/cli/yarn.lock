@@ -3,9 +3,9 @@
 
 
 "@generilla/core@^1.0.0":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@generilla/core/-/core-1.0.4.tgz#e1c7c9b5a0eed612562d4c7ee86e86ab006d4ff2"
-  integrity sha512-d211O1EQLiSr8pwCh2F1dQRAVxOZjL2sGFar0UezuB1Bf0vwdt4bOQCb9WjIRXX9UbyVxubBO1jSViP1a0d0ZA==
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@generilla/core/-/core-1.0.5.tgz#7fae0a61b2c2e4261160de903a7c8c0b3dc90d29"
+  integrity sha512-5uIzs3OBhYPVE2dUJYxQ1iphYoUujXpNi0SakFGc8/zEEmHRvn5qNdKyWyX9Y5YCnXDlYLZauAId0b5J0AS0qQ==
   dependencies:
     case-formatter "^1.0.9"
     clone-deep "^4.0.1"
