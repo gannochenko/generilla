@@ -1,4 +1,7 @@
 {
+    "compilerOptions": {
+        "types": []
+    },
     "extends": "./tsconfig.json",
     "exclude": ["node_modules", "build", "**/**/*.test.ts"]
 }
