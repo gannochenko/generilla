@@ -8,7 +8,7 @@ export class Interpolator {
             if (Object.prototype.hasOwnProperty.call(variables, variable)) {
                 const value = variables[variable]
                     .toString()
-                    .replace(/[^a-zA-Z0-9_-]/g, '');
+                    .replace(/[^a-zA-Z0-9._-]/g, '');
 
                 processedTemplate = processedTemplate.replace(
                     new RegExp(`\\[\\?${variable}\\]`, 'i'),

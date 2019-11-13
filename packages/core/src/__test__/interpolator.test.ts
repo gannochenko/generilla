@@ -29,4 +29,40 @@ describe('Interpolator', () => {
             }),
         ).toEqual('three');
     });
+    describe('should allow', () => {
+        it('digits', async () => {
+            expect(
+                Interpolator.apply('[one]', {
+                    one: '1234567890',
+                    two: '2',
+                    three: '3',
+                }),
+            ).toEqual('1234567890');
+        });
+        it('letters', async () => {
+            const value = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            expect(Interpolator.apply('[one]', { one: value })).toEqual(value);
+            expect(
+                Interpolator.apply('[one]', { one: value.toLowerCase() }),
+            ).toEqual(value.toLowerCase());
+        });
+        it('some spec charaters', async () => {
+            const value = '_-.';
+            expect(Interpolator.apply('[one]', { one: value })).toEqual(value);
+        });
+    });
+    describe('should not allow', () => {
+        it('slashes', async () => {
+            const value = 'lala/../../lolo';
+            expect(Interpolator.apply('[one]', { one: value })).toEqual(
+                'lala....lolo',
+            );
+        });
+        it('backslashes', async () => {
+            const value = 'lala\\..\\..\\lolo';
+            expect(Interpolator.apply('[one]', { one: value })).toEqual(
+                'lala....lolo',
+            );
+        });
+    });
 });

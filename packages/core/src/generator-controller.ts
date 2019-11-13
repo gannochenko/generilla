@@ -136,21 +136,30 @@ export class GeneratorController {
         deps: Dependencies,
         args: string[] = [],
     ) {
-        if (deps && deps.packages && deps.packages.length) {
-            let cmdDestination = destination;
+        const { packages, destination: localDestination } = deps || {};
 
-            const localDestination = deps.destination;
-            if (localDestination) {
-                cmdDestination = Interpolator.apply(
-                    join(cmdDestination, localDestination),
-                    answers,
-                );
-            }
-
-            await execa('yarn', ['add', ...deps.packages, ...args], {
-                cwd: cmdDestination,
-                stdio: ['inherit', 'inherit', 'inherit'],
-            });
+        if (!packages || !packages.length) {
+            return;
         }
+
+        const safePackages = packages
+            .map(pack => (!pack ? '' : pack.toString().trim()))
+            .filter(pack => !!pack.length);
+        if (!safePackages.length) {
+            return;
+        }
+
+        let cmdDestination = destination;
+        if (localDestination) {
+            cmdDestination = Interpolator.apply(
+                join(cmdDestination, localDestination),
+                answers,
+            );
+        }
+
+        await execa('yarn', ['add', ...safePackages, ...args], {
+            cwd: cmdDestination,
+            stdio: ['inherit', 'inherit', 'inherit'],
+        });
     }
 }
