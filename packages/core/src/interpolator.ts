@@ -10,11 +10,11 @@ export class Interpolator {
                     .toString()
                     .replace(/[^a-zA-Z0-9_-]/g, '');
 
-                processedTemplate = template.replace(
+                processedTemplate = processedTemplate.replace(
                     new RegExp(`\\[\\?${variable}\\]`, 'i'),
                     '',
                 );
-                processedTemplate = template.replace(
+                processedTemplate = processedTemplate.replace(
                     new RegExp(`\\[${variable}\\]`, 'g'),
                     value,
                 );
