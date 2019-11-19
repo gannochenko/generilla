@@ -41,6 +41,7 @@ export class GeneratorController {
 
         // ask questions
         let answers = await this.askQuestions(generator, parameters || {});
+        generator.answers = answers;
 
         result.originalAnswers = cloneDeep(answers);
 

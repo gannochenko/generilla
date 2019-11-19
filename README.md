@@ -48,6 +48,7 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
+  * [Upgrading](#upgrading)
   * [Development](#development)
 * [Usage](#usage)
   * [Creating a generator](#creating-a-generator)
@@ -103,6 +104,13 @@ To avoid problems with permissions and `sudo`, it is possible to install the pac
     export PATH=${PATH}:${HOME}/.node/bin
     ```
 4. Add the command above to `~/.bashrc` (or `~/.bash_profile` in case of MacOS)
+
+### Upgrading
+
+If you followed the way how the installation was done, then do upgrading as following:
+```sh
+yarn global add @generilla/cli --prefix ~/.node
+```
 
 ### Development
 

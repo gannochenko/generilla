@@ -26,6 +26,7 @@ export interface TargetFsObject {
 }
 
 export interface Generator {
+    answers: ObjectLiteral;
     // eslint-disable-next-line @typescript-eslint/no-misused-new
     new (property: string): Generator;
     setContext(context: ObjectLiteral): string;
