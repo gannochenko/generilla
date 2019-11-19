@@ -48,7 +48,7 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
-  * [Upgrading](#upgrading)
+  * [Upgrade](#upgrade)
   * [Development](#development)
 * [Usage](#usage)
   * [Creating a generator](#creating-a-generator)
@@ -105,11 +105,11 @@ To avoid problems with permissions and `sudo`, it is possible to install the pac
     ```
 4. Add the command above to `~/.bashrc` (or `~/.bash_profile` in case of MacOS)
 
-### Upgrading
+### Upgrade
 
 If you followed the way how the installation was done, then do upgrading as following:
 ```sh
-yarn global add @generilla/cli --prefix ~/.node
+yarn global upgrade @generilla/cli --prefix ~/.node
 ```
 
 ### Development
