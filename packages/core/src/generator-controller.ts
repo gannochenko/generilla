@@ -24,13 +24,10 @@ export class GeneratorController {
             originalAnswers: {},
         };
 
-        // before hook
-        if (typeof generator.setContext === 'function') {
-            await generator.setContext({
-                generatorPath: normalize(path),
-                destinationPath: normalize(destination),
-            });
-        }
+        generator.context = {
+            generatorPath: normalize(path),
+            destinationPath: normalize(destination),
+        };
 
         // before hook
         if (typeof generator.onBeforeExecution === 'function') {
