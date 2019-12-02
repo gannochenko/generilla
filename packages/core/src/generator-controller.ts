@@ -48,6 +48,7 @@ export class GeneratorController {
         // refine answers
         if (typeof generator.refineAnswers === 'function') {
             answers = await generator.refineAnswers(answers);
+            generator.answers = answers;
         }
 
         // copy files
