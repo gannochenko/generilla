@@ -14,6 +14,20 @@ export class TextConverter {
         return caseFormatter.snakeToPascal(this.toSnake(value));
     }
 
+    public uCFirst(value: string) {
+        return `${value.substr(0, 1).toUpperCase()}${value.substr(
+            1,
+            value.length - 1,
+        )}`;
+    }
+
+    public lCFirst(value: string) {
+        return `${value.substr(0, 1).toLowerCase()}${value.substr(
+            1,
+            value.length - 1,
+        )}`;
+    }
+
     private toSnake(value: string) {
         return value.replace(/[-\s]+/g, '_');
     }
