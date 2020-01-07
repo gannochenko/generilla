@@ -1,9 +1,9 @@
 import ejs from 'ejs';
 import fs from 'fs';
+import { isBinaryFileSync } from 'isbinaryfile';
 // @ts-ignore
 import { FsCrawler } from './fs-crawler';
 import { ObjectLiteral } from './type';
-import { isBinaryFileSync } from 'isbinaryfile';
 
 interface Parameters {
     blowUpLandingSite?: false;
@@ -15,6 +15,7 @@ export class Template {
     public async copy(
         dstPath: string,
         variables: ObjectLiteral = {},
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         parameters: Parameters = {},
     ) {
         const crawler = new FsCrawler(this.path);

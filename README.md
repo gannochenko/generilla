@@ -121,6 +121,7 @@ yarn global upgrade @generilla/cli --prefix ~/.node
 2. Install NPM packages
     ```sh
     cd generilla;
+    yarn;
     yarn run boostrap;
     ```
 3. Build and link `core` package

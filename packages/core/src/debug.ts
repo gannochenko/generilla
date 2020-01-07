@@ -11,8 +11,10 @@ export class Debug {
         }
 
         if (what instanceof Error) {
+            // eslint-disable-next-line no-console
             console.error(what);
         } else {
+            // eslint-disable-next-line no-console
             console.log(what);
         }
     }
