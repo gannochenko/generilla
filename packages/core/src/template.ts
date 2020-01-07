@@ -3,6 +3,7 @@ import fs from 'fs';
 // @ts-ignore
 import { FsCrawler } from './fs-crawler';
 import { ObjectLiteral } from './type';
+import { isBinaryFileSync } from 'isbinaryfile';
 
 interface Parameters {
     blowUpLandingSite?: false;
@@ -28,12 +29,19 @@ export class Template {
                 fs.mkdirSync(object.path);
             }
             if (object.type === 'f') {
-                // eslint-disable-next-line no-await-in-loop
-                const content = (await this.renderFile(
-                    source,
-                    variables,
-                )) as string;
-                fs.writeFileSync(object.path, Buffer.from(content, 'utf-8'));
+                if (isBinaryFileSync(source)) {
+                    fs.copyFileSync(source, object.path);
+                } else {
+                    // eslint-disable-next-line no-await-in-loop
+                    const content = (await this.renderFile(
+                        source,
+                        variables,
+                    )) as string;
+                    fs.writeFileSync(
+                        object.path,
+                        Buffer.from(content, 'utf-8'),
+                    );
+                }
             }
         }
     }

@@ -131,14 +131,34 @@ yarn global upgrade @generilla/cli --prefix ~/.node
     cd ../cli;
     yarn link @generilla/core;
     ```
-4. Build and link `cli` package to the global scope
+4. Build and link `cli` package to the global scope (being in the `packages/cli` folder)
     ```sh
-    cd packages/cli;
     yarn run build;
     yarn link
     ```
-    As this is done, the command `generilla` should be available
-
+    As this is done, the command `generilla` should be available globally
+5. Re-build `core` or `cli` packages by typing
+    ```sh
+    yarn run build;
+    ```
+    in the corresponding `package/*` folder.
+6. Instead of linking `cli` package to the global scope and re-building it manually, you may want to build it every time something gets changed in the code and run it locally after that.
+    Then, instead of steps `4` and `5` do:
+    ```sh
+    cd packages/core;
+    yarn run build:watch;
+    ```
+    In the other terminal then:
+    ```sh
+    cd packages/cli;
+    yarn run build:watch;
+    ```
+    In one more terminal:
+    ```sh
+    cd packages/cli;
+    yarn start;
+    ```
+    Use your development version as usual, the generated data will appear in the `_output` folder.
 <!-- USAGE -->
 ## Usage
 
@@ -162,7 +182,7 @@ yarn global upgrade @generilla/cli --prefix ~/.node
 
 ### Using a generator
 
-As soon as the generator is there, type `generilla` in the terminal. You should be able to see your generator in the list. After choosing a generator the code will be create in the current folder.
+As soon as the generator is there, type `generilla` in the terminal. You should be able to see your generator in the list. After choosing a generator the code will be created in the current folder.
 
 <img src="https://raw.githubusercontent.com/awesome1888/generilla/master/demo/demo_480.gif" alt="Logo" width="480" height="286">
 
