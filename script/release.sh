@@ -27,4 +27,4 @@ fi
 git add -A ./;
 git commit -m "another build";
 
-yarn lerna publish --npm-client=yarn;
+yarn lerna publish
