@@ -17,7 +17,7 @@
 <br />
 <p align="center">
   <!--
-  <a href="https://github.com/awesome1888/generilla">
+  <a href="https://github.com/gannochenko/generilla">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
   -->
@@ -28,13 +28,13 @@
     Simple code generator for JS/JS applications
     <!--
     <br />
-    <a href="https://github.com/awesome1888/generilla"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/gannochenko/generilla"><strong>Explore the docs »</strong></a>
     -->
     <br />
     <br />
-    <a href="https://github.com/awesome1888/generilla/issues">Report Bug</a>
+    <a href="https://github.com/gannochenko/generilla/issues">Report Bug</a>
     ·
-    <a href="https://github.com/awesome1888/generilla/issues">Request Feature</a>
+    <a href="https://github.com/gannochenko/generilla/issues">Request Feature</a>
   </p>
 </p>
 
@@ -105,6 +105,8 @@ To avoid problems with permissions and `sudo`, it is possible to install the pac
     ```
 4. Add the command above to `~/.bashrc` (or `~/.bash_profile` in case of MacOS)
 
+5. You should be able to run the `generilla` command now
+
 ### Upgrade
 
 If you followed the way how the installation was done, then do upgrading as following:
@@ -130,13 +132,13 @@ yarn global upgrade @generilla/cli --prefix ~/.node
     Inside the `template/` folder you will put the template of the code to be generated.
     The `index.js` file is the generator itself.
 
-    Use [these generators as examples](https://github.com/awesome1888/generators).
+    Use [these generators as examples](https://github.com/gannochenko/generators).
 
 ### Using a generator
 
 As soon as the generator is there, type `generilla` in the terminal. You should be able to see your generator in the list. After choosing a generator and answering some questions 🕵️ the code will be created in the current folder.
 
-<img src="https://raw.githubusercontent.com/awesome1888/generilla/master/demo/demo_480.gif" alt="Logo" width="480" height="286">
+<img src="https://raw.githubusercontent.com/gannochenko/generilla/master/demo/demo_480.gif" alt="Logo" width="480" height="286">
 
 Type `generilla -h` to find out about all available commands.
 
@@ -145,7 +147,7 @@ Type `generilla -h` to find out about all available commands.
 
 1. Clone the repo
     ```sh
-    git clone https://github.com/awesome1888/generilla.git
+    git clone https://github.com/gannochenko/generilla.git
     ```
 2. Install NPM packages
     ```sh
@@ -195,7 +197,7 @@ Type `generilla -h` to find out about all available commands.
 
 * Getting generators directly from GitHub
 
-See the [open issues](https://github.com/awesome1888/generilla/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/gannochenko/generilla/issues) for a list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -218,22 +220,22 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Sergei Gannochenko - [Linkedin](https://www.linkedin.com/in/gannochenko/)
 
-Project Link: [https://github.com/awesome1888/generilla](https://github.com/awesome1888/generilla)
+Project Link: [https://github.com/gannochenko/generilla](https://github.com/gannochenko/generilla)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/awesome1888/generilla.svg?style=flat-square
-[contributors-url]: https://github.com/awesome1888/generilla/graphs/contributors
-[language-shield]: https://img.shields.io/github/languages/top/awesome1888/generilla.svg?style=flat-square
-[language-url]: https://github.com/awesome1888/generilla
-[forks-shield]: https://img.shields.io/github/forks/awesome1888/generilla.svg?style=flat-square
-[forks-url]: https://github.com/awesome1888/generilla/network/members
-[stars-shield]: https://img.shields.io/github/stars/awesome1888/generilla.svg?style=flat-square
-[stars-url]: https://github.com/awesome1888/generilla/stargazers
-[issues-shield]: https://img.shields.io/github/issues/awesome1888/generilla.svg?style=flat-square
-[issues-url]: https://github.com/awesome1888/generilla/issues
-[license-shield]: https://img.shields.io/github/license/awesome1888/generilla.svg?style=flat-square
-[license-url]: https://github.com/awesome1888/generilla/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/gannochenko/generilla.svg?style=flat-square
+[contributors-url]: https://github.com/gannochenko/generilla/graphs/contributors
+[language-shield]: https://img.shields.io/github/languages/top/gannochenko/generilla.svg?style=flat-square
+[language-url]: https://github.com/gannochenko/generilla
+[forks-shield]: https://img.shields.io/github/forks/gannochenko/generilla.svg?style=flat-square
+[forks-url]: https://github.com/gannochenko/generilla/network/members
+[stars-shield]: https://img.shields.io/github/stars/gannochenko/generilla.svg?style=flat-square
+[stars-url]: https://github.com/gannochenko/generilla/stargazers
+[issues-shield]: https://img.shields.io/github/issues/gannochenko/generilla.svg?style=flat-square
+[issues-url]: https://github.com/gannochenko/generilla/issues
+[license-shield]: https://img.shields.io/github/license/gannochenko/generilla.svg?style=flat-square
+[license-url]: https://github.com/gannochenko/generilla/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/sergey-gannochenko/
 [product-screenshot]: images/screenshot.png
