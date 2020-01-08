@@ -49,10 +49,10 @@
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
   * [Upgrade](#upgrade)
-  * [Development](#development)
 * [Usage](#usage)
   * [Creating a generator](#creating-a-generator)
   * [Using a generator](#using-a-generator)
+* [Development](#development)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
 * [License](#license)
@@ -111,7 +111,36 @@ If you followed the way how the installation was done, then do upgrading as foll
 ```sh
 yarn global upgrade @generilla/cli --prefix ~/.node
 ```
+<!-- USAGE -->
+## Usage
 
+### Creating a generator
+
+1. Create a generator home folder, if there is none
+    ~~~sh
+    mkdir ~/.generilla
+    ~~~
+2. Create a sub-folder there, with the following structure
+    ~~~
+    generator-name/
+    └-- template/
+    └── index.js
+    ~~~
+
+    Inside the `template/` folder you will put the template of the code to be generated.
+    The `index.js` file is the generator itself.
+
+    Use [these generators as examples](https://github.com/awesome1888/generators).
+
+### Using a generator
+
+As soon as the generator is there, type `generilla` in the terminal. You should be able to see your generator in the list. After choosing a generator and answering some questions 🕵️ the code will be created in the current folder.
+
+<img src="https://raw.githubusercontent.com/awesome1888/generilla/master/demo/demo_480.gif" alt="Logo" width="480" height="286">
+
+Type `generilla -h` to find out about all available commands.
+
+<!-- DEVELOPMENT -->
 ### Development
 
 1. Clone the repo
@@ -160,34 +189,6 @@ yarn global upgrade @generilla/cli --prefix ~/.node
     yarn start;
     ```
     Use your development version as usual, the generated data will appear in the `_output` folder.
-<!-- USAGE -->
-## Usage
-
-### Creating a generator
-
-1. Create a generator home folder, if there is none
-    ~~~sh
-    mkdir ~/.generilla
-    ~~~
-2. Create a sub-folder there, with the following structure
-    ~~~
-    generator-name/
-    └-- template/
-    └── index.js
-    ~~~
-
-    Inside the `template/` folder you will put the template of the code to be generated.
-    The `index.js` file is the generator itself.
-
-    Use [these generators as examples](https://github.com/awesome1888/generators).
-
-### Using a generator
-
-As soon as the generator is there, type `generilla` in the terminal. You should be able to see your generator in the list. After choosing a generator the code will be created in the current folder.
-
-<img src="https://raw.githubusercontent.com/awesome1888/generilla/master/demo/demo_480.gif" alt="Logo" width="480" height="286">
-
-Type `generilla -h` to find out about all available commands.
 
 <!-- ROADMAP -->
 ## Roadmap
