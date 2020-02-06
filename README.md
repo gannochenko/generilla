@@ -22,6 +22,8 @@
   </a>
   -->
 
+  <span align="center" style="font-size: 30px;">💻 + 🦍 = ⚡⚡⚡</span>
+
   <h3 align="center">Generilla</h3>
 
   <p align="center">
