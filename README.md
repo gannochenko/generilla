@@ -22,7 +22,7 @@
   </a>
   -->
 
-  <span align="center" style="font-size: 30px;">💻 + 🦍 = ⚡⚡⚡</span>
+  <div align="center" style="font-size: 30px;"><font size="7">💻 + 🦍 = ⚡⚡⚡</font></span>
 
   <h3 align="center">Generilla</h3>
 
@@ -46,7 +46,6 @@
 ## Table of Contents
 
 * [About the Project](#about-the-project)
-  * [Built With](#built-with)
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
@@ -58,6 +57,7 @@
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
 * [License](#license)
+* [Built With](#built-with)
 * [Contact](#contact)
 
 
@@ -70,16 +70,6 @@
 -->
 
 `Generilla` is a tool for running `generilla code generators`. See below how to make your own generator with `Generilla`.
-
-### Built With
-
-* [TypeScript](http://www.typescriptlang.org/)
-* [Inquirer](https://www.npmjs.com/package/inquirer)
-* [Chalk](https://www.npmjs.com/package/chalk)
-* [Execa](https://www.npmjs.com/package/execa)
-* [Filget](https://www.npmjs.com/package/figlet)
-* [Commander](https://www.npmjs.com/package/commander)
-* [EJS](https://www.npmjs.com/package/ejs)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -107,7 +97,11 @@ To avoid problems with permissions and `sudo`, it is possible to install the pac
     ```
 4. Add the command above to `~/.bashrc` (or `~/.bash_profile` in case of MacOS)
 
-5. You should be able to run the `generilla` command now
+5. Create a generator home folder, if there is none
+    ~~~sh
+    mkdir ~/.generilla
+    ~~~
+6. You should be able to run the `generilla` command now
 
 ### Upgrade
 
@@ -120,11 +114,7 @@ yarn global upgrade @generilla/cli --prefix ~/.node
 
 ### Creating a generator
 
-1. Create a generator home folder, if there is none
-    ~~~sh
-    mkdir ~/.generilla
-    ~~~
-2. Create a sub-folder there, with the following structure
+1. Create a sub-folder there, with the following structure
     ~~~
     generator-name/
     └-- template/
@@ -216,6 +206,17 @@ Contributions are what make the open source community such an amazing place to b
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
+
+<!-- BUILTWITH -->
+### Built With
+
+* [TypeScript](http://www.typescriptlang.org/)
+* [Inquirer](https://www.npmjs.com/package/inquirer)
+* [Chalk](https://www.npmjs.com/package/chalk)
+* [Execa](https://www.npmjs.com/package/execa)
+* [Filget](https://www.npmjs.com/package/figlet)
+* [Commander](https://www.npmjs.com/package/commander)
+* [EJS](https://www.npmjs.com/package/ejs)
 
 <!-- CONTACT -->
 ## Contact
