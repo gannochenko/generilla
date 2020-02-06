@@ -22,7 +22,7 @@
   </a>
   -->
 
-  <div align="center" style="font-size: 30px;"><font size="7">💻 + 🦍 = ⚡⚡⚡</font></span>
+  <h2 align="center">💻 + 🦍 = ⚡⚡⚡</h2>
 
   <h3 align="center">Generilla</h3>
 
