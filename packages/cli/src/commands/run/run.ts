@@ -15,10 +15,6 @@ import { NOTHING } from '../../lib/constants';
 
 @Implements<CommandProcessor>()
 export class CommandRun {
-    public static getCode() {
-        return 'run';
-    }
-
     public static attach(
         program: CommanderCommand,
         actionCallback: ActionCallback,

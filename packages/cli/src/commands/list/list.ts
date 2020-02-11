@@ -1,29 +1,20 @@
 import { Command as CommanderCommand } from 'commander';
 import { GeneratorList } from '@generilla/core';
 
-import {
-    ActionCallback,
-    CommandAction,
-    CommandProcessor,
-    Implements,
-} from '../type';
+import { ActionCallback, CommandProcessor, Implements } from '../type';
 import { Generilla } from '../../lib/generilla';
 
 @Implements<CommandProcessor>()
 export class CommandList {
-    public static getCode() {
-        return 'list';
-    }
-
     public static attach(
         program: CommanderCommand,
         actionCallback: ActionCallback,
     ) {
         program
-            .command('list')
+            .command('repository.ts')
             .alias('l')
             .description('Display a list of available generators')
-            .action((generator: string, command: CommanderCommand) =>
+            .action(() =>
                 actionCallback({
                     command: this,
                     arguments: {},

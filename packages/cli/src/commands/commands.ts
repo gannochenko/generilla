@@ -2,11 +2,12 @@ import { Command as CommanderCommand } from 'commander';
 
 import { CommandRun } from './run/run';
 import { CommandList } from './list/list';
+import { CommandGenerator } from './generators/generators';
 import { ActionCallback } from './type';
 
 export class Commands {
     protected static getCommands() {
-        return [CommandRun, CommandList];
+        return [CommandRun, CommandList, CommandGenerator];
     }
 
     public static getDefaultCommand() {
