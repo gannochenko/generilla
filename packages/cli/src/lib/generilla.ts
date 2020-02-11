@@ -5,24 +5,22 @@ import clear from 'clear';
 import figlet from 'figlet';
 import inquirer from 'inquirer';
 import fs from 'fs';
-import commander, { Command as CommanderCommand } from 'commander';
+import commander from 'commander';
 
-import {
-    GeneratorList,
-    GeneratorController,
-    GeneratorListItem,
-    ObjectLiteral,
-    Debug,
-} from '@generilla/core';
-import { Command } from './type';
-import { COMMAND_LIST, COMMAND_RUN } from './commands';
+import { GeneratorListItem, Debug } from '@generilla/core';
 import { NOTHING, VERSION } from './constants';
 import { Commands } from '../commands/commands';
+import { CommandAction, CommandProcessor } from '../commands/type';
+import { Nullable, ObjectLiteral } from '../type';
 
 export class Generilla {
     private introShown = false;
 
     constructor(private generatorsPath: string) {}
+
+    public getGeneratorsPath() {
+        return this.generatorsPath;
+    }
 
     public async run() {
         if (!this.isObjectExist(this.generatorsPath)) {
@@ -30,84 +28,14 @@ export class Generilla {
         }
 
         const command = this.processCLI();
-        if (command.args.debug) {
+        if (command.arguments.debug) {
             Debug.enable();
         }
 
-        if (command.name === COMMAND_RUN) {
-            await this.runCommandRun(command);
-        } else if (command.name === COMMAND_LIST) {
-            await this.runCommandList(command);
-        }
+        await command.command.process(this, command.arguments);
     }
 
-    protected async runCommandRun(command: Command) {
-        let generatorCode = command.args.generator as string;
-        let generatorItem: GeneratorListItem | undefined;
-
-        const list = await GeneratorList.getList(this.generatorsPath);
-        let chosenFromList = false;
-
-        if (!generatorCode) {
-            this.showIntro();
-            generatorCode = await this.selectGenerator(list!);
-
-            if (generatorCode === NOTHING) {
-                console.log('Well then, see you round!');
-                return;
-            }
-
-            chosenFromList = true;
-        }
-
-        generatorItem = list!.find(item => item.code === generatorCode);
-        if (!generatorItem) {
-            console.log(
-                'Emm... I am not aware of such generator to be out there.',
-            );
-            return;
-        }
-
-        this.showIntro();
-        if (!chosenFromList) {
-            console.log(
-                `Running '${generatorItem.name}' [${generatorItem.code}] generator`,
-            );
-        }
-
-        const generator = new GeneratorController(generatorItem!);
-
-        const destination =
-            command.args.output || process.env.GENERILLA_DST || process.cwd();
-        const { originalAnswers } = await generator.runPipeline(
-            destination,
-            command.args,
-        );
-
-        console.log('Enjoy your brand new whatever you generated there!');
-
-        if (command.args.mould) {
-            console.log(
-                'Ah, yes. If you would like to run this process non-interactively, use the following command:',
-            );
-            console.log(
-                `generilla run ${generatorItem.code} -a '${JSON.stringify(
-                    originalAnswers || {},
-                )}'`,
-            );
-        }
-    }
-
-    protected async runCommandList(command: Command) {
-        console.log('Available generators:');
-        console.log('');
-        (await GeneratorList.getList(this.generatorsPath)).forEach(generator =>
-            console.log(`   * ${generator.name} [${generator.code}]`),
-        );
-        console.log('');
-    }
-
-    protected showIntro() {
+    public showIntro() {
         if (this.introShown) {
             return;
         }
@@ -122,7 +50,7 @@ export class Generilla {
         this.introShown = true;
     }
 
-    protected async selectGenerator(list: GeneratorListItem[]) {
+    public async selectGenerator(list: GeneratorListItem[]) {
         const answers = await inquirer.prompt([
             {
                 type: 'list',
@@ -157,10 +85,10 @@ export class Generilla {
         }
     }
 
-    private processCLI() {
+    private processCLI(): CommandAction {
         const program = new commander.Command();
 
-        let commandToRun = '';
+        let commandToRun: Nullable<CommandProcessor> = null;
         let commandArguments: ObjectLiteral = {};
 
         program
@@ -174,23 +102,23 @@ export class Generilla {
             .option('-d, --debug', 'output an additional debug info');
 
         Commands.attachCommands(program, command => {
-            commandToRun = command.code;
+            commandToRun = command.command;
             commandArguments = command.arguments || {};
         });
 
         program.parse(process.argv);
 
         if (!commandToRun) {
-            commandToRun = COMMAND_RUN;
+            commandToRun = Commands.getDefaultCommand();
         }
 
         return {
-            name: commandToRun,
-            args: {
+            command: commandToRun!,
+            arguments: {
                 ...commandArguments,
                 mould: program.mould,
                 debug: program.debug,
             },
-        } as Command;
+        };
     }
 }

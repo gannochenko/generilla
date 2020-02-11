@@ -1,5 +1,13 @@
 import { Command as CommanderCommand } from 'commander';
-import { ActionCallback, CommandProcessor, Implements } from '../type';
+import { GeneratorList } from '@generilla/core';
+
+import {
+    ActionCallback,
+    CommandAction,
+    CommandProcessor,
+    Implements,
+} from '../type';
+import { Generilla } from '../../lib/generilla';
 
 @Implements<CommandProcessor>()
 export class CommandList {
@@ -17,10 +25,20 @@ export class CommandList {
             .description('Display a list of available generators')
             .action((generator: string, command: CommanderCommand) =>
                 actionCallback({
-                    code: this.getCode(),
+                    command: this,
+                    arguments: {},
                 }),
             );
     }
 
-    public static process() {}
+    public static async process(generilla: Generilla) {
+        console.log('Available generators:');
+        console.log('');
+        (
+            await GeneratorList.getList(generilla.getGeneratorsPath())
+        ).forEach(generator =>
+            console.log(`   * ${generator.name} [${generator.code}]`),
+        );
+        console.log('');
+    }
 }

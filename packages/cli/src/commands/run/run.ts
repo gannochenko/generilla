@@ -1,5 +1,17 @@
 import { Command as CommanderCommand } from 'commander';
-import { ActionCallback, CommandProcessor, Implements } from '../type';
+import {
+    GeneratorList,
+    GeneratorListItem,
+    GeneratorController,
+} from '@generilla/core';
+import {
+    ActionCallback,
+    CommandActionArguments,
+    CommandProcessor,
+    Implements,
+} from '../type';
+import { Generilla } from '../../lib/generilla';
+import { NOTHING } from '../../lib/constants';
 
 @Implements<CommandProcessor>()
 export class CommandRun {
@@ -23,7 +35,7 @@ export class CommandRun {
             )
             .action((generator: string, command: CommanderCommand) =>
                 actionCallback({
-                    code: this.getCode(),
+                    command: this,
                     arguments: {
                         generator,
                         answers: command.answers,
@@ -34,5 +46,63 @@ export class CommandRun {
             );
     }
 
-    public static process() {}
+    public static async process(
+        generilla: Generilla,
+        args: CommandActionArguments,
+    ) {
+        let generatorCode = args.generator as string;
+        let generatorItem: GeneratorListItem | undefined;
+
+        const list = await GeneratorList.getList(generilla.getGeneratorsPath());
+        let chosenFromList = false;
+
+        if (!generatorCode) {
+            generilla.showIntro();
+            generatorCode = await generilla.selectGenerator(list!);
+
+            if (generatorCode === NOTHING) {
+                console.log('Well then, see you round!');
+                return;
+            }
+
+            chosenFromList = true;
+        }
+
+        generatorItem = list!.find(item => item.code === generatorCode);
+        if (!generatorItem) {
+            console.log(
+                'Emm... I am not aware of such generator to be out there.',
+            );
+            return;
+        }
+
+        generilla.showIntro();
+        if (!chosenFromList) {
+            console.log(
+                `Running '${generatorItem.name}' [${generatorItem.code}] generator`,
+            );
+        }
+
+        const generator = new GeneratorController(generatorItem!);
+
+        const destination =
+            args.output || process.env.GENERILLA_DST || process.cwd();
+        const { originalAnswers } = await generator.runPipeline(
+            destination,
+            args,
+        );
+
+        console.log('Enjoy your brand new whatever you generated there!');
+
+        if (args.mould) {
+            console.log(
+                'Ah, yes. If you would like to run this process non-interactively, use the following command:',
+            );
+            console.log(
+                `generilla run ${generatorItem.code} -a '${JSON.stringify(
+                    originalAnswers || {},
+                )}'`,
+            );
+        }
+    }
 }

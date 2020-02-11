@@ -1,13 +1,12 @@
 import { Command as CommanderCommand } from 'commander';
+import { ObjectLiteral } from '../type';
+import { Generilla } from '../lib/generilla';
+
+export type CommandActionArguments = ObjectLiteral;
 
 export interface CommandAction {
-    code: string;
-    arguments?: {
-        generator: string;
-        answers: any;
-        yes: any;
-        output: any;
-    };
+    command: CommandProcessor;
+    arguments: CommandActionArguments;
 }
 
 export type ActionCallback = (action: CommandAction) => void;
@@ -17,7 +16,7 @@ interface CommandProcessorInstance {}
 export interface CommandProcessor {
     new (): CommandProcessorInstance;
     attach(program: CommanderCommand, actionCallback: ActionCallback): void;
-    process(): void;
+    process(generilla: Generilla, args?: CommandActionArguments): Promise<void>;
 }
 
 export function Implements<T>() {
