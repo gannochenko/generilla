@@ -1,3 +1,7 @@
+/**
+ * @deprecated
+ */
+
 import path from 'path';
 import inquirer from 'inquirer';
 import ejs from 'ejs';

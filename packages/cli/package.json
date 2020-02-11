@@ -10,7 +10,7 @@
         "generilla": "./build/index.js"
     },
     "scripts": {
-        "start": "GENERILLA_DST=./../../_output ts-node src/index.ts",
+        "start": "GENERILLA_DST=./../../_output GENERILLA_GENERATORS_HOME=./../../_generators ts-node src/index.ts",
         "build:watch": "rm -rf ./build/*; tsc -w -p .",
         "build": "rm -rf ./build/*; tsc -p .; chmod +x ./build/index.js"
     },

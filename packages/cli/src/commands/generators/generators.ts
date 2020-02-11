@@ -1,4 +1,5 @@
 import { Command as CommanderCommand } from 'commander';
+import { URLParser } from '@generilla/core';
 
 import { ActionCallback, CommandProcessor, Implements } from '../type';
 import { Generilla } from '../../lib/generilla';
@@ -22,6 +23,12 @@ export class CommandGenerator {
                 console.log(
                     '  $ generilla generator add https://github.com/joe/generators/tree/master/awesome.generator',
                 );
+                console.log(
+                    '  $ generilla generator add https://github.com/joe/generators.git|master|/awesome.generator',
+                );
+                console.log(
+                    '  $ generilla generator add git@github.com:joe/generators.git|master|/awesome.generator',
+                );
                 console.log('  $ generilla generator update awesome.generator');
                 console.log('  $ generilla generator remove awesome.generator');
             })
@@ -37,6 +44,10 @@ export class CommandGenerator {
     }
 
     public static async process(generilla: Generilla, args: ObjectLiteral) {
-        console.log(args);
+        if (args.action === 'add') {
+            const result = URLParser.parse(args.url);
+            console.log(result);
+        }
+        // console.log(generilla.getGeneratorsPath());
     }
 }
