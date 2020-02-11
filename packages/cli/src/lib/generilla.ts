@@ -17,6 +17,7 @@ import {
 import { Command } from './type';
 import { COMMAND_LIST, COMMAND_RUN } from './commands';
 import { NOTHING, VERSION } from './constants';
+import { Commands } from '../commands/commands';
 
 export class Generilla {
     private introShown = false;
@@ -164,45 +165,18 @@ export class Generilla {
 
         program
             .name('generilla')
-            .version(VERSION, '-v, --version', 'Output the current version')
+            .version(VERSION, '-v, --version', 'output the current version')
             .description('Generilla: an extremely simple code generator runner')
             .option(
                 '-m, --mould',
-                'Output a mould of just executed generation, so it is possible to repeat it again later in a non-interactive way',
+                'output a mould of just executed generation, so it is possible to repeat it again later in a non-interactive way',
             )
-            .option('-d, --debug', 'Output an additional debug info');
+            .option('-d, --debug', 'output an additional debug info');
 
-        program
-            .command('run [generator]')
-            .alias('r')
-            .description('Run a specified generator')
-            .option('-a, --answers <answers>', 'Answers as JSON object')
-            .option('-y, --yes', 'Use the default answers when possible')
-            .option(
-                '-o, --output <output>',
-                'Specify an alternative target folder, rather than CWD',
-            )
-
-            // function to execute when command is uses
-            .action((generator: string, command: CommanderCommand) => {
-                commandToRun = COMMAND_RUN;
-                commandArguments = {
-                    generator,
-                    answers: command.answers,
-                    yes: command.yes,
-                    output: command.output,
-                };
-            });
-
-        program
-            .command('list')
-            .alias('l')
-            .description('Display a list of available generators')
-
-            // function to execute when command is uses
-            .action(function() {
-                commandToRun = COMMAND_LIST;
-            });
+        Commands.attachCommands(program, command => {
+            commandToRun = command.code;
+            commandArguments = command.arguments || {};
+        });
 
         program.parse(process.argv);
 
