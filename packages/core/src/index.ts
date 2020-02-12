@@ -6,4 +6,6 @@ export * from './template';
 export * from './text-converter';
 export * from './debug';
 export * from './reference-parser';
+export * from './generator-manager';
+export * from './generator-record';
 export * from './type';

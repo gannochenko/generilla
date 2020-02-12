@@ -1,5 +1,9 @@
 import { Command as CommanderCommand } from 'commander';
-import { ReferenceParser, ReferenceParseResult } from '@generilla/core';
+import {
+    ReferenceParser,
+    ReferenceParseResult,
+    GeneratorManager,
+} from '@generilla/core';
 
 import { ActionCallback, CommandProcessor, Implements } from '../type';
 import { Generilla } from '../../lib/generilla';
@@ -53,7 +57,8 @@ export class CommandGenerator {
                 return;
             }
 
-            console.log(result);
+            const manager = new GeneratorManager(generilla.getGeneratorsPath());
+            await manager.add(result);
         }
         if (args.action === 'update') {
         }
