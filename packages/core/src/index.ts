@@ -5,5 +5,5 @@ export * from './interpolator';
 export * from './template';
 export * from './text-converter';
 export * from './debug';
-export * from './url-parser';
+export * from './reference-parser';
 export * from './type';

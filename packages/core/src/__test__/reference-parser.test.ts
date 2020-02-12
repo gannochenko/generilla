@@ -1,10 +1,10 @@
-import { URLParser } from '../url-parser';
+import { ReferenceParser } from '../reference-parser';
 
-describe('URLParser', () => {
+describe('ReferenceParser', () => {
     describe('parse()', () => {
         it('should parse github file browser url', async () => {
             expect(
-                URLParser.parse(
+                ReferenceParser.parse(
                     'https://github.com/joe/generators/tree/master/awesome.generator/foo/bar',
                 ),
             ).toMatchObject({
@@ -18,7 +18,7 @@ describe('URLParser', () => {
         });
         it('should parse "url" with separator, 3 parts', async () => {
             expect(
-                URLParser.parse(
+                ReferenceParser.parse(
                     'https://github.com/joe/generators.git|master|/awesome.generator/foo/bar',
                 ),
             ).toMatchObject({
@@ -29,7 +29,7 @@ describe('URLParser', () => {
         });
         it('should parse github file browser url', async () => {
             expect(
-                URLParser.parse(
+                ReferenceParser.parse(
                     'git@github.com:joe/generators.git|master|/awesome.generator/foo/bar',
                 ),
             ).toMatchObject({

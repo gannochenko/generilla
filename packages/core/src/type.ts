@@ -69,3 +69,12 @@ export interface GeneratorImport {
 export interface GenerationResult {
     originalAnswers: ObjectLiteral;
 }
+
+export interface ReferenceParseResult {
+    host?: string;
+    account?: string;
+    repo?: string;
+    repository: string;
+    branch: string;
+    path: string;
+}

@@ -1,5 +1,7 @@
-export class URLParser {
-    public static parse(url: string) {
+import { ReferenceParseResult } from './type';
+
+export class ReferenceParser {
+    public static parse(url: string): ReferenceParseResult {
         const trimmedUrl = url.trim();
         if (trimmedUrl.indexOf('|') >= 0) {
             const parts = url.trim().split('|');
@@ -26,6 +28,6 @@ export class URLParser {
             }
         }
 
-        throw new Error('Illegal ');
+        throw new Error('Illegal reference');
     }
 }

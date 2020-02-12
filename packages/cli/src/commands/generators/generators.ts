@@ -1,9 +1,9 @@
 import { Command as CommanderCommand } from 'commander';
-import { URLParser } from '@generilla/core';
+import { ReferenceParser, ReferenceParseResult } from '@generilla/core';
 
 import { ActionCallback, CommandProcessor, Implements } from '../type';
 import { Generilla } from '../../lib/generilla';
-import { ObjectLiteral } from '../../type';
+import { Nullable, ObjectLiteral } from '../../type';
 
 @Implements<CommandProcessor>()
 export class CommandGenerator {
@@ -12,7 +12,7 @@ export class CommandGenerator {
         actionCallback: ActionCallback,
     ) {
         program
-            .command('generator [action] [url]')
+            .command('generator [action] [reference]')
             .usage('add|update|remove repository_url')
             .alias('g')
             .alias('gen')
@@ -32,12 +32,12 @@ export class CommandGenerator {
                 console.log('  $ generilla generator update awesome.generator');
                 console.log('  $ generilla generator remove awesome.generator');
             })
-            .action((action: string, url: string) =>
+            .action((action: string, reference: string) =>
                 actionCallback({
                     command: this,
                     arguments: {
                         action,
-                        url,
+                        reference,
                     },
                 }),
             );
@@ -45,9 +45,19 @@ export class CommandGenerator {
 
     public static async process(generilla: Generilla, args: ObjectLiteral) {
         if (args.action === 'add') {
-            const result = URLParser.parse(args.url);
+            let result: Nullable<ReferenceParseResult> = null;
+            try {
+                result = ReferenceParser.parse(args.reference);
+            } catch (e) {
+                console.error('Your repository looks really weird.');
+                return;
+            }
+
             console.log(result);
         }
-        // console.log(generilla.getGeneratorsPath());
+        if (args.action === 'update') {
+        }
+        if (args.action === 'remove') {
+        }
     }
 }
