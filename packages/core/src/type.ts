@@ -78,3 +78,13 @@ export interface ReferenceParseResult {
     branch: string;
     path: string;
 }
+
+export interface GeneratorRecordElement {
+    id: string;
+    branch: string;
+    path: string;
+}
+
+export interface GeneratorRecordType {
+    generators: GeneratorRecordElement[];
+}

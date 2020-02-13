@@ -19,12 +19,14 @@
     "dependencies": {
         "case-formatter": "^1.0.9",
         "clone-deep": "^4.0.1",
+        "del": "^5.1.0",
         "ejs": "^2.7.1",
         "execa": "^3.2.0",
         "findit": "^2.0.0",
         "inquirer": "^7.0.0",
         "isbinaryfile": "^4.0.3",
         "js-yaml": "^3.13.1",
+        "matcher": "^2.1.0",
         "nanoid": "^2.1.11",
         "ncp": "^2.0.0",
         "path-exists": "^4.0.0"
@@ -35,10 +37,12 @@
     "devDependencies": {
         "@team-griffin/install-self-peers": "^1.1.1",
         "@types/clone-deep": "^4.0.1",
+        "@types/del": "^4.0.0",
         "@types/ejs": "^2.6.3",
         "@types/inquirer": "^6.5.0",
         "@types/jest": "^24.0.23",
         "@types/js-yaml": "^3.12.2",
+        "@types/matcher": "^2.0.0",
         "@types/nanoid": "^2.1.0",
         "@types/ncp": "^2.0.3",
         "@typescript-eslint/eslint-plugin": "^2.6.1",

@@ -1,30 +1,58 @@
 import path from 'path';
 import yaml from 'js-yaml';
 import fs from 'fs';
-import { ObjectLiteral, ReferenceParseResult } from './type';
+import matcher from 'matcher';
+import {
+    GeneratorRecordElement,
+    GeneratorRecordType,
+    ObjectLiteral,
+    ReferenceParseResult,
+} from './type';
 
 const GENERATORS_FILE = '.generators';
 
 export class GeneratorRecord {
     constructor(private generatorsPath = '') {}
 
-    public async add(localPath: string, reference: ReferenceParseResult) {
-        const list = await this.getList();
+    public async addGenerator(
+        localPath: string,
+        reference: ReferenceParseResult,
+    ) {
+        const list = await this.get();
 
         list.generators.push({
-            path: localPath,
+            id: localPath,
             branch: reference.branch,
-            subPath: reference.path,
+            path: reference.path,
         });
 
-        await this.saveList(list);
+        await this.save(list);
     }
 
-    public async getList() {
+    public async removeGenerators(query: string) {
+        const record = await this.get();
+        return this.save({
+            ...record,
+            generators: this.filterGenerators(record.generators, query, true),
+        });
+    }
+
+    public async get(query?: string): Promise<GeneratorRecordType> {
         const fileName = this.getGeneratorsFileName();
 
         try {
-            return yaml.safeLoad(fs.readFileSync(fileName, 'utf8'));
+            const result = yaml.safeLoad(
+                fs.readFileSync(fileName, 'utf8'),
+            ) as GeneratorRecordType;
+
+            if (query) {
+                return {
+                    ...result,
+                    generators: this.filterGenerators(result.generators, query),
+                };
+            } else {
+                return result;
+            }
         } catch (e) {
             return {
                 generators: [],
@@ -32,11 +60,23 @@ export class GeneratorRecord {
         }
     }
 
-    private async saveList(list: ObjectLiteral) {
+    private async save(list: GeneratorRecordType) {
         fs.writeFileSync(this.getGeneratorsFileName(), yaml.safeDump(list));
     }
 
     private getGeneratorsFileName() {
         return path.join(this.generatorsPath, GENERATORS_FILE);
+    }
+
+    private filterGenerators(
+        generators: GeneratorRecordElement[],
+        query: string,
+        exclude = false,
+    ) {
+        return generators.filter(generator => {
+            const match = matcher.isMatch(generator.id, query);
+
+            return exclude ? !match : match;
+        });
     }
 }
