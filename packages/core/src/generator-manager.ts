@@ -7,6 +7,7 @@ import del from 'del';
 import { promisify } from 'util';
 import { ReferenceParseResult } from './type';
 import { GIT } from './git';
+import { Yarn } from './yarn';
 import { GeneratorRecord } from './generator-record';
 
 export class GeneratorManager {
@@ -30,11 +31,27 @@ export class GeneratorManager {
 
         const copy = promisify(ncp.ncp);
         await copy(localPath, finalRepositoryPath);
+        await Yarn.install(localGeneratorPath);
 
         const recordManager = new GeneratorRecord(this.generatorsPath);
         await recordManager.addGenerator(id, reference);
+    }
 
-        // todo: run yarn if package.json is there
+    public async update(query: string) {
+        const recordManager = new GeneratorRecord(this.generatorsPath);
+        const record = await recordManager.get(query);
+
+        // eslint-disable-next-line no-restricted-syntax
+        for (const generator of record.generators) {
+            const finalRepositoryPath = path.join(
+                this.generatorsPath,
+                generator.id,
+            );
+            // eslint-disable-next-line no-await-in-loop
+            await GIT.pull(finalRepositoryPath, generator.branch);
+            // eslint-disable-next-line no-await-in-loop
+            await Yarn.install(path.join(finalRepositoryPath, generator.path));
+        }
     }
 
     public async remove(query: string) {
@@ -53,5 +70,10 @@ export class GeneratorManager {
 
             await recordManager.removeGenerators(query);
         }
+    }
+
+    public async getList(query: string) {
+        const recordManager = new GeneratorRecord(this.generatorsPath);
+        return recordManager.get(query);
     }
 }

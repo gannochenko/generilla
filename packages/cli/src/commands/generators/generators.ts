@@ -62,12 +62,13 @@ export class CommandGenerator {
             const manager = new GeneratorManager(generilla.getGeneratorsPath());
             await manager.add(result);
         }
-        if (args.action === 'update') {
+        if (args.action === 'update' || args.action === 'up') {
             const manager = new GeneratorManager(generilla.getGeneratorsPath());
+            await manager.update(args.reference);
         }
-        if (args.action === 'remove') {
+        if (args.action === 'remove' || args.action === 'rm') {
             const manager = new GeneratorManager(generilla.getGeneratorsPath());
-            manager.remove(args.reference);
+            await manager.remove(args.reference);
         }
     }
 }

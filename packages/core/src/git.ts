@@ -18,4 +18,15 @@ export class GIT {
             stdio: ['inherit', 'inherit', 'inherit'],
         });
     }
+
+    public static async pull(path: string, branch: string) {
+        await execa('git', ['pull', 'origin', branch], {
+            cwd: path,
+            stdio: ['inherit', 'inherit', 'inherit'],
+        });
+    }
+
+    public static async isAvailable() {
+        // todo
+    }
 }
