@@ -1,1 +1,4 @@
-generators: []
+generators:
+  - id: gen-a-RxF5lEmi2a3HnXcW_T_
+    branch: master
+    path: /microservice.backend

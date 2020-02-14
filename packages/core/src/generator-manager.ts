@@ -49,6 +49,7 @@ export class GeneratorManager {
             );
             // eslint-disable-next-line no-await-in-loop
             await GIT.pull(finalRepositoryPath, generator.branch);
+
             // eslint-disable-next-line no-await-in-loop
             await Yarn.install(path.join(finalRepositoryPath, generator.path));
         }

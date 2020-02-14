@@ -1,6 +1,9 @@
 import execa from 'execa';
+import { isAvailable } from './util';
 
 export class GIT {
+    protected static isGitAvailable: boolean;
+
     public static async clone(url: string, cwd: string, as: string) {
         await execa('git', ['clone', url, as], {
             cwd,
@@ -27,6 +30,10 @@ export class GIT {
     }
 
     public static async isAvailable() {
-        // todo
+        if (this.isGitAvailable === undefined) {
+            this.isGitAvailable = await isAvailable('git -h');
+        }
+
+        return this.isGitAvailable;
     }
 }

@@ -1,9 +1,16 @@
 import execa from 'execa';
 import path from 'path';
 import pathExists from 'path-exists';
+import { isAvailable } from './util';
 
 export class Yarn {
+    protected static isYarnAvailable: boolean;
+
     public static async install(packagePath: string) {
+        if (!(await this.isAvailable())) {
+            return;
+        }
+
         if (!(await pathExists(path.join(packagePath, 'package.json')))) {
             return;
         }
@@ -15,6 +22,10 @@ export class Yarn {
     }
 
     public static async isAvailable() {
-        // todo
+        if (this.isYarnAvailable === undefined) {
+            this.isYarnAvailable = await isAvailable('yarn -h');
+        }
+
+        return this.isYarnAvailable;
     }
 }

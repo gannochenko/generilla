@@ -55,7 +55,9 @@ export class CommandGenerator {
             try {
                 result = ReferenceParser.parse(args.reference);
             } catch (e) {
-                console.error('Your repository looks really weird.');
+                console.error(
+                    'The generator reference you provided looks really weird.',
+                );
                 return;
             }
 

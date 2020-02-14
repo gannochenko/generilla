@@ -5,7 +5,6 @@ import matcher from 'matcher';
 import {
     GeneratorRecordElement,
     GeneratorRecordType,
-    ObjectLiteral,
     ReferenceParseResult,
 } from './type';
 
