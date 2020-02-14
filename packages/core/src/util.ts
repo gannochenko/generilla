@@ -1,4 +1,5 @@
 import execa from 'execa';
+import path from 'path';
 
 export const isAvailable = async (cmd: string) => {
     const cmdParts = cmd.trim().split(' ');
@@ -16,3 +17,6 @@ export const isAvailable = async (cmd: string) => {
             return e.code !== 'ENOENT';
         });
 };
+
+export const absolutizePath = (folder: string) =>
+    path.isAbsolute(folder) ? folder : path.join(process.cwd(), folder);

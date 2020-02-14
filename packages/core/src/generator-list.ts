@@ -20,6 +20,7 @@ import { TextConverter } from './text-converter';
 import { Template } from './template';
 import { Debug } from './debug';
 import { GeneratorManager } from './generator-manager';
+import { absolutizePath } from './util';
 
 export class GeneratorList {
     public static async getList(folder: string) {
@@ -33,9 +34,7 @@ export class GeneratorList {
         // eslint-disable-next-line no-restricted-syntax
         for (const generatorFolder of folderList) {
             // eslint-disable-next-line no-await-in-loop
-            const effectivePath = path.isAbsolute(generatorFolder)
-                ? generatorFolder
-                : path.join(process.cwd(), generatorFolder);
+            const effectivePath = absolutizePath(generatorFolder);
             const item = await this.getGeneratorItem(effectivePath, {
                 textConverter,
             });
@@ -56,7 +55,6 @@ export class GeneratorList {
         try {
             imported = await import(folder);
         } catch (error) {
-            console.log(error);
             Debug.log(error);
             return null;
         }

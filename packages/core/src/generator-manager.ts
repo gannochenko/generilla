@@ -10,6 +10,7 @@ import { GIT } from './git';
 import { Yarn } from './yarn';
 import { GeneratorRecord } from './generator-record';
 import { GeneratorList } from './generator-list';
+import { absolutizePath } from './util';
 
 export class GeneratorManager {
     constructor(private generatorsPath = '') {}
@@ -20,6 +21,10 @@ export class GeneratorManager {
         const localPath = path.join(tmpDir, id);
         const localGeneratorPath = path.join(localPath, reference.path);
         const finalRepositoryPath = path.join(this.generatorsPath, id);
+        const finalGeneratorPath = path.join(
+            finalRepositoryPath,
+            reference.path,
+        );
 
         await GIT.clone(reference.repository, tmpDir, id);
         await GIT.checkout(localPath, reference.branch);
@@ -30,19 +35,19 @@ export class GeneratorManager {
             );
         }
 
+        const copy = promisify(ncp.ncp);
+        await copy(localPath, finalRepositoryPath);
+        if (await Yarn.isAvailable()) {
+            await Yarn.install(finalGeneratorPath);
+        }
+
         const generatorItem = await GeneratorList.getGeneratorItem(
-            localGeneratorPath,
+            absolutizePath(finalGeneratorPath),
         );
         if (!generatorItem) {
             throw new Error(
-                'The repository folder does not look like a generator',
+                'Having hard times importing an index file of the generator. Use -d option to see the error.',
             );
-        }
-
-        const copy = promisify(ncp.ncp);
-        await copy(localPath, finalRepositoryPath);
-        if (!(await Yarn.isAvailable())) {
-            await Yarn.install(localGeneratorPath);
         }
 
         const recordManager = new GeneratorRecord(this.generatorsPath);
@@ -63,7 +68,7 @@ export class GeneratorManager {
             await GIT.pull(finalRepositoryPath, generator.branch);
 
             // eslint-disable-next-line no-await-in-loop
-            if (!(await Yarn.isAvailable())) {
+            if (await Yarn.isAvailable()) {
                 // eslint-disable-next-line no-await-in-loop
                 await Yarn.install(
                     path.join(finalRepositoryPath, generator.path),
