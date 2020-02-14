@@ -1,4 +1,6 @@
 generators:
-  - id: gen-a-RxF5lEmi2a3HnXcW_T_
+  - id: gen-j6Uub9hOV1VE8N3m_paRU
     branch: master
-    path: /microservice.backend
+    path: /interview.starter
+    code: interview.starter
+    name: Interview starter

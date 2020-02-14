@@ -5,6 +5,10 @@ export class GIT {
     protected static isGitAvailable: boolean;
 
     public static async clone(url: string, cwd: string, as: string) {
+        if (!(await this.isAvailable())) {
+            throw new Error('Not available');
+        }
+
         await execa('git', ['clone', url, as], {
             cwd,
             stdio: ['inherit', 'inherit', 'inherit'],
@@ -12,6 +16,10 @@ export class GIT {
     }
 
     public static async checkout(path: string, branch: string) {
+        if (!(await this.isAvailable())) {
+            throw new Error('Not available');
+        }
+
         await execa('git', ['fetch', 'origin', branch], {
             cwd: path,
             stdio: ['inherit', 'inherit', 'inherit'],
@@ -23,6 +31,10 @@ export class GIT {
     }
 
     public static async pull(path: string, branch: string) {
+        if (!(await this.isAvailable())) {
+            throw new Error('Not available');
+        }
+
         await execa('git', ['pull', 'origin', branch], {
             cwd: path,
             stdio: ['inherit', 'inherit', 'inherit'],

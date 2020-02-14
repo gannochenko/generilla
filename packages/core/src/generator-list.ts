@@ -9,7 +9,13 @@ import fs from 'fs';
 import execa from 'execa';
 import pathExists from 'path-exists';
 import caseFormatter from 'case-formatter';
-import { GeneratorListItem, Generator, GeneratorImport } from './type';
+import {
+    GeneratorListItem,
+    Generator,
+    GeneratorImport,
+    Nullable,
+    ObjectLiteral,
+} from './type';
 import { TextConverter } from './text-converter';
 import { Template } from './template';
 import { Debug } from './debug';
@@ -23,44 +29,58 @@ export class GeneratorList {
         const folderList = await this.getFolderList(folder);
         // eslint-disable-next-line no-restricted-syntax
         for (const generatorFolder of folderList) {
-            let imported: GeneratorImport;
-            try {
-                // eslint-disable-next-line no-await-in-loop
-                imported = await import(generatorFolder);
-            } catch (error) {
-                Debug.log(error);
-                continue;
-            }
-            const GeneratorClass = imported.Generator || imported.default;
-            if (typeof GeneratorClass !== 'function') {
-                continue;
-            }
-
-            const generator: Generator = new GeneratorClass({
-                inquirer,
+            // eslint-disable-next-line no-await-in-loop
+            const item = await this.getGeneratorItem(generatorFolder, {
                 textConverter,
-                execa,
-                makeTemplate: (templateFolder: string) =>
-                    new Template(templateFolder),
-                ejs,
-                pathExists,
-                caseFormatter,
             });
 
-            let name = '';
-            if (typeof generator.getName === 'function') {
-                name = generator.getName();
+            if (item) {
+                list.push(item);
             }
-
-            list.push({
-                path: generatorFolder,
-                name: name || path.basename(generatorFolder),
-                code: path.basename(generatorFolder),
-                generator,
-            });
         }
 
         return list;
+    }
+
+    public static async getGeneratorItem(
+        folder: string,
+        params: ObjectLiteral = {},
+    ): Promise<Nullable<GeneratorListItem>> {
+        let imported: GeneratorImport;
+        try {
+            imported = await import(folder);
+        } catch (error) {
+            Debug.log(error);
+            return null;
+        }
+        const GeneratorClass = imported.Generator || imported.default;
+        if (typeof GeneratorClass !== 'function') {
+            return null;
+        }
+
+        const generator: Generator = new GeneratorClass({
+            inquirer,
+            textConverter: params.textConverter || null,
+            execa,
+            makeTemplate: (templateFolder: string) =>
+                new Template(templateFolder),
+            ejs,
+            pathExists,
+            caseFormatter,
+            ...params,
+        });
+
+        let name = '';
+        if (typeof generator.getName === 'function') {
+            name = generator.getName();
+        }
+
+        return {
+            path: folder,
+            name: name || path.basename(folder),
+            code: path.basename(folder),
+            generator,
+        };
     }
 
     public static async getByCode(folder: string, generatorCode: string) {

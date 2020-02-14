@@ -8,7 +8,7 @@ export class Yarn {
 
     public static async install(packagePath: string) {
         if (!(await this.isAvailable())) {
-            return;
+            throw new Error('Not available');
         }
 
         if (!(await pathExists(path.join(packagePath, 'package.json')))) {

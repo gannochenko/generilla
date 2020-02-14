@@ -5,3 +5,5 @@ packages/**/node_modules/
 .idea/
 packages/**/build/*
 packages/**/fields/*
+_generators/**/*
+!_generators/.gitkeep

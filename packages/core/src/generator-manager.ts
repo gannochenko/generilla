@@ -9,6 +9,7 @@ import { ReferenceParseResult } from './type';
 import { GIT } from './git';
 import { Yarn } from './yarn';
 import { GeneratorRecord } from './generator-record';
+import { GeneratorList } from './generator-list';
 
 export class GeneratorManager {
     constructor(private generatorsPath = '') {}
@@ -29,9 +30,20 @@ export class GeneratorManager {
             );
         }
 
+        const generatorItem = await GeneratorList.getGeneratorItem(
+            localGeneratorPath,
+        );
+        if (!generatorItem) {
+            throw new Error(
+                'The repository folder does not look like a generator',
+            );
+        }
+
         const copy = promisify(ncp.ncp);
         await copy(localPath, finalRepositoryPath);
-        await Yarn.install(localGeneratorPath);
+        if (!(await Yarn.isAvailable())) {
+            await Yarn.install(localGeneratorPath);
+        }
 
         const recordManager = new GeneratorRecord(this.generatorsPath);
         await recordManager.addGenerator(id, reference);
@@ -51,7 +63,12 @@ export class GeneratorManager {
             await GIT.pull(finalRepositoryPath, generator.branch);
 
             // eslint-disable-next-line no-await-in-loop
-            await Yarn.install(path.join(finalRepositoryPath, generator.path));
+            if (!(await Yarn.isAvailable())) {
+                // eslint-disable-next-line no-await-in-loop
+                await Yarn.install(
+                    path.join(finalRepositoryPath, generator.path),
+                );
+            }
         }
     }
 
