@@ -7,3 +7,5 @@ packages/**/build/*
 packages/**/fields/*
 _generators/**/*
 !_generators/.gitkeep
+_output/**/*
+!_output/.gitkeep

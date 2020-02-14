@@ -11,7 +11,7 @@ export class CommandList {
         actionCallback: ActionCallback,
     ) {
         program
-            .command('repository.ts')
+            .command('list')
             .alias('l')
             .description('Display a list of available generators')
             .action(() =>

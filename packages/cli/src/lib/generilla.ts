@@ -53,7 +53,7 @@ export class Generilla {
     public async selectGenerator(list: GeneratorListItem[]) {
         const answers = await inquirer.prompt([
             {
-                type: 'repository.ts',
+                type: 'list',
                 name: 'generator',
                 message: 'Oh yes, I will create...',
                 choices: this.formatGeneratorChoices(list),

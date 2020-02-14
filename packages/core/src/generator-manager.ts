@@ -90,8 +90,15 @@ export class GeneratorManager {
         }
     }
 
-    public async getList(query: string) {
+    public async getList(query?: string) {
         const recordManager = new GeneratorRecord(this.generatorsPath);
         return recordManager.get(query);
+    }
+
+    public async getFolderList() {
+        const list = await this.getList();
+        return list.generators.map(item =>
+            path.join(this.generatorsPath, item.id, item.path),
+        );
     }
 }

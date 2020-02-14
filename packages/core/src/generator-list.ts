@@ -19,6 +19,7 @@ import {
 import { TextConverter } from './text-converter';
 import { Template } from './template';
 import { Debug } from './debug';
+import { GeneratorManager } from './generator-manager';
 
 export class GeneratorList {
     public static async getList(folder: string) {
@@ -26,11 +27,16 @@ export class GeneratorList {
 
         const textConverter = new TextConverter();
 
-        const folderList = await this.getFolderList(folder);
+        const generatorRecord = new GeneratorManager(folder);
+        const folderList = await generatorRecord.getFolderList();
+
         // eslint-disable-next-line no-restricted-syntax
         for (const generatorFolder of folderList) {
             // eslint-disable-next-line no-await-in-loop
-            const item = await this.getGeneratorItem(generatorFolder, {
+            const effectivePath = path.isAbsolute(generatorFolder)
+                ? generatorFolder
+                : path.join(process.cwd(), generatorFolder);
+            const item = await this.getGeneratorItem(effectivePath, {
                 textConverter,
             });
 
@@ -50,6 +56,7 @@ export class GeneratorList {
         try {
             imported = await import(folder);
         } catch (error) {
+            console.log(error);
             Debug.log(error);
             return null;
         }
@@ -87,11 +94,5 @@ export class GeneratorList {
         return (await this.getList(folder)).find(
             item => item.name === generatorCode,
         );
-    }
-
-    private static async getFolderList(folder: string) {
-        return fs
-            .readdirSync(folder)
-            .map(subFolder => path.join(folder, subFolder));
     }
 }
