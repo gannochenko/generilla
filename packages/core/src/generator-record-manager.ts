@@ -100,11 +100,11 @@ export class GeneratorRecordManager {
             for (const generator of generators) {
                 console.log(`❌ Removing ${describeGenerator(generator)}`);
                 // eslint-disable-next-line no-await-in-loop
-                // await this.rmGeneratorById(generator.id);
+                await this.rmGeneratorById(generator.id);
                 ids.push(generator.id);
             }
 
-            // await recordManager.removeGenerators(ids);
+            await recordManager.removeGenerators(ids);
         }
     }
 
