@@ -1,5 +1,5 @@
 import { Command as CommanderCommand } from 'commander';
-import { GeneratorList } from '@generilla/core';
+import { GeneratorList, describeGenerator } from '@generilla/core';
 
 import { ActionCallback, CommandProcessor, Implements } from '../type';
 import { Generilla } from '../../lib/generilla';
@@ -33,7 +33,7 @@ export class CommandList {
             console.log('Available generators:');
             console.log('');
             generators.forEach(generator =>
-                console.log(`   * ${generator.name} [${generator.code}]`),
+                console.log(`   * ${describeGenerator(generator)}`),
             );
             console.log('');
         }

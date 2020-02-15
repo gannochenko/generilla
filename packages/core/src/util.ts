@@ -1,5 +1,6 @@
 import execa from 'execa';
 import path from 'path';
+import { GeneratorListItem } from './type';
 
 export const isAvailable = async (cmd: string) => {
     const cmdParts = cmd.trim().split(' ');
@@ -20,3 +21,6 @@ export const isAvailable = async (cmd: string) => {
 
 export const absolutizePath = (folder: string) =>
     path.isAbsolute(folder) ? folder : path.join(process.cwd(), folder);
+
+export const describeGenerator = (generator: GeneratorListItem) =>
+    `${generator.name} (code: ${generator.code}, id: ${generator.id})`;

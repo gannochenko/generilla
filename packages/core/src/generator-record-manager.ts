@@ -10,6 +10,7 @@ import { GIT } from './git';
 import { NPM } from './npm';
 import { GeneratorRecord } from './generator-record';
 import { GeneratorList } from './generator-list';
+import { describeGenerator } from './util';
 
 export class GeneratorRecordManager {
     constructor(private generatorsPath = '') {}
@@ -67,6 +68,7 @@ export class GeneratorRecordManager {
 
         // eslint-disable-next-line no-restricted-syntax
         for (const generator of generators) {
+            console.log(`➡️  Updating ${describeGenerator(generator)}`);
             const finalRepositoryPath = path.join(
                 this.generatorsPath,
                 generator.id,
@@ -96,12 +98,13 @@ export class GeneratorRecordManager {
             const ids: string[] = [];
             // eslint-disable-next-line no-restricted-syntax
             for (const generator of generators) {
+                console.log(`❌ Removing ${describeGenerator(generator)}`);
                 // eslint-disable-next-line no-await-in-loop
-                await this.rmGeneratorById(generator.id);
+                // await this.rmGeneratorById(generator.id);
                 ids.push(generator.id);
             }
 
-            await recordManager.removeGenerators(ids);
+            // await recordManager.removeGenerators(ids);
         }
     }
 

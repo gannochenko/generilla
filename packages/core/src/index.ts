@@ -11,3 +11,4 @@ export * from './generator-record';
 export * from './type';
 export * from './git';
 export * from './npm';
+export * from './util';
