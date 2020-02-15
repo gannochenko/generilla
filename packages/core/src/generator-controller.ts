@@ -1,7 +1,6 @@
 import inquirer from 'inquirer';
 import cloneDeep from 'clone-deep';
 import { join, normalize } from 'path';
-import execa from 'execa';
 import {
     Dependencies,
     GenerationResult,
@@ -11,6 +10,7 @@ import {
 } from './type';
 import { Template } from './template';
 import { Interpolator } from './interpolator';
+import { NPM } from './npm';
 
 export class GeneratorController {
     constructor(private generator: GeneratorListItem) {}
@@ -67,7 +67,7 @@ export class GeneratorController {
                 destination,
                 answers,
                 await generator.getDevDependencies(answers),
-                ['--dev'],
+                true,
             );
         }
 
@@ -133,18 +133,11 @@ export class GeneratorController {
         destination: string,
         answers: ObjectLiteral,
         deps: Dependencies,
-        args: string[] = [],
+        dev = false,
     ) {
         const { packages, destination: localDestination } = deps || {};
 
         if (!packages || !packages.length) {
-            return;
-        }
-
-        const safePackages = packages
-            .map(pack => (!pack ? '' : pack.toString().trim()))
-            .filter(pack => !!pack.length);
-        if (!safePackages.length) {
             return;
         }
 
@@ -156,9 +149,6 @@ export class GeneratorController {
             );
         }
 
-        await execa('yarn', ['add', ...safePackages, ...args], {
-            cwd: cmdDestination,
-            stdio: ['inherit', 'inherit', 'inherit'],
-        });
+        await NPM.add(cmdDestination, packages, dev);
     }
 }

@@ -7,7 +7,56 @@ export class NPM {
     protected static isYarnAvailableCache: boolean;
     protected static isNPMAvailableCache: boolean;
 
-    public static async install(packagePath: string) {
+    public static async add(
+        packagePath: string,
+        packages: string[],
+        isDev = false,
+    ) {
+        const safePackages = packages
+            .map(pack => (!pack ? '' : pack.toString().trim()))
+            .filter(pack => !!pack.length);
+        if (!safePackages.length) {
+            return;
+        }
+
+        const yarnAvailable = await this.isYarnAvailable();
+        const npmAvailable = await this.isNPMAvailable();
+
+        if (!yarnAvailable && !npmAvailable) {
+            throw new Error('Neither yarn nor npm is not available');
+        }
+
+        if (yarnAvailable) {
+            const dev = isDev ? '--dev' : '';
+
+            await execa(
+                'yarn',
+                ['add', ...safePackages, dev].filter(x => !!x),
+                {
+                    cwd: packagePath,
+                    stdio: ['inherit', 'inherit', 'inherit'],
+                },
+            );
+            return;
+        }
+
+        if (npmAvailable) {
+            console.log('Yarn is not available, switching to NPM');
+
+            const dev = isDev ? '--save-dev' : '--save';
+
+            await execa(
+                'npm',
+                ['install', ...safePackages, dev].filter(x => !!x),
+                {
+                    cwd: packagePath,
+                    stdio: ['inherit', 'inherit', 'inherit'],
+                },
+            );
+        }
+    }
+
+    public static async reInstall(packagePath: string) {
         if (!(await pathExists(path.join(packagePath, 'package.json')))) {
             return;
         }
@@ -20,19 +69,27 @@ export class NPM {
         }
 
         if (yarnAvailable) {
-            await execa('yarn', ['install'], {
-                cwd: packagePath,
-                stdio: ['inherit', 'inherit', 'inherit'],
-            });
+            await execa(
+                'yarn',
+                ['install'].filter(x => !!x),
+                {
+                    cwd: packagePath,
+                    stdio: ['inherit', 'inherit', 'inherit'],
+                },
+            );
             return;
         }
 
         if (npmAvailable) {
             console.log('Yarn is not available, switching to NPM');
-            await execa('yarn', ['install'], {
-                cwd: packagePath,
-                stdio: ['inherit', 'inherit', 'inherit'],
-            });
+            await execa(
+                'npm',
+                ['install'].filter(x => !!x),
+                {
+                    cwd: packagePath,
+                    stdio: ['inherit', 'inherit', 'inherit'],
+                },
+            );
         }
     }
 

@@ -39,7 +39,7 @@ export class GeneratorRecordManager {
         }
 
         if (await NPM.isAvailable()) {
-            await NPM.install(finalGeneratorPath);
+            await NPM.reInstall(finalGeneratorPath);
         }
 
         const generatorItem = await GeneratorList.getGeneratorItem(
@@ -79,7 +79,7 @@ export class GeneratorRecordManager {
             // eslint-disable-next-line no-await-in-loop
             if (await NPM.isAvailable()) {
                 // eslint-disable-next-line no-await-in-loop
-                await NPM.install(
+                await NPM.reInstall(
                     path.join(finalRepositoryPath, generator.path),
                 );
             }
