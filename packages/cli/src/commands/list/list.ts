@@ -24,13 +24,18 @@ export class CommandList {
 
     public static async process(generilla: Generilla) {
         await generilla.showPreFlight();
-        console.log('Available generators:');
-        console.log('');
-        (
-            await GeneratorList.getList(generilla.getGeneratorsPath())
-        ).forEach(generator =>
-            console.log(`   * ${generator.name} [${generator.code}]`),
+        const generators = await GeneratorList.getList(
+            generilla.getGeneratorsPath(),
         );
-        console.log('');
+        if (!generators.length) {
+            console.log('No generators installed yet.');
+        } else {
+            console.log('Available generators:');
+            console.log('');
+            generators.forEach(generator =>
+                console.log(`   * ${generator.name} [${generator.code}]`),
+            );
+            console.log('');
+        }
     }
 }

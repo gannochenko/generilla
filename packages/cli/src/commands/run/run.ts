@@ -50,6 +50,11 @@ export class CommandRun {
         let generatorItem: GeneratorListItem | undefined;
 
         const list = await GeneratorList.getList(generilla.getGeneratorsPath());
+        if (!list.length) {
+            console.log('No generators installed yet.');
+            return;
+        }
+
         let chosenFromList = false;
 
         if (!generatorCode) {

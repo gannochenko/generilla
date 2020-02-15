@@ -32,28 +32,19 @@ export class GeneratorRecord {
         const record = await this.get();
         return this.save({
             ...record,
-            generators: record.generators.filter(generator =>
-                ids.includes(generator.id),
+            generators: record.generators.filter(
+                generator => !ids.includes(generator.id),
             ),
         });
     }
 
-    public async get(query?: string): Promise<GeneratorRecordType> {
+    public async get(): Promise<GeneratorRecordType> {
         const fileName = this.getGeneratorsFileName();
 
         try {
-            const result = yaml.safeLoad(
+            return yaml.safeLoad(
                 fs.readFileSync(fileName, 'utf8'),
             ) as GeneratorRecordType;
-
-            if (query) {
-                return {
-                    ...result,
-                    generators: this.filterGenerators(result.generators, query),
-                };
-            } else {
-                return result;
-            }
         } catch (e) {
             return {
                 generators: [],

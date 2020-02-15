@@ -105,11 +105,6 @@ export class GeneratorRecordManager {
         }
     }
 
-    public async getList(query?: string) {
-        const recordManager = new GeneratorRecord(this.generatorsPath);
-        return recordManager.get(query);
-    }
-
     private async rmGeneratorById(id: string) {
         return del([path.join(this.generatorsPath, id)], {
             force: true,
