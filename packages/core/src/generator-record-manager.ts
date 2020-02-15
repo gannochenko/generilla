@@ -10,9 +10,8 @@ import { GIT } from './git';
 import { NPM } from './npm';
 import { GeneratorRecord } from './generator-record';
 import { GeneratorList } from './generator-list';
-import { absolutizePath } from './util';
 
-export class GeneratorManager {
+export class GeneratorRecordManager {
     constructor(private generatorsPath = '') {}
 
     public async add(reference: ReferenceParseResult) {
@@ -22,9 +21,6 @@ export class GeneratorManager {
             throw new Error('Git is not installed');
         }
 
-        // const tmpDir = os.tmpdir();
-        // const localPath = path.join(tmpDir, id);
-        // const localGeneratorPath = path.join(localPath, reference.path);
         const finalRepositoryPath = path.join(this.generatorsPath, id);
         const finalGeneratorPath = path.join(
             finalRepositoryPath,
@@ -41,14 +37,16 @@ export class GeneratorManager {
             );
         }
 
-        // const copy = promisify(ncp.ncp);
-        // await copy(localPath, finalRepositoryPath);
         if (await NPM.isAvailable()) {
             await NPM.install(finalGeneratorPath);
         }
 
         const generatorItem = await GeneratorList.getGeneratorItem(
-            absolutizePath(finalGeneratorPath),
+            this.generatorsPath,
+            {
+                id,
+                ...reference,
+            },
         );
         if (!generatorItem) {
             await this.rmGeneratorById(id);
@@ -62,11 +60,13 @@ export class GeneratorManager {
     }
 
     public async update(query: string) {
-        const recordManager = new GeneratorRecord(this.generatorsPath);
-        const record = await recordManager.get(query);
+        const generators = await GeneratorList.getList(
+            this.generatorsPath,
+            query,
+        );
 
         // eslint-disable-next-line no-restricted-syntax
-        for (const generator of record.generators) {
+        for (const generator of generators) {
             const finalRepositoryPath = path.join(
                 this.generatorsPath,
                 generator.id,
@@ -85,31 +85,29 @@ export class GeneratorManager {
     }
 
     public async remove(query: string) {
+        const generators = await GeneratorList.getList(
+            this.generatorsPath,
+            query,
+        );
         const recordManager = new GeneratorRecord(this.generatorsPath);
-        const record = await recordManager.get(query);
 
-        if (record.generators.length) {
+        if (generators.length) {
             // kill em all
+            const ids: string[] = [];
             // eslint-disable-next-line no-restricted-syntax
-            for (const generator of record.generators) {
+            for (const generator of generators) {
                 // eslint-disable-next-line no-await-in-loop
                 await this.rmGeneratorById(generator.id);
+                ids.push(generator.id);
             }
 
-            await recordManager.removeGenerators(query);
+            await recordManager.removeGenerators(ids);
         }
     }
 
     public async getList(query?: string) {
         const recordManager = new GeneratorRecord(this.generatorsPath);
         return recordManager.get(query);
-    }
-
-    public async getFolderList() {
-        const list = await this.getList();
-        return list.generators.map(item =>
-            path.join(this.generatorsPath, item.id, item.path),
-        );
     }
 
     private async rmGeneratorById(id: string) {

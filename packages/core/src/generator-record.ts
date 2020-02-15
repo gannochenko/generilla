@@ -28,11 +28,13 @@ export class GeneratorRecord {
         await this.save(list);
     }
 
-    public async removeGenerators(query: string) {
+    public async removeGenerators(ids: string[]) {
         const record = await this.get();
         return this.save({
             ...record,
-            generators: this.filterGenerators(record.generators, query, true),
+            generators: record.generators.filter(generator =>
+                ids.includes(generator.id),
+            ),
         });
     }
 
@@ -73,7 +75,12 @@ export class GeneratorRecord {
         exclude = false,
     ) {
         return generators.filter(generator => {
-            const match = matcher.isMatch(generator.id, query);
+            let match = false;
+            if (query === '*') {
+                match = true;
+            } else {
+                match = matcher.isMatch(generator.id, query);
+            }
 
             return exclude ? !match : match;
         });

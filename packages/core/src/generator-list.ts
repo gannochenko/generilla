@@ -8,39 +8,46 @@ import ejs from 'ejs';
 import execa from 'execa';
 import pathExists from 'path-exists';
 import caseFormatter from 'case-formatter';
+import matcher from 'matcher';
 import {
     GeneratorListItem,
     Generator,
     GeneratorImport,
     Nullable,
     ObjectLiteral,
+    GeneratorRecordElement,
 } from './type';
 import { TextConverter } from './text-converter';
 import { Template } from './template';
 import { Debug } from './debug';
-import { GeneratorManager } from './generator-manager';
 import { absolutizePath } from './util';
+import { GeneratorRecord } from './generator-record';
 
 export class GeneratorList {
-    public static async getList(folder: string) {
+    public static async getList(folder: string, query?: string) {
         const list: GeneratorListItem[] = [];
 
         const textConverter = new TextConverter();
 
-        const generatorRecord = new GeneratorManager(folder);
-        const folderList = await generatorRecord.getFolderList();
+        const generatorRecordManager = new GeneratorRecord(folder);
+        const records = await generatorRecordManager.get();
 
         // eslint-disable-next-line no-restricted-syntax
-        for (const generatorFolder of folderList) {
+        for (const generatorRecord of records.generators) {
             // eslint-disable-next-line no-await-in-loop
-            const effectivePath = absolutizePath(generatorFolder);
-            // eslint-disable-next-line no-await-in-loop
-            const item = await this.getGeneratorItem(effectivePath, {
+            const item = await this.getGeneratorItem(folder, generatorRecord, {
                 textConverter,
             });
 
             if (item) {
-                list.push(item);
+                // filter here
+                if (query) {
+                    if (this.isGeneratorMatch(item, query)) {
+                        list.push(item);
+                    }
+                } else {
+                    list.push(item);
+                }
             }
         }
 
@@ -49,11 +56,21 @@ export class GeneratorList {
 
     public static async getGeneratorItem(
         folder: string,
+        generatorRecord: GeneratorRecordElement,
         params: ObjectLiteral = {},
     ): Promise<Nullable<GeneratorListItem>> {
+        const generatorFolder = path.join(
+            folder,
+            generatorRecord.id,
+            generatorRecord.path,
+        );
+
+        // eslint-disable-next-line no-await-in-loop
+        const effectiveGeneratorFolder = absolutizePath(generatorFolder);
+
         let imported: GeneratorImport;
         try {
-            imported = await import(folder);
+            imported = await import(effectiveGeneratorFolder);
         } catch (error) {
             Debug.log(error);
             return null;
@@ -81,10 +98,26 @@ export class GeneratorList {
         }
 
         return {
+            id: generatorRecord.id,
             path: folder,
-            name: name || path.basename(folder),
-            code: path.basename(folder),
+            name: name || path.basename(generatorFolder),
+            code: path.basename(generatorFolder),
+            branch: generatorRecord.branch,
             generator,
         };
+    }
+
+    private static isGeneratorMatch(
+        generator: GeneratorListItem,
+        query: string,
+    ) {
+        if (query === '*') {
+            return true;
+        }
+
+        return matcher.isMatch(
+            [generator.id, generator.name, generator.code],
+            query,
+        );
     }
 }

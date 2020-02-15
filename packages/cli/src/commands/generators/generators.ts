@@ -2,8 +2,10 @@ import { Command as CommanderCommand } from 'commander';
 import {
     ReferenceParser,
     ReferenceParseResult,
-    GeneratorManager,
+    GeneratorRecordManager,
+    GeneratorList,
 } from '@generilla/core';
+import inquirer from 'inquirer';
 
 import { ActionCallback, CommandProcessor, Implements } from '../type';
 import { Generilla } from '../../lib/generilla';
@@ -62,16 +64,64 @@ export class CommandGenerator {
                 return;
             }
 
-            const manager = new GeneratorManager(generilla.getGeneratorsPath());
+            const manager = new GeneratorRecordManager(
+                generilla.getGeneratorsPath(),
+            );
             await manager.add(result);
         }
         if (args.action === 'update' || args.action === 'up') {
-            const manager = new GeneratorManager(generilla.getGeneratorsPath());
-            await manager.update(args.reference);
+            const proceed = await this.promptProceed(
+                generilla,
+                args,
+                'Will be updated #COUNT# generator(s). Proceed?',
+            );
+            if (proceed) {
+                const manager = new GeneratorRecordManager(
+                    generilla.getGeneratorsPath(),
+                );
+                await manager.update(args.reference);
+            }
         }
         if (args.action === 'remove' || args.action === 'rm') {
-            const manager = new GeneratorManager(generilla.getGeneratorsPath());
-            await manager.remove(args.reference);
+            const proceed = await this.promptProceed(
+                generilla,
+                args,
+                'Will be removed #COUNT# generator(s). Proceed?',
+            );
+            if (proceed) {
+                const manager = new GeneratorRecordManager(
+                    generilla.getGeneratorsPath(),
+                );
+                await manager.remove(args.reference);
+            }
         }
+    }
+
+    private static async promptProceed(
+        generilla: Generilla,
+        args: ObjectLiteral,
+        question: string,
+    ) {
+        const generators = await GeneratorList.getList(
+            generilla.getGeneratorsPath(),
+            args.reference,
+        );
+        const count = generators.length;
+        if (count) {
+            const answers = await inquirer.prompt([
+                {
+                    type: 'confirm',
+                    name: 'proceed',
+                    message: question.replace('#COUNT#', count.toString()),
+                },
+            ]);
+            if (answers.proceed) {
+                return true;
+            }
+        } else {
+            console.log('No generators match the given criteria');
+        }
+
+        return false;
     }
 }

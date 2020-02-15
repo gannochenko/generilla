@@ -14,9 +14,11 @@ export interface ObjectLiteral<P = any> {
 }
 
 export interface GeneratorListItem {
+    id: string;
     path: string;
     name: string;
     code: string;
+    branch: string;
     generator: Generator;
 }
 
