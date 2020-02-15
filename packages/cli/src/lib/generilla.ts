@@ -15,6 +15,7 @@ import { Nullable, ObjectLiteral } from '../type';
 
 export class Generilla {
     private introShown = false;
+    private preFlightShown = false;
 
     constructor(private generatorsPath: string) {}
 
@@ -41,6 +42,8 @@ export class Generilla {
         }
 
         clear();
+
+        this.showPreFlight();
         console.log(
             chalk.red(
                 figlet.textSync('Generilla', { horizontalLayout: 'full' }),
@@ -120,5 +123,14 @@ export class Generilla {
                 debug: program.debug,
             },
         };
+    }
+
+    public showPreFlight() {
+        if (this.preFlightShown) {
+            return;
+        }
+        this.preFlightShown = true;
+
+        console.log(chalk.yellow('Important!'));
     }
 }

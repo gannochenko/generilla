@@ -7,7 +7,7 @@ import del from 'del';
 // import { promisify } from 'util';
 import { ReferenceParseResult } from './type';
 import { GIT } from './git';
-import { Yarn } from './yarn';
+import { NPM } from './npm';
 import { GeneratorRecord } from './generator-record';
 import { GeneratorList } from './generator-list';
 import { absolutizePath } from './util';
@@ -17,6 +17,11 @@ export class GeneratorManager {
 
     public async add(reference: ReferenceParseResult) {
         const id = `gen-${nanoid()}`;
+
+        if (!(await GIT.isAvailable())) {
+            throw new Error('Git is not installed');
+        }
+
         // const tmpDir = os.tmpdir();
         // const localPath = path.join(tmpDir, id);
         // const localGeneratorPath = path.join(localPath, reference.path);
@@ -38,8 +43,8 @@ export class GeneratorManager {
 
         // const copy = promisify(ncp.ncp);
         // await copy(localPath, finalRepositoryPath);
-        if (await Yarn.isAvailable()) {
-            await Yarn.install(finalGeneratorPath);
+        if (await NPM.isAvailable()) {
+            await NPM.install(finalGeneratorPath);
         }
 
         const generatorItem = await GeneratorList.getGeneratorItem(
@@ -70,9 +75,9 @@ export class GeneratorManager {
             await GIT.pull(finalRepositoryPath, generator.branch);
 
             // eslint-disable-next-line no-await-in-loop
-            if (await Yarn.isAvailable()) {
+            if (await NPM.isAvailable()) {
                 // eslint-disable-next-line no-await-in-loop
-                await Yarn.install(
+                await NPM.install(
                     path.join(finalRepositoryPath, generator.path),
                 );
             }

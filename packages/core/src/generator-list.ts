@@ -5,7 +5,6 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import ejs from 'ejs';
-import fs from 'fs';
 import execa from 'execa';
 import pathExists from 'path-exists';
 import caseFormatter from 'case-formatter';
@@ -87,11 +86,5 @@ export class GeneratorList {
             code: path.basename(folder),
             generator,
         };
-    }
-
-    public static async getByCode(folder: string, generatorCode: string) {
-        return (await this.getList(folder)).find(
-            item => item.name === generatorCode,
-        );
     }
 }

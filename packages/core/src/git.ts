@@ -48,4 +48,8 @@ export class GIT {
 
         return this.isGitAvailable;
     }
+
+    public static getInstallationInfo() {
+        return `To install GIT, visit https://git-scm.com/book/en/v2/Getting-Started-Installing-Git`;
+    }
 }

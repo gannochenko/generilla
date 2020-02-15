@@ -50,6 +50,7 @@ export class CommandGenerator {
     }
 
     public static async process(generilla: Generilla, args: ObjectLiteral) {
+        generilla.showPreFlight();
         if (args.action === 'add') {
             let result: Nullable<ReferenceParseResult> = null;
             try {
