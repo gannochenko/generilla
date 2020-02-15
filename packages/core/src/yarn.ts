@@ -12,7 +12,6 @@ export class Yarn {
         }
 
         if (!(await pathExists(path.join(packagePath, 'package.json')))) {
-            console.log('NO PKG');
             return;
         }
 

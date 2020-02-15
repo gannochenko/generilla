@@ -35,6 +35,7 @@ export class GeneratorList {
         for (const generatorFolder of folderList) {
             // eslint-disable-next-line no-await-in-loop
             const effectivePath = absolutizePath(generatorFolder);
+            // eslint-disable-next-line no-await-in-loop
             const item = await this.getGeneratorItem(effectivePath, {
                 textConverter,
             });

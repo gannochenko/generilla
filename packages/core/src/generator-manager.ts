@@ -1,10 +1,10 @@
 import nanoid from 'nanoid';
-import os from 'os';
+// import os from 'os';
 import path from 'path';
 import pathExists from 'path-exists';
-import ncp from 'ncp';
+// import ncp from 'ncp';
 import del from 'del';
-import { promisify } from 'util';
+// import { promisify } from 'util';
 import { ReferenceParseResult } from './type';
 import { GIT } from './git';
 import { Yarn } from './yarn';
@@ -17,26 +17,27 @@ export class GeneratorManager {
 
     public async add(reference: ReferenceParseResult) {
         const id = `gen-${nanoid()}`;
-        const tmpDir = os.tmpdir();
-        const localPath = path.join(tmpDir, id);
-        const localGeneratorPath = path.join(localPath, reference.path);
+        // const tmpDir = os.tmpdir();
+        // const localPath = path.join(tmpDir, id);
+        // const localGeneratorPath = path.join(localPath, reference.path);
         const finalRepositoryPath = path.join(this.generatorsPath, id);
         const finalGeneratorPath = path.join(
             finalRepositoryPath,
             reference.path,
         );
 
-        await GIT.clone(reference.repository, tmpDir, id);
-        await GIT.checkout(localPath, reference.branch);
+        await GIT.clone(reference.repository, this.generatorsPath, id);
+        await GIT.checkout(finalRepositoryPath, reference.branch);
 
-        if (!(await pathExists(localGeneratorPath))) {
+        if (!(await pathExists(finalGeneratorPath))) {
+            await this.rmGeneratorById(id);
             throw new Error(
                 `Path "${reference.path}" was not found in the repository`,
             );
         }
 
-        const copy = promisify(ncp.ncp);
-        await copy(localPath, finalRepositoryPath);
+        // const copy = promisify(ncp.ncp);
+        // await copy(localPath, finalRepositoryPath);
         if (await Yarn.isAvailable()) {
             await Yarn.install(finalGeneratorPath);
         }
@@ -45,6 +46,7 @@ export class GeneratorManager {
             absolutizePath(finalGeneratorPath),
         );
         if (!generatorItem) {
+            await this.rmGeneratorById(id);
             throw new Error(
                 'Having hard times importing an index file of the generator. Use -d option to see the error.',
             );
@@ -86,9 +88,7 @@ export class GeneratorManager {
             // eslint-disable-next-line no-restricted-syntax
             for (const generator of record.generators) {
                 // eslint-disable-next-line no-await-in-loop
-                await del([path.join(this.generatorsPath, generator.id)], {
-                    force: true,
-                });
+                await this.rmGeneratorById(generator.id);
             }
 
             await recordManager.removeGenerators(query);
@@ -105,5 +105,11 @@ export class GeneratorManager {
         return list.generators.map(item =>
             path.join(this.generatorsPath, item.id, item.path),
         );
+    }
+
+    private async rmGeneratorById(id: string) {
+        return del([path.join(this.generatorsPath, id)], {
+            force: true,
+        });
     }
 }
