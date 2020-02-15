@@ -23,7 +23,7 @@ export class CommandList {
     }
 
     public static async process(generilla: Generilla) {
-        generilla.showPreFlight();
+        await generilla.showPreFlight();
         console.log('Available generators:');
         console.log('');
         (

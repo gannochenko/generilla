@@ -12,6 +12,7 @@ import { NOTHING, VERSION } from './constants';
 import { Commands } from '../commands/commands';
 import { CommandAction, CommandProcessor } from '../commands/type';
 import { Nullable, ObjectLiteral } from '../type';
+import { GIT, NPM } from '@generilla/core';
 
 export class Generilla {
     private introShown = false;
@@ -36,14 +37,14 @@ export class Generilla {
         await command.command.process(this, command.arguments);
     }
 
-    public showIntro() {
+    public async showIntro() {
         if (this.introShown) {
             return;
         }
 
         clear();
 
-        this.showPreFlight();
+        await this.showPreFlight();
         console.log(
             chalk.red(
                 figlet.textSync('Generilla', { horizontalLayout: 'full' }),
@@ -125,12 +126,28 @@ export class Generilla {
         };
     }
 
-    public showPreFlight() {
+    public async showPreFlight() {
         if (this.preFlightShown) {
             return;
         }
         this.preFlightShown = true;
 
-        console.log(chalk.yellow('Important!'));
+        if (!(await GIT.isAvailable())) {
+            console.log(
+                chalk.yellow(
+                    "* Warning! You don't have GIT installed. Some functionality may not work as expected.",
+                ),
+            );
+            console.log(`  ${GIT.getInstallationInfo()}`);
+        }
+        if (!(await NPM.isAvailable())) {
+            console.log(
+                chalk.yellow(
+                    "* Warning! You don't have neither Yarn nor NPM installed. Some functionality may not work as expected.",
+                ),
+            );
+            console.log(`  ${NPM.getInstallationInfoYarn()}`);
+            console.log(`  ${NPM.getInstallationInfoNPM()}`);
+        }
     }
 }

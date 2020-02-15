@@ -9,3 +9,5 @@ export * from './reference-parser';
 export * from './generator-manager';
 export * from './generator-record';
 export * from './type';
+export * from './git';
+export * from './npm';

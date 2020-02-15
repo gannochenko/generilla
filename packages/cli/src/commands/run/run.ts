@@ -53,7 +53,7 @@ export class CommandRun {
         let chosenFromList = false;
 
         if (!generatorCode) {
-            generilla.showIntro();
+            await generilla.showIntro();
             generatorCode = await generilla.selectGenerator(list!);
 
             if (generatorCode === NOTHING) {
@@ -72,7 +72,7 @@ export class CommandRun {
             return;
         }
 
-        generilla.showIntro();
+        await generilla.showIntro();
         if (!chosenFromList) {
             console.log(
                 `Running '${generatorItem.name}' [${generatorItem.code}] generator`,
