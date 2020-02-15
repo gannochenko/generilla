@@ -4,7 +4,7 @@ import clear from 'clear';
 // @ts-ignore
 import figlet from 'figlet';
 import inquirer from 'inquirer';
-import fs from 'fs';
+import fs from 'fs-extra';
 import commander from 'commander';
 
 import { GeneratorListItem, Debug } from '@generilla/core';
@@ -25,6 +25,7 @@ export class Generilla {
     }
 
     public async run() {
+        await fs.ensureDir(this.generatorsPath);
         if (!this.isObjectExist(this.generatorsPath)) {
             throw new Error(`No such directory: ${this.generatorsPath}`);
         }

@@ -17,6 +17,7 @@
     "devDependencies": {
         "@types/clone-deep": "^4.0.1",
         "@types/ejs": "^2.6.3",
+        "@types/fs-extra": "^8.0.1",
         "@types/inquirer": "^6.5.0",
         "@types/node": "^12.7.8",
         "nodemon": "^1.19.2",
@@ -35,6 +36,7 @@
         "execa": "^3.2.0",
         "figlet": "^1.2.4",
         "findit": "^2.0.0",
+        "fs-extra": "^8.1.0",
         "inquirer": "^7.0.0"
     },
     "publishConfig": {
