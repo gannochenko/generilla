@@ -64,10 +64,13 @@ export class CommandGenerator {
                 return;
             }
 
-            const manager = new GeneratorRecordManager(
-                generilla.getGeneratorsPath(),
-            );
-            await manager.add(result);
+            console.log(result);
+            return;
+
+            // const manager = new GeneratorRecordManager(
+            //     generilla.getGeneratorsPath(),
+            // );
+            // await manager.add(result);
         }
         if (args.action === 'update' || args.action === 'up') {
             const proceed = await this.promptProceed(

@@ -72,13 +72,18 @@ export interface GenerationResult {
     originalAnswers: ObjectLiteral;
 }
 
+export type RefrenceType = 'remote' | 'local';
+
 export interface ReferenceParseResult {
+    type: RefrenceType;
     host?: string;
     account?: string;
     repo?: string;
-    repository: string;
-    branch: string;
+    branch?: string;
     path: string;
+
+    repository?: string;
+    repositorySSH?: string;
 }
 
 export interface GeneratorRecordElement {

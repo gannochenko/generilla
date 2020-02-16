@@ -18,42 +18,48 @@ export class GeneratorRecordManager {
     public async add(reference: ReferenceParseResult) {
         const id = `gen-${nanoid()}`;
 
-        if (!(await GIT.isAvailable())) {
-            throw new Error('Git is not installed');
-        }
+        if (reference.type === 'remote') {
+            if (!(await GIT.isAvailable())) {
+                throw new Error('Git is not installed');
+            }
 
-        const finalRepositoryPath = path.join(this.generatorsPath, id);
-        const finalGeneratorPath = path.join(
-            finalRepositoryPath,
-            reference.path,
-        );
-
-        await GIT.clone(reference.repository, this.generatorsPath, id);
-        await GIT.checkout(finalRepositoryPath, reference.branch);
-
-        if (!(await pathExists(finalGeneratorPath))) {
-            await this.rmGeneratorById(id);
-            throw new Error(
-                `Path "${reference.path}" was not found in the repository`,
+            const finalRepositoryPath = path.join(this.generatorsPath, id);
+            const finalGeneratorPath = path.join(
+                finalRepositoryPath,
+                reference.path,
             );
-        }
 
-        if (await NPM.isAvailable()) {
-            await NPM.reInstall(finalGeneratorPath);
-        }
+            await GIT.clone(reference.repository, this.generatorsPath, id);
+            await GIT.checkout(finalRepositoryPath, reference.branch);
 
-        const generatorItem = await GeneratorList.getGeneratorItem(
-            this.generatorsPath,
-            {
-                id,
-                ...reference,
-            },
-        );
-        if (!generatorItem) {
-            await this.rmGeneratorById(id);
-            throw new Error(
-                'Having hard times importing an index file of the generator. Use -d option to see the error.',
+            if (!(await pathExists(finalGeneratorPath))) {
+                await this.rmGeneratorById(id);
+                throw new Error(
+                    `Path "${reference.path}" was not found in the repository`,
+                );
+            }
+
+            if (await NPM.isAvailable()) {
+                await NPM.reInstall(finalGeneratorPath);
+            }
+
+            const generatorItem = await GeneratorList.getGeneratorItem(
+                this.generatorsPath,
+                {
+                    id,
+                    ...reference,
+                },
             );
+            if (!generatorItem) {
+                await this.rmGeneratorById(id);
+                throw new Error(
+                    'Having hard times importing an index file of the generator. Use -d option to see the error.',
+                );
+            }
+        } else if (reference.type === 'local') {
+            // symlink
+        } else {
+            throw new Error('Unknown reference type');
         }
 
         const recordManager = new GeneratorRecord(this.generatorsPath);
