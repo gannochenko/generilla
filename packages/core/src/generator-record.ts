@@ -2,11 +2,7 @@ import path from 'path';
 import yaml from 'js-yaml';
 import fs from 'fs';
 import matcher from 'matcher';
-import {
-    GeneratorRecordElement,
-    GeneratorRecordType,
-    ReferenceParseResult,
-} from './type';
+import { GeneratorRecordElement, GeneratorRecordType } from './type';
 
 const GENERATORS_FILE = '.generators';
 
@@ -15,14 +11,15 @@ export class GeneratorRecord {
 
     public async addGenerator(
         localPath: string,
-        reference: ReferenceParseResult,
+        recordElement: GeneratorRecordElement,
     ) {
         const list = await this.get();
 
         list.generators.push({
             id: localPath,
-            branch: reference.branch,
-            path: reference.path,
+            branch: recordElement.branch || '',
+            path: recordElement.path || '',
+            type: recordElement.type,
         });
 
         await this.save(list);

@@ -64,19 +64,17 @@ export class CommandGenerator {
                 return;
             }
 
-            console.log(result);
-            return;
-
-            // const manager = new GeneratorRecordManager(
-            //     generilla.getGeneratorsPath(),
-            // );
-            // await manager.add(result);
+            const manager = new GeneratorRecordManager(
+                generilla.getGeneratorsPath(),
+            );
+            await manager.add(result);
         }
         if (args.action === 'update' || args.action === 'up') {
             const proceed = await this.promptProceed(
                 generilla,
                 args,
                 'Will be updated #COUNT# generator(s). Proceed?',
+                'remote',
             );
             if (proceed) {
                 const manager = new GeneratorRecordManager(
@@ -104,11 +102,14 @@ export class CommandGenerator {
         generilla: Generilla,
         args: ObjectLiteral,
         question: string,
+        type?: string,
     ) {
         const generators = await GeneratorList.getList(
             generilla.getGeneratorsPath(),
             args.reference,
+            type,
         );
+
         const count = generators.length;
         if (count) {
             const answers = await inquirer.prompt([

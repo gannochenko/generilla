@@ -24,7 +24,7 @@ import { absolutizePath } from './util';
 import { GeneratorRecord } from './generator-record';
 
 export class GeneratorList {
-    public static async getList(folder: string, query?: string) {
+    public static async getList(folder: string, query?: string, type?: string) {
         const list: GeneratorListItem[] = [];
 
         const textConverter = new TextConverter();
@@ -41,11 +41,17 @@ export class GeneratorList {
 
             if (item) {
                 // filter here
-                if (query) {
-                    if (this.isGeneratorMatch(item, query)) {
-                        list.push(item);
-                    }
-                } else {
+                let match = true;
+
+                if (type && item.type !== type) {
+                    match = false;
+                }
+
+                if (query && !this.isGeneratorMatch(item, query)) {
+                    match = false;
+                }
+
+                if (match) {
                     list.push(item);
                 }
             }
@@ -62,7 +68,7 @@ export class GeneratorList {
         const generatorFolder = path.join(
             folder,
             generatorRecord.id,
-            generatorRecord.path,
+            generatorRecord.path || '',
         );
 
         // eslint-disable-next-line no-await-in-loop
@@ -102,7 +108,8 @@ export class GeneratorList {
             path: folder,
             name: name || path.basename(generatorFolder),
             code: path.basename(generatorFolder),
-            branch: generatorRecord.branch,
+            branch: generatorRecord.branch || '',
+            type: generatorRecord.type,
             generator,
         };
     }

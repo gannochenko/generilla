@@ -19,6 +19,7 @@ export interface GeneratorListItem {
     name: string;
     code: string;
     branch: string;
+    type: string;
     generator: Generator;
 }
 
@@ -72,10 +73,10 @@ export interface GenerationResult {
     originalAnswers: ObjectLiteral;
 }
 
-export type RefrenceType = 'remote' | 'local';
+export type ReferenceType = 'remote' | 'local';
 
 export interface ReferenceParseResult {
-    type: RefrenceType;
+    type: ReferenceType;
     host?: string;
     account?: string;
     repo?: string;
@@ -88,8 +89,9 @@ export interface ReferenceParseResult {
 
 export interface GeneratorRecordElement {
     id: string;
-    branch: string;
-    path: string;
+    branch?: string;
+    path?: string;
+    type: ReferenceType;
 }
 
 export interface GeneratorRecordType {
