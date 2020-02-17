@@ -22,6 +22,7 @@ export class GeneratorController {
         const { path, generator } = this.generator;
         const result: GenerationResult = {
             originalAnswers: {},
+            answers: {},
         };
 
         generator.context = {
@@ -47,6 +48,8 @@ export class GeneratorController {
             answers = await generator.refineAnswers(answers);
             generator.answers = answers;
         }
+
+        result.answers = cloneDeep(generator.answers);
 
         // copy files
         const template = new Template(join(path, 'template'));

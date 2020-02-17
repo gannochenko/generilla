@@ -5,6 +5,7 @@ import {
     GeneratorRecordManager,
     GeneratorList,
     GeneratorController,
+    TextConverter,
 } from '@generilla/core';
 import inquirer from 'inquirer';
 import path from 'path';
@@ -101,6 +102,8 @@ export class CommandGenerator {
             return;
         }
         if (args.action === 'scaffold' || args.action === 'mk') {
+            const textConverter = new TextConverter();
+
             const packageRoot = path.join(__dirname, '../../../');
             const generatorItem = await GeneratorList.getGeneratorItem(
                 packageRoot,
@@ -109,6 +112,9 @@ export class CommandGenerator {
                     branch: '',
                     path: '',
                     type: 'local',
+                },
+                {
+                    textConverter,
                 },
             );
 
@@ -119,9 +125,16 @@ export class CommandGenerator {
             const generator = new GeneratorController(generatorItem);
 
             const destination = process.env.GENERILLA_DST || process.cwd();
-            await generator.runPipeline(destination, args);
+            const { answers } = await generator.runPipeline(destination, args);
+            console.log(path.join(destination, answers.generator_name_kebab));
 
-            return;
+            const manager = new GeneratorRecordManager(
+                generilla.getGeneratorsPath(),
+            );
+            return manager.add({
+                path: path.join(destination, answers.generator_name_kebab),
+                type: 'local',
+            });
         }
 
         throw new Error(`Unknown action: ${args.action}`);

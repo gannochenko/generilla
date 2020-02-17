@@ -1,4 +1,8 @@
 module.exports.Generator = class Generator {
+    constructor(util) {
+        this.util = util;
+    }
+
     getName() {
         return 'Generator generator';
     }
@@ -10,5 +14,13 @@ module.exports.Generator = class Generator {
                 name: 'generator_name',
             },
         ];
+    }
+
+    refineAnswers(answers) {
+        answers.generator_name_kebab = this.util.textConverter.toKebab(
+            answers.generator_name,
+        );
+
+        return answers;
     }
 };

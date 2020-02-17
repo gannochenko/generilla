@@ -72,6 +72,7 @@ export interface GeneratorImport {
 
 export interface GenerationResult {
     originalAnswers: ObjectLiteral;
+    answers: ObjectLiteral;
 }
 
 export type ReferenceType = 'remote' | 'local';
