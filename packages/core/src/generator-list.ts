@@ -105,7 +105,7 @@ export class GeneratorList {
 
         return {
             id: generatorRecord.id,
-            path: folder,
+            path: generatorFolder,
             name: name || path.basename(generatorFolder),
             code: path.basename(generatorFolder),
             branch: generatorRecord.branch || '',
