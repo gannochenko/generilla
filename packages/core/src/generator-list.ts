@@ -86,7 +86,7 @@ export class GeneratorList {
             return null;
         }
 
-        const generator: Generator = new GeneratorClass({
+        const util = {
             inquirer,
             textConverter: params.textConverter || null,
             execa,
@@ -96,7 +96,10 @@ export class GeneratorList {
             pathExists,
             caseFormatter,
             ...params,
-        });
+        };
+
+        const generator: Generator = new GeneratorClass(util);
+        generator.util = util;
 
         let name = '';
         if (typeof generator.getName === 'function') {

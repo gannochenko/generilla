@@ -10,7 +10,7 @@ describe('Interpolator', () => {
             }),
         ).toEqual('123');
     });
-    it('should removeGenerators conditional placeholder', async () => {
+    it('should remove conditional placeholder', async () => {
         expect(
             Interpolator.apply('[?one]two', { one: '1', two: '2', three: '3' }),
         ).toEqual('two');

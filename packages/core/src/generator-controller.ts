@@ -19,7 +19,6 @@ export class GeneratorController {
      * This is the default pipeline
      */
     async runPipeline(destination: string, parameters?: ObjectLiteral) {
-        console.log(this.generator);
         const { path, generator } = this.generator;
         const result: GenerationResult = {
             originalAnswers: {},

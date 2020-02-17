@@ -4,8 +4,10 @@ import {
     ReferenceParseResult,
     GeneratorRecordManager,
     GeneratorList,
+    GeneratorController,
 } from '@generilla/core';
 import inquirer from 'inquirer';
+import path from 'path';
 
 import { ActionCallback, CommandProcessor, Implements } from '../type';
 import { Generilla } from '../../lib/generilla';
@@ -19,7 +21,7 @@ export class CommandGenerator {
     ) {
         program
             .command('generator [action] [reference]')
-            .usage('add|update|removeGenerators repository_url')
+            .usage('add|update|remove|scaffold reference')
             .alias('g')
             .alias('gen')
             .description('Manage installed generators')
@@ -36,9 +38,7 @@ export class CommandGenerator {
                     '  $ generilla generator add git@github.com:joe/generators.git|master|/awesome.generator',
                 );
                 console.log('  $ generilla generator update awesome.generator');
-                console.log(
-                    '  $ generilla generator removeGenerators awesome.generator',
-                );
+                console.log('  $ generilla generator remove awesome.generator');
             })
             .action((action: string, reference: string) =>
                 actionCallback({
@@ -67,7 +67,7 @@ export class CommandGenerator {
             const manager = new GeneratorRecordManager(
                 generilla.getGeneratorsPath(),
             );
-            await manager.add(result);
+            return manager.add(result);
         }
         if (args.action === 'update' || args.action === 'up') {
             const proceed = await this.promptProceed(
@@ -82,6 +82,8 @@ export class CommandGenerator {
                 );
                 await manager.update(args.reference);
             }
+
+            return;
         }
         if (args.action === 'remove' || args.action === 'rm') {
             const proceed = await this.promptProceed(
@@ -95,7 +97,34 @@ export class CommandGenerator {
                 );
                 await manager.remove(args.reference);
             }
+
+            return;
         }
+        if (args.action === 'scaffold' || args.action === 'mk') {
+            const packageRoot = path.join(__dirname, '../../../');
+            const generatorItem = await GeneratorList.getGeneratorItem(
+                packageRoot,
+                {
+                    id: 'generator-generator',
+                    branch: '',
+                    path: '',
+                    type: 'local',
+                },
+            );
+
+            if (!generatorItem) {
+                throw new Error('Generator generator is not accessible');
+            }
+
+            const generator = new GeneratorController(generatorItem);
+
+            const destination = process.env.GENERILLA_DST || process.cwd();
+            await generator.runPipeline(destination, args);
+
+            return;
+        }
+
+        throw new Error(`Unknown action: ${args.action}`);
     }
 
     private static async promptProceed(
