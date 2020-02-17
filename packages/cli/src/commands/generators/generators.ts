@@ -126,7 +126,6 @@ export class CommandGenerator {
 
             const destination = process.env.GENERILLA_DST || process.cwd();
             const { answers } = await generator.runPipeline(destination, args);
-            console.log(path.join(destination, answers.generator_name_kebab));
 
             const manager = new GeneratorRecordManager(
                 generilla.getGeneratorsPath(),

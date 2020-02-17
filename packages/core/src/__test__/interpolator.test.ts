@@ -29,6 +29,11 @@ describe('Interpolator', () => {
             }),
         ).toEqual('three');
     });
+    it('should keep conditional placeholder if the key is missing', async () => {
+        expect(
+            Interpolator.apply('[?one]two', { two: '2', three: '3' }),
+        ).toEqual('[?one]two');
+    });
     describe('should allow', () => {
         it('digits', async () => {
             expect(

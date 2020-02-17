@@ -74,7 +74,7 @@ export class FsCrawler {
         if (name.startsWith('[?')) {
             const condition = name.match(CONDITION_REGEX);
             if (condition && condition[1]) {
-                if (!variables[condition[1]]) {
+                if (condition[1] in variables && !variables[condition[1]]) {
                     return null;
                 }
             }
