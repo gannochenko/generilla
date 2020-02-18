@@ -26,7 +26,6 @@ export class GeneratorRecordManager {
             }
 
             const repository = reference.repository!;
-            const branch = reference.branch!;
             const generatorPath = reference.path;
 
             const finalRepositoryPath = path.join(this.generatorsPath, id);
@@ -36,7 +35,9 @@ export class GeneratorRecordManager {
             );
 
             await GIT.clone(repository, this.generatorsPath, id);
-            await GIT.checkout(finalRepositoryPath, branch);
+            if (reference.branch) {
+                await GIT.checkout(finalRepositoryPath, reference.branch);
+            }
 
             if (!(await pathExists(finalGeneratorPath))) {
                 await this.rmGeneratorById(id);
@@ -53,7 +54,7 @@ export class GeneratorRecordManager {
                 this.generatorsPath,
                 {
                     id,
-                    branch,
+                    branch: reference.branch,
                     path: generatorPath,
                     type: reference.type,
                 },

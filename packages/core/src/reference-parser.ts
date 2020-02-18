@@ -21,9 +21,7 @@ export class ReferenceParser {
                 const parts = url.trim().split('|');
                 if (parts.length === 3) {
                     // parse repo
-                    const match = parts[0].match(
-                        /^(https:\/\/|git@)github\.com(:|\/)([^\/]+)\/([^\/]+)\.git$/,
-                    );
+                    const match = this.parseGithubURL(parts[0]);
 
                     if (match) {
                         return {
@@ -32,14 +30,26 @@ export class ReferenceParser {
                             repo: match[4],
                             branch: parts[1],
                             path: parts[2],
+                            ...this.makeGithubURLs(match[3], match[4]),
+                        };
+                    }
+                } else if (parts.length === 2) {
+                    // parse repo
+                    const match = this.parseGithubURL(parts[0]);
 
-                            repository: `https://github.com/${match[3]}/${match[4]}.git`,
-                            repositorySSH: `git@github.com:${match[3]}/${match[4]}.git`,
+                    if (match) {
+                        return {
+                            type: 'remote',
+                            account: match[3],
+                            repo: match[4],
+                            branch: '',
+                            path: parts[1],
+                            ...this.makeGithubURLs(match[3], match[4]),
                         };
                     }
                 }
             } else {
-                const match = trimmedUrl.match(
+                let match = trimmedUrl.match(
                     /^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/tree\/([^\/]+)\/(.+)$/,
                 );
                 if (match) {
@@ -49,14 +59,39 @@ export class ReferenceParser {
                         repo: match[2],
                         branch: match[3],
                         path: `/${match[4]}`,
+                        ...this.makeGithubURLs(match[1], match[2]),
+                    };
+                }
 
-                        repository: `https://github.com/${match[1]}/${match[2]}.git`,
-                        repositorySSH: `git@github.com:${match[1]}/${match[2]}.git`,
+                match = trimmedUrl.match(
+                    /^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/?$/,
+                );
+                if (match) {
+                    return {
+                        type: 'remote',
+                        account: match[1],
+                        repo: match[2],
+                        branch: '',
+                        path: '',
+                        ...this.makeGithubURLs(match[1], match[2]),
                     };
                 }
             }
         }
 
         throw new Error('Illegal reference');
+    }
+
+    private static parseGithubURL(url: string) {
+        return url.match(
+            /^(https:\/\/|git@)github\.com(:|\/)([^\/]+)\/([^\/]+)\.git$/,
+        );
+    }
+
+    private static makeGithubURLs(account: string, repository: string) {
+        return {
+            repository: `https://github.com/${account}/${repository}.git`,
+            repositorySSH: `git@github.com:${account}/${repository}.git`,
+        };
     }
 }
