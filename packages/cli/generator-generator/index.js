@@ -1,8 +1,4 @@
 module.exports.Generator = class Generator {
-    constructor(util) {
-        this.util = util;
-    }
-
     getName() {
         return 'Generator generator';
     }

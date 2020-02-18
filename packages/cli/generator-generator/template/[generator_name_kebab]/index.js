@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports.Generator = class Generator {
     getName() {
         // this is the name your generator will appear in the list under
@@ -59,5 +61,12 @@ module.exports.Generator = class Generator {
     async onAfterExecution() {
         // do something after the code gets generated
         console.log('onAfterExecution()');
+        await this.util.execa('git', ['init'], {
+            cwd: path.join(
+                this.context.destinationPath,
+                this.answers.package_name_kebab,
+            ),
+            stdio: ['inherit', 'inherit', 'inherit'],
+        });
     }
 };
