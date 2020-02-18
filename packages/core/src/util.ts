@@ -23,4 +23,4 @@ export const absolutizePath = (folder: string) =>
     path.isAbsolute(folder) ? folder : path.join(process.cwd(), folder);
 
 export const describeGenerator = (generator: GeneratorListItem) =>
-    `${generator.name} (code: ${generator.code}, id: ${generator.id})`;
+    `"${generator.name}" (code: ${generator.code}, id: ${generator.id})`;

@@ -12,7 +12,7 @@ export class CommandList {
     ) {
         program
             .command('list')
-            .alias('l')
+            .alias('ls')
             .description('Display a list of available generators')
             .action(() =>
                 actionCallback({

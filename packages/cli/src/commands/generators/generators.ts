@@ -4,11 +4,8 @@ import {
     ReferenceParseResult,
     GeneratorRecordManager,
     GeneratorList,
-    GeneratorController,
-    TextConverter,
 } from '@generilla/core';
 import inquirer from 'inquirer';
-import path from 'path';
 
 import { ActionCallback, CommandProcessor, Implements } from '../type';
 import { Generilla } from '../../lib/generilla';
@@ -22,8 +19,7 @@ export class CommandGenerator {
     ) {
         program
             .command('generator [action] [reference]')
-            .usage('add|update|remove|scaffold reference')
-            .alias('g')
+            .usage('add|update|remove <reference>')
             .alias('gen')
             .description('Manage installed generators')
             .on('--help', () => {
@@ -100,40 +96,6 @@ export class CommandGenerator {
             }
 
             return;
-        }
-        if (args.action === 'scaffold' || args.action === 'mk') {
-            const textConverter = new TextConverter();
-
-            const packageRoot = path.join(__dirname, '../../../');
-            const generatorItem = await GeneratorList.getGeneratorItem(
-                packageRoot,
-                {
-                    id: 'generator-generator',
-                    branch: '',
-                    path: '',
-                    type: 'local',
-                },
-                {
-                    textConverter,
-                },
-            );
-
-            if (!generatorItem) {
-                throw new Error('Generator generator is not accessible');
-            }
-
-            const generator = new GeneratorController(generatorItem);
-
-            const destination = process.env.GENERILLA_DST || process.cwd();
-            const { answers } = await generator.runPipeline(destination, args);
-
-            const manager = new GeneratorRecordManager(
-                generilla.getGeneratorsPath(),
-            );
-            return manager.add({
-                path: path.join(destination, answers.generator_name_kebab),
-                type: 'local',
-            });
         }
 
         throw new Error(`Unknown action: ${args.action}`);

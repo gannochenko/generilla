@@ -42,6 +42,7 @@ export class GeneratorController {
         generator.answers = answers;
 
         result.originalAnswers = cloneDeep(answers);
+        generator.originalAnswers = cloneDeep(answers);
 
         // refine answers
         if (typeof generator.refineAnswers === 'function') {

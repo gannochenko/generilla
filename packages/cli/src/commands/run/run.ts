@@ -52,6 +52,10 @@ export class CommandRun {
         const list = await GeneratorList.getList(generilla.getGeneratorsPath());
         if (!list.length) {
             console.log('No generators installed yet.');
+            console.log(
+                'Type "generilla generator add <reference>" to add an existing generator, or',
+            );
+            console.log('type "generilla scaffold" to make a brand new one!');
             return;
         }
 
