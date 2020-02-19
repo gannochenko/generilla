@@ -238,10 +238,10 @@ Whatever works for you better.
 To pull new changes made on the remotely linked generator, type
 
 ~~~bash
-generilla generator update <query-string>
+generilla generator update <wildcard>
 ~~~
 
-Where `<query-string>` is a wildcard matched against the generator `name` or `id`.
+Where `<wildcard>` is a wildcard matched against the generator `name` or `id`.
 
 For instance, to update all remote generators, type
 
@@ -260,7 +260,7 @@ generilla generator update gen-*
 To remove one or several generators of any type, use
 
 ~~~bash
-generilla generator remove gen-*
+generilla generator remove <wildcard>
 ~~~
 
 Local generators will not be removed physically, they get un-symlinked.
