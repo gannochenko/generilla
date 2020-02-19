@@ -27,7 +27,8 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
     "no-useless-constructor": "off",
-    "no-continue": "off"
+    "no-continue": "off",
+    "no-useless-escape": "off"
   },
   "parserOptions": {
     "ecmaVersion": 6,

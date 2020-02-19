@@ -15,67 +15,67 @@ export class ReferenceParser {
                 type: 'local',
                 path: url,
             };
-        } else {
-            const trimmedUrl = url.trim();
-            if (trimmedUrl.indexOf('|') >= 0) {
-                const parts = url.trim().split('|');
-                if (parts.length === 3) {
-                    // parse repo
-                    const match = this.parseGithubURL(parts[0]);
+        }
 
-                    if (match) {
-                        return {
-                            type: 'remote',
-                            account: match[3],
-                            repo: match[4],
-                            branch: parts[1],
-                            path: parts[2],
-                            ...this.makeGithubURLs(match[3], match[4]),
-                        };
-                    }
-                } else if (parts.length === 2) {
-                    // parse repo
-                    const match = this.parseGithubURL(parts[0]);
+        const trimmedUrl = url.trim();
+        if (trimmedUrl.indexOf('|') >= 0) {
+            const parts = url.trim().split('|');
+            if (parts.length === 3) {
+                // parse repo
+                const match = this.parseGithubURL(parts[0]);
 
-                    if (match) {
-                        return {
-                            type: 'remote',
-                            account: match[3],
-                            repo: match[4],
-                            branch: '',
-                            path: parts[1],
-                            ...this.makeGithubURLs(match[3], match[4]),
-                        };
-                    }
-                }
-            } else {
-                let match = trimmedUrl.match(
-                    /^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/tree\/([^\/]+)\/(.+)$/,
-                );
                 if (match) {
                     return {
                         type: 'remote',
-                        account: match[1],
-                        repo: match[2],
-                        branch: match[3],
-                        path: `/${match[4]}`,
-                        ...this.makeGithubURLs(match[1], match[2]),
+                        account: match[3],
+                        repo: match[4],
+                        branch: parts[1],
+                        path: parts[2],
+                        ...this.makeGithubURLs(match[3], match[4]),
                     };
                 }
+            } else if (parts.length === 2) {
+                // parse repo
+                const match = this.parseGithubURL(parts[0]);
 
-                match = trimmedUrl.match(
-                    /^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/?$/,
-                );
                 if (match) {
                     return {
                         type: 'remote',
-                        account: match[1],
-                        repo: match[2],
+                        account: match[3],
+                        repo: match[4],
                         branch: '',
-                        path: '',
-                        ...this.makeGithubURLs(match[1], match[2]),
+                        path: parts[1],
+                        ...this.makeGithubURLs(match[3], match[4]),
                     };
                 }
+            }
+        } else {
+            let match = trimmedUrl.match(
+                /^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/tree\/([^\/]+)\/(.+)$/,
+            );
+            if (match) {
+                return {
+                    type: 'remote',
+                    account: match[1],
+                    repo: match[2],
+                    branch: match[3],
+                    path: `/${match[4]}`,
+                    ...this.makeGithubURLs(match[1], match[2]),
+                };
+            }
+
+            match = trimmedUrl.match(
+                /^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/?$/,
+            );
+            if (match) {
+                return {
+                    type: 'remote',
+                    account: match[1],
+                    repo: match[2],
+                    branch: '',
+                    path: '',
+                    ...this.makeGithubURLs(match[1], match[2]),
+                };
             }
         }
 
