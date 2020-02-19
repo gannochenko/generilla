@@ -7,6 +7,12 @@
     "files": [
         "build/"
     ],
+    "keywords": [
+        "code",
+        "generator",
+        "generilla",
+        "core"
+    ],
     "scripts": {
         "install-peers": "install-self-peers -- --ignore-scripts",
         "build": "rm -rf ./build/*; tsc -p ./tsconfig.build.json",
