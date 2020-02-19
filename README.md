@@ -298,43 +298,25 @@ See the [open issues](https://github.com/gannochenko/generilla/issues) for a lis
     yarn;
     yarn run boostrap;
     ```
-3. Build and link `core` package
+3. Link the `core` package
     ```sh
     cd packages/core;
-    yarn run build;
     yarn link;
     cd ../cli;
     yarn link @generilla/core;
     ```
-4. Build and link `cli` package to the global scope (being in the `packages/cli` folder)
-    ```sh
-    yarn run build;
-    yarn link
-    ```
-    As this is done, the command `generilla` should be available globally
-5. Re-build `core` or `cli` packages by typing
-    ```sh
-    yarn run build;
-    ```
-    in the corresponding `package/*` folder.
-6. Instead of linking `cli` package to the global scope and re-building it manually, you may want to build it every time something gets changed in the code and run it locally after that.
-    Then, instead of steps `4` and `5` do:
-    ```sh
-    cd packages/core;
+4. Go back to `core` and start watching for changes
+    ````bash
+    cd ../core;
     yarn run build:watch;
-    ```
-    In the other terminal then:
-    ```sh
-    cd packages/cli;
-    yarn run build:watch;
-    ```
-    In one more terminal:
-    ```sh
-    cd packages/cli;
-    yarn start;
-    ```
-    Use your development version as usual, the generated data will appear in the `_output` folder.
-
+    ````
+5. In the other terminal go to `cli` and run `yarn start`
+    ````bash
+    cd ../cli;
+    ````
+    `yarn start` executes main cli binary.
+    Use the development version as usual, for example `yarn start list` will be the same as `generilla list` and so on.
+    The generated data will appear in the `_output` folder, and linked generators - in `_generators` folder.
 
 <!-- CONTRIBUTING -->
 ## Contributing
