@@ -1,0 +1,8 @@
+{
+    "name": "generator-generator",
+    "version": "1.0.0",
+    "license": "MIT",
+    "dependencies": {
+        "@generilla/core": "^2.0.0"
+    }
+}

@@ -4,6 +4,17 @@ import { isAvailable } from './util';
 export class GIT {
     protected static isGitAvailable: boolean;
 
+    public static async init(url: string, cwd: string, as: string) {
+        if (!(await this.isAvailable())) {
+            throw new Error('Not available');
+        }
+
+        await execa('git', ['init'], {
+            cwd,
+            stdio: ['inherit', 'inherit', 'inherit'],
+        });
+    }
+
     public static async clone(url: string, cwd: string, as: string) {
         if (!(await this.isAvailable())) {
             throw new Error('Not available');

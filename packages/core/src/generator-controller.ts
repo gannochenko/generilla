@@ -98,7 +98,9 @@ export class GeneratorController {
             }
         } else {
             if (typeof generator.getQuestions === 'function') {
-                let questions = await generator.getQuestions();
+                let questions = (await generator.getQuestions()).filter(
+                    x => !!x,
+                );
                 if (questions && questions.length) {
                     let defaultAnswers: ObjectLiteral = {};
                     if (parameters.yes) {
