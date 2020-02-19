@@ -1,5 +1,5 @@
-import { ReferenceParseResult } from './type';
 import fs from 'fs-extra';
+import { ReferenceParseResult } from './type';
 
 export class ReferenceParser {
     public static parse(url: string): ReferenceParseResult {
