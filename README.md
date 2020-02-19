@@ -132,12 +132,14 @@ generator-name/
 If you open `index.js` for editing, you will see a lifecycle of a generator.
 The typical lifecycle of a generator is the following:
 
-1. run `onBeforeExecution()`
-2. ask questions returned by `getQuestions()`
-3. refine answers, if needed, by running `refineAnswers()`
-4. install dependencies, if `getDependencies()` returned a non-empty list
-5. install dev dependencies, if `getDevDependencies()` returned a non-empty list
-6. run `onAfterExecution()`
+1. run `async onBeforeExecution()`
+2. ask questions returned by `async getQuestions()`
+3. refine answers by running `async refineAnswers()`
+4. install dependencies, if `async getDependencies()` returned a non-empty list
+5. install dev dependencies, if `async getDevDependencies()` returned a non-empty list
+6. run `async onAfterExecution()`
+
+All of these methods are optional, use them only when you need them.
 
 #### Templating mechanism
 
