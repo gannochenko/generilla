@@ -9,6 +9,12 @@
     "bin": {
         "generilla": "./build/index.js"
     },
+    "keywords": [
+        "code",
+        "generator",
+        "generilla",
+        "cli"
+    ],
     "scripts": {
         "start": "GENERILLA_DST=./../../_output GENERILLA_GENERATORS_HOME=./../../_generators ts-node src/index.ts",
         "build:watch": "rm -rf ./build/*; tsc -w -p .",
