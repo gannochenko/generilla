@@ -146,10 +146,10 @@ Inside of each file in `template/` folder you may use [ejs template syntax](http
 For example, let's say you have two questions: `use_react` and `generator_name`.
 Then in any file you can write something like<br /> `Hello, this is <%- generator_name %> speaking!`.
 
-Furthermore, you can inject these templates into the name of the files, by naming the files like this:
-`hello-[generator_name].js`. All symbols, except `[a-zA-Z_-\.]` will be omitted.
+Furthermore, you can inject these templates into the name of the files, by naming the files like this:<br />
+`hello-[generator_name].js`. All symbols, except `[a-zA-Z0-9_-\.]` will be omitted.
 
-You can also conditionally enable or disable rendering of files or sub-folders, by giving names like this:
+You can also conditionally enable or disable rendering of files or sub-folders, by giving names like this:<br />
 `[?use_react]react/` or `[?use_react][generator_name].saga.ts`.
 
 #### Provided tools
@@ -170,6 +170,22 @@ Each function in the lifecycle has access to the following properties of the gen
             const template = this.util.makeTemplate(absolutePathToOtherTemplateFolder);
             await template.copy(absoluteDestinationPath, answers);
         ~~~
+
+#### Custom dependecies
+
+Each generator may have `package.json` next to `index.js` file. In this case, after linking a generator `generilla` will automatically run
+
+~~~bash
+yarn
+~~~
+
+or
+
+~~~bash
+npm install
+~~~
+
+on it.
 
 If you need more examples, check out [these generators](https://github.com/gannochenko/generators).
 
