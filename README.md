@@ -284,6 +284,9 @@ Type `generilla -h` to find out about all available commands.
 ## Roadmap
 
 * Bugfixing :)
+* Better edge cases handling.
+* Allow `generilla` to run a generator without installing it: `generilla run /path/to/generator`
+* Enable making of `self-executable` generators, that are distributed through `npm repository` and export a CLI command that runs `generilla run <generator>`
 
 See the [open issues](https://github.com/gannochenko/generilla/issues) for a list of proposed features (and known issues).
 
