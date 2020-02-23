@@ -235,6 +235,8 @@ generilla generator add git@github.com:joe/generators.git|master|/awesome.genera
 
 Whatever works for you better.
 
+✅ If there is a `package.json` located next to the `index.js` file of a generator, then after the remote generator is linked, `Generilla` will try to install dependencies automatically.
+
 ### Upgrading a remote generator
 
 To pull new changes made on the remotely linked generator, type
