@@ -4,7 +4,8 @@
     "license": "MIT",
     "main": "./build/index.js",
     "files": [
-        "build/"
+        "build/",
+        "generator-generator"
     ],
     "bin": {
         "generilla": "./build/index.js"
