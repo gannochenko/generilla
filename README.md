@@ -289,6 +289,7 @@ Type `generilla -h` to find out about all available commands.
 * Better edge cases handling.
 * Allow `generilla` to run a generator without linking it, like this: `generilla run /path/to/generator`.
 * Enable making of `self-executable` generators, that are distributed as an `npm package` and export a CLI command that runs `generilla run <generator>`.
+    This will allow using `yarn create <generator-name>`, which is quite cool.
 
 See the [open issues](https://github.com/gannochenko/generilla/issues) for a list of proposed features (and known issues).
 
