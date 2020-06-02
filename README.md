@@ -349,7 +349,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 * [Inquirer](https://www.npmjs.com/package/inquirer)
 * [Chalk](https://www.npmjs.com/package/chalk)
 * [Execa](https://www.npmjs.com/package/execa)
-* [Filget](https://www.npmjs.com/package/figlet)
+* [Figlet](https://www.npmjs.com/package/figlet)
 * [Commander](https://www.npmjs.com/package/commander)
 * [EJS](https://www.npmjs.com/package/ejs)
 
