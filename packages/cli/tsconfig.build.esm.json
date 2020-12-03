@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "es6",
+        "outDir": "./build.esm/",
+        "types": []
+    },
+    "extends": "./tsconfig.json",
+    "exclude": [
+        "node_modules",
+        "build",
+        "build:esm",
+        "build:cjs",
+
+        "**/**/*.test.ts"
+    ]
+}

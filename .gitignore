@@ -4,6 +4,8 @@ packages/**/node_modules/
 *.tar.gz
 .idea/
 packages/**/build/*
+packages/**/build.cjs/*
+packages/**/build.esm/*
 packages/**/fields/*
 _generators/**/*
 _generators/.generators

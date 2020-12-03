@@ -4,15 +4,20 @@ import clear from 'clear';
 // @ts-ignore
 import figlet from 'figlet';
 import inquirer from 'inquirer';
-import fs from 'fs-extra';
+import fsExtra from 'fs-extra';
 import commander from 'commander';
+import path from 'path';
+import fs from 'fs';
+import { promisify } from 'util';
 
-import { GeneratorListItem, Debug } from '@generilla/core';
-import { NOTHING, VERSION } from './constants';
+import { GeneratorListItem, Debug, GIT, NPM } from '@generilla/core';
+import { NOTHING } from './constants';
 import { Commands } from '../commands/commands';
 import { CommandAction, CommandProcessor } from '../commands/type';
 import { Nullable, ObjectLiteral } from '../type';
-import { GIT, NPM } from '@generilla/core';
+
+const getFileAccessError = promisify(fs.access);
+const readFile = promisify(fs.readFile);
 
 export class Generilla {
     private introShown = false;
@@ -25,12 +30,12 @@ export class Generilla {
     }
 
     public async run() {
-        await fs.ensureDir(this.generatorsPath);
+        await fsExtra.ensureDir(this.generatorsPath);
         if (!this.isObjectExist(this.generatorsPath)) {
             throw new Error(`No such directory: ${this.generatorsPath}`);
         }
 
-        const command = this.processCLI();
+        const command = await this.processCLI();
         if (command.arguments.debug) {
             Debug.enable();
         }
@@ -84,13 +89,13 @@ export class Generilla {
 
     private isObjectExist(objectPath: string) {
         try {
-            return fs.existsSync(objectPath);
+            return fsExtra.existsSync(objectPath);
         } catch (err) {
             return false;
         }
     }
 
-    private processCLI(): CommandAction {
+    private async processCLI(): Promise<CommandAction> {
         const program = new commander.Command();
 
         let commandToRun: Nullable<CommandProcessor> = null;
@@ -98,7 +103,11 @@ export class Generilla {
 
         program
             .name('generilla')
-            .version(VERSION, '-v, --version', 'output the current version')
+            .version(
+                await this.getVersion(),
+                '-v, --version',
+                'output the current version',
+            )
             .description('Generilla: an extremely simple code generator runner')
             .option(
                 '-m, --mould',
@@ -150,5 +159,30 @@ export class Generilla {
             console.log(`  ${NPM.getInstallationInfoYarn()}`);
             console.log(`  ${NPM.getInstallationInfoNPM()}`);
         }
+    }
+
+    private async getVersion(): Promise<string> {
+        const UNKNOWN_VERSION = '0.0.0';
+
+        const packagePath = path.normalize(
+            path.join(__dirname, '../../package.json'),
+        );
+        const accessError = await getFileAccessError(packagePath);
+        // @ts-ignore
+        if (accessError) {
+            return UNKNOWN_VERSION;
+        }
+
+        try {
+            // @ts-ignore
+            const packageData = JSON.parse(
+                (await readFile(packagePath)).toString('utf8'),
+            );
+            return packageData.version || UNKNOWN_VERSION;
+        } catch (error) {
+            console.error('Was not able to read the package.json file');
+        }
+
+        return UNKNOWN_VERSION;
     }
 }

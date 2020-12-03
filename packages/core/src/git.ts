@@ -15,12 +15,22 @@ export class GIT {
         });
     }
 
-    public static async clone(url: string, cwd: string, as: string) {
+    public static async clone(
+        url: string,
+        cwd: string,
+        as: string,
+        shallow?: boolean,
+    ) {
         if (!(await this.isAvailable())) {
             throw new Error('Not available');
         }
 
-        await execa('git', ['clone', url, as], {
+        let shallowArgs: string[] = [];
+        if (shallow) {
+            shallowArgs = ['-–depth', '1'];
+        }
+
+        await execa('git', [...shallowArgs, 'clone', url, as], {
             cwd,
             stdio: ['inherit', 'inherit', 'inherit'],
         });

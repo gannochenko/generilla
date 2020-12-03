@@ -2,9 +2,12 @@
     "name": "@generilla/cli",
     "version": "2.0.1",
     "license": "MIT",
-    "main": "./build/index.js",
+    "main": "build.cjs/index.js",
+    "module": "build.esm/index.js",
+    "typings": "build.cjs/index.d.ts",
     "files": [
-        "build/",
+        "build.esm/",
+        "build.cjs/",
         "generator-generator"
     ],
     "bin": {
@@ -18,8 +21,9 @@
     ],
     "scripts": {
         "start": "GENERILLA_DST=./../../_output GENERILLA_GENERATORS_HOME=./../../_generators ts-node src/index.ts",
-        "build:watch": "rm -rf ./build/*; tsc -w -p .",
-        "build": "rm -rf ./build/*; tsc -p .; chmod +x ./build/index.js",
+        "build": "rm -rf ./build/* && yarn run build:esm && yarn run build:cjs",
+        "build:cjs": "rm -rf ./build.cjs/* && tsc -p ./tsconfig.build.cjs.json && chmod +x ./build.cjs/index.js",
+        "build:esm": "rm -rf ./build.esm/* && tsc -p ./tsconfig.build.esm.json",
         "lint": "eslint ./src --ext .js,.ts",
         "lint:fix": "eslint ./src --fix --ext .js,.ts",
         "release": "./script/release.sh"

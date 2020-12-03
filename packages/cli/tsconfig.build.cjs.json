@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "target": "es5",
+        "outDir": "./build.cjs/",
+        "types": []
+    },
+    "extends": "./tsconfig.json",
+    "exclude": [
+        "node_modules",
+        "build",
+        "build:esm",
+        "build:cjs",
+        "**/**/*.test.ts"
+    ]
+}

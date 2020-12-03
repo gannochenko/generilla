@@ -34,7 +34,7 @@ export class GeneratorRecordManager {
                 reference.path,
             );
 
-            await GIT.clone(repository, this.generatorsPath, id);
+            await GIT.clone(repository, this.generatorsPath, id, true);
             if (reference.branch) {
                 await GIT.checkout(finalRepositoryPath, reference.branch);
             }
