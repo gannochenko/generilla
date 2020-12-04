@@ -64,7 +64,6 @@ export class CommandRun {
             return null;
         }
 
-        console.log(reference);
         const textConverter = new TextConverter();
         const generatorListEntry = await GeneratorList.getGeneratorItem(
             '',
