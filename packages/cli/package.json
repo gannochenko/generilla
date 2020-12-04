@@ -24,6 +24,7 @@
         "build": "rm -rf ./build/* && yarn run build:esm && yarn run build:cjs",
         "build:cjs": "rm -rf ./build.cjs/* && tsc -p ./tsconfig.build.cjs.json && chmod +x ./build.cjs/index.js",
         "build:esm": "rm -rf ./build.esm/* && tsc -p ./tsconfig.build.esm.json",
+        "build:watch": "tsc -w -p ./tsconfig.build.cjs.json",
         "lint": "eslint ./src --ext .js,.ts",
         "lint:fix": "eslint ./src --fix --ext .js,.ts",
         "release": "./script/release.sh"

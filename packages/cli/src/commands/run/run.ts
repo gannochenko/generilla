@@ -3,6 +3,8 @@ import {
     GeneratorList,
     GeneratorListItem,
     GeneratorController,
+    ReferenceParser,
+    TextConverter,
 } from '@generilla/core';
 import {
     ActionCallback,
@@ -12,6 +14,7 @@ import {
 } from '../type';
 import { Generilla } from '../../lib/generilla';
 import { NOTHING } from '../../lib/constants';
+import { ObjectLiteral } from '../../type';
 
 @Implements<CommandProcessor>()
 export class CommandRun {
@@ -42,11 +45,46 @@ export class CommandRun {
             );
     }
 
-    public static async process(
+    public static checkForReference(reference: string) {
+        try {
+            const result = ReferenceParser.parse(reference);
+            if (result.type === 'local' || result.type === 'remote') {
+                return result;
+            }
+        } catch (error) {}
+
+        return null;
+    }
+
+    public static async getGeneratorFromSource(reference: ObjectLiteral) {
+        if (reference.type === 'remote') {
+            console.error(
+                'Obtaining remote generators without putting them into list currently is not supported.',
+            );
+            return null;
+        }
+
+        console.log(reference);
+        const textConverter = new TextConverter();
+        const generatorListEntry = await GeneratorList.getGeneratorItem(
+            '',
+            // @ts-ignore
+            {
+                id: '',
+                ...reference,
+            },
+            {
+                textConverter,
+            },
+        );
+
+        return new GeneratorController(generatorListEntry);
+    }
+
+    public static async getGeneratorFromList(
+        generatorCode: string,
         generilla: Generilla,
-        args: CommandActionArguments,
     ) {
-        let generatorCode = args.generator as string;
         let generatorItem: GeneratorListItem | undefined;
 
         const list = await GeneratorList.getList(generilla.getGeneratorsPath());
@@ -56,7 +94,7 @@ export class CommandRun {
                 'Type "generilla generator add <reference>" to add an existing generator, or',
             );
             console.log('type "generilla scaffold" to make a brand new one!');
-            return;
+            return null;
         }
 
         let chosenFromList = false;
@@ -67,7 +105,7 @@ export class CommandRun {
 
             if (generatorCode === NOTHING) {
                 console.log('Well then, see you round!');
-                return;
+                return null;
             }
 
             chosenFromList = true;
@@ -78,7 +116,7 @@ export class CommandRun {
             console.log(
                 'Emm... I am not aware of such generator to be out there.',
             );
-            return;
+            return null;
         }
 
         await generilla.showIntro();
@@ -88,26 +126,46 @@ export class CommandRun {
             );
         }
 
-        const generator = new GeneratorController(generatorItem!);
+        return new GeneratorController(generatorItem!);
+    }
 
-        const destination =
-            args.output || process.env.GENERILLA_DST || process.cwd();
-        const { originalAnswers } = await generator.runPipeline(
-            destination,
-            args,
-        );
+    public static async process(
+        generilla: Generilla,
+        args: CommandActionArguments,
+    ) {
+        let generatorCode = args.generator as string;
 
-        console.log('Enjoy your brand new whatever you generated there!');
-
-        if (args.mould) {
-            console.log(
-                'Ah, yes. If you would like to run this process non-interactively, use the following command:',
+        let generator: GeneratorController | null;
+        const result = this.checkForReference(generatorCode);
+        if (result) {
+            generator = await this.getGeneratorFromSource(result);
+        } else {
+            generator = await this.getGeneratorFromList(
+                generatorCode,
+                generilla,
             );
-            console.log(
-                `generilla run ${generatorItem.code} -a '${JSON.stringify(
-                    originalAnswers || {},
-                )}'`,
-            );
+        }
+
+        if (generator) {
+            await generilla.showIntro();
+
+            const destination =
+                args.output || process.env.GENERILLA_DST || process.cwd();
+
+            await generator.runPipeline(destination, args);
+
+            console.log('Enjoy your brand new whatever you generated there!');
+
+            // if (args.mould) {
+            //     console.log(
+            //         'Ah, yes. If you would like to run this process non-interactively, use the following command:',
+            //     );
+            //     console.log(
+            //         `generilla run ${generatorItem.code} -a '${JSON.stringify(
+            //             originalAnswers || {},
+            //         )}'`,
+            //     );
+            // }
         }
     }
 }
