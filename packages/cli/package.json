@@ -11,7 +11,7 @@
         "generator-generator"
     ],
     "bin": {
-        "generilla": "./build/index.js"
+        "generilla": "./build.cjs/index.js"
     },
     "keywords": [
         "code",
