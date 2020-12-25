@@ -27,10 +27,10 @@ export class GIT {
 
         let shallowArgs: string[] = [];
         if (shallow) {
-            shallowArgs = ['-–depth', '1'];
+            shallowArgs = ['--depth', '1'];
         }
 
-        await execa('git', [...shallowArgs, 'clone', url, as], {
+        await execa('git', ['clone', ...shallowArgs, url, as], {
             cwd,
             stdio: ['inherit', 'inherit', 'inherit'],
         });

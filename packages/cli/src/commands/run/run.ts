@@ -1,10 +1,13 @@
 import { Command as CommanderCommand } from 'commander';
+import os from 'os';
+import path from 'path';
 import {
     GeneratorList,
     GeneratorListItem,
     GeneratorController,
     ReferenceParser,
     TextConverter,
+    GIT,
 } from '@generilla/core';
 import {
     ActionCallback,
@@ -57,21 +60,41 @@ export class CommandRun {
     }
 
     public static async getGeneratorFromSource(reference: ObjectLiteral) {
+        const textConverter = new TextConverter();
+
+        let actualReference = {};
+
         if (reference.type === 'remote') {
-            console.error(
-                'Obtaining remote generators without putting them into list currently is not supported.',
+            const tmpDir = os.tmpdir();
+            const generatorTmpName = Math.round(
+                Math.random() * 100000000,
+            ).toString();
+            await GIT.clone(
+                reference.repositorySSH,
+                tmpDir,
+                generatorTmpName,
+                true,
             );
-            return null;
+
+            const repositoryPath = path.join(tmpDir, generatorTmpName);
+            const generatorPath = path.join(repositoryPath, reference.path);
+
+            actualReference = {
+                id: '',
+                type: 'local',
+                path: generatorPath,
+            };
+        } else {
+            actualReference = {
+                id: '',
+                ...reference,
+            };
         }
 
-        const textConverter = new TextConverter();
         const generatorListEntry = await GeneratorList.getGeneratorItem(
             '',
             // @ts-ignore
-            {
-                id: '',
-                ...reference,
-            },
+            actualReference,
             {
                 textConverter,
             },
