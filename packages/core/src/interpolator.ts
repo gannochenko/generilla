@@ -6,9 +6,16 @@ export class Interpolator {
         // eslint-disable-next-line no-restricted-syntax
         for (const variable in variables) {
             if (Object.prototype.hasOwnProperty.call(variables, variable)) {
-                const value = variables[variable]
-                    .toString()
-                    .replace(/[^a-zA-Z0-9._-]/g, '');
+                let value = variables[variable];
+                if (value === undefined) {
+                    // eslint-disable-next-line no-console
+                    console.warn(
+                        `No value for the placeholder for "${variable}", setting to ''`,
+                    );
+                    value = '';
+                } else {
+                    value = value.toString().replace(/[^a-zA-Z0-9._-]/g, '');
+                }
 
                 processedTemplate = processedTemplate.replace(
                     new RegExp(`\\[\\?${variable}\\]`, 'i'),
